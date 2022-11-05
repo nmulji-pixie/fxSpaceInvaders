@@ -67,8 +67,8 @@ public class GameWorld extends GameEngine {
         // Sets the window title
         primaryStage.setTitle(getWindowTitle());
 
-        primaryStage.setFullScreen(true);
-        primaryStage.setMaximized(true);        
+        //primaryStage.setFullScreen(true);
+        //primaryStage.setMaximized(true);
 
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main_page.fxml"));
