@@ -114,7 +114,7 @@ case "$( uname )" in                #(
   NONSTOP* )        nonstop=true ;;
 esac
 
-CLASSPATH=$APP_HOME/lib/app.jar:$APP_HOME/lib/javafx-fxml-18.0.2-linux.jar:$APP_HOME/lib/javafx-controls-18.0.2-linux.jar:$APP_HOME/lib/javafx-controls-18.0.2.jar:$APP_HOME/lib/javafx-media-18.0.2-linux.jar:$APP_HOME/lib/javafx-graphics-18.0.2-linux.jar:$APP_HOME/lib/javafx-graphics-18.0.2.jar:$APP_HOME/lib/javafx-base-18.0.2-linux.jar:$APP_HOME/lib/javafx-base-18.0.2.jar
+CLASSPATH=$APP_HOME/lib/app.jar:$APP_HOME/lib/javafx-fxml-18.0.2-mac-aarch64.jar:$APP_HOME/lib/javafx-controls-18.0.2-mac-aarch64.jar:$APP_HOME/lib/javafx-controls-18.0.2.jar:$APP_HOME/lib/javafx-media-18.0.2-mac-aarch64.jar:$APP_HOME/lib/javafx-graphics-18.0.2-mac-aarch64.jar:$APP_HOME/lib/javafx-graphics-18.0.2.jar:$APP_HOME/lib/javafx-base-18.0.2-mac-aarch64.jar:$APP_HOME/lib/javafx-base-18.0.2.jar
 
 
 # Determine the Java command to use to start the JVM.
@@ -203,12 +203,6 @@ set -- \
         -classpath "$CLASSPATH" \
         edu.vanier.ufo.ui.SpaceInvadersApp \
         "$@"
-
-# Stop when "xargs" is not available.
-if ! command -v xargs >/dev/null 2>&1
-then
-    die "xargs is not available"
-fi
 
 # Use "xargs" to parse quoted args.
 #

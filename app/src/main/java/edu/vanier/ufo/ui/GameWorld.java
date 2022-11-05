@@ -1,10 +1,14 @@
 package edu.vanier.ufo.ui;
 
+import edu.vanier.ufo.controller.Controller;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.engine.*;
 import edu.vanier.ufo.game.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -16,11 +20,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Random;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -59,12 +63,23 @@ public class GameWorld extends GameEngine {
      * @param primaryStage The game window or primary stage.
      */
     @Override
-    public void initialize(final Stage primaryStage) {
+    public void initialize(final Stage primaryStage)  {
         // Sets the window title
         primaryStage.setTitle(getWindowTitle());
 
         primaryStage.setFullScreen(true);
         primaryStage.setMaximized(true);        
+
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main_page.fxml"));
+        Pane mainPane = null;
+        try {
+            mainPane = fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        fxmlLoader.setController(new Controller());
+            Scene scene = new Scene(mainPane);
 
         // Create the scene
         setSceneNodes(new Group());
@@ -74,7 +89,7 @@ public class GameWorld extends GameEngine {
             new ImagePattern(new Image(ResourcesManager.BACKGROUND))
         );
         
-        primaryStage.setScene(getGameSurface());
+        primaryStage.setScene(scene);
         // Setup Game input
         setupGameControl(primaryStage);
 
@@ -116,7 +131,8 @@ public class GameWorld extends GameEngine {
         });
         // load sound file        
         //TODO: load your sound file(s) here. 
-        getSoundManager().loadSoundEffects("laser", getClass().getResource(ResourcesManager.SOUND_LASER));                
+        getSoundManager().loadSoundEffects("laser", getClass().getResource(ResourcesManager.SOUND_LASER));
+        getSoundManager().loadSoundEffects("explosion", getClass().getResource(ResourcesManager.SOUND_EXPLOSION));
     }
 
     /**
