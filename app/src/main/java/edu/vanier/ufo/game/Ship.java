@@ -15,6 +15,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.event.EventHandler;
 
 /**
  * A spaceship with 32 directions When two atoms collide each will fade and
@@ -147,17 +148,17 @@ public class Ship extends Sprite {
     private Circle hitBounds;
 
     public Ship() {
-
         // Load one image.
-        Image shipSprite;
-        shipSprite = new Image(getClass().getResource(ResourcesManager.SPACE_SHIP).toExternalForm(), true);
+        Image shipImage;
+        shipImage = new Image(ResourcesManager.SPACE_STAR_SHIP, true);
         stopArea.setRadius(40);
         stopArea.setStroke(Color.ORANGE);
         RotatedShipImage prev = null;
+
         // create all the number of directions based on a unit angle. 360 divided by NUM_DIRECTIONS
         for (int i = 0; i < NUM_DIRECTIONS; i++) {
             RotatedShipImage imageView = new RotatedShipImage();
-            imageView.setImage(shipSprite);
+            imageView.setImage(shipImage);
             imageView.setRotate(-1 * i * UNIT_ANGLE_PER_FRAME);
             imageView.setCache(true);
             imageView.setCacheHint(CacheHint.SPEED);
@@ -179,8 +180,8 @@ public class Ship extends Sprite {
         // set javafx node to an image
         firstShip.setVisible(true);
         setNode(flipBook);
-        flipBook.setTranslateX(200);
-        flipBook.setTranslateY(300);
+        flipBook.setTranslateX(350);
+        flipBook.setTranslateY(450);
         flipBook.setCache(true);
         flipBook.setCacheHint(CacheHint.SPEED);
         flipBook.setManaged(false);
@@ -189,7 +190,60 @@ public class Ship extends Sprite {
     }
 
     /**
-     * Initialize the collision region for the spaceship. It's just an
+     * Change the ship imageView
+     *
+     * @param newShip new image of ship
+     */
+    public void changeShip(String newShip) {
+        double currentX = flipBook.getTranslateX();
+        double currentY = flipBook.getTranslateY();
+
+        directionalShips.clear();
+        flipBook.getChildren().clear();
+
+        Image shipImage;
+        shipImage = new Image(newShip, true);
+        stopArea.setRadius(40);
+        stopArea.setStroke(Color.ORANGE);
+        RotatedShipImage prev = null;
+        // create all the number of directions based on a unit angle. 360 divided by NUM_DIRECTIONS
+        for (int i = 0; i < NUM_DIRECTIONS; i++) {
+            RotatedShipImage imageView = new RotatedShipImage();
+            imageView.setImage(shipImage);
+            imageView.setRotate(-1 * i * UNIT_ANGLE_PER_FRAME);
+            imageView.setCache(true);
+            imageView.setCacheHint(CacheHint.SPEED);
+            imageView.setManaged(false);
+
+            imageView.setPrevRotatedImage(prev);
+            imageView.setVisible(false);
+
+            directionalShips.add(imageView);
+            if (prev != null) {
+                prev.setNextRotatedImage(imageView);
+            }
+            prev = imageView;
+            flipBook.getChildren().add(imageView);
+        }
+
+        RotatedShipImage firstShip = directionalShips.get(0);
+        firstShip.setPrevRotatedImage(prev);
+        prev.setNextRotatedImage(firstShip);
+
+        // set javafx node to an image
+        firstShip.setVisible(true);
+        setNode(flipBook);
+        flipBook.setTranslateX(currentX);
+        flipBook.setTranslateY(currentY);
+        flipBook.setCache(true);
+        flipBook.setCacheHint(CacheHint.SPEED);
+        flipBook.setManaged(false);
+        flipBook.setAutoSizeChildren(false);
+        initHitZone();
+    }
+
+    /**
+     * Initialize the collision region for the space ship. It's just an
      * inscribed circle.
      */
     public void initHitZone() {
@@ -319,16 +373,6 @@ public class Ship extends Sprite {
         if (vIndex < 0) {
             vIndex = NUM_DIRECTIONS + vIndex;
         }
-        String debugMsg = turnDirection
-                + " U [m(" + u.mx + ", " + u.my + ")  => c(" + u.x + ", " + u.y + ")] "
-                + " V [m(" + v.mx + ", " + v.my + ")  => c(" + v.x + ", " + v.y + ")] "
-                + " start angle: " + atan2DegreesU
-                + " end angle:" + atan2DegreesV
-                + " Angle between: " + degreesToMove
-                + " Start index: " + uIndex
-                + " End index: " + vIndex;
-
-        //System.out.println(debugMsg);
         if (thrust) {
             vX = Math.cos(atan2RadiansV) * THRUST_AMOUNT;
             vY = -Math.sin(atan2RadiansV) * THRUST_AMOUNT;
@@ -339,6 +383,7 @@ public class Ship extends Sprite {
     }
 
     private void turnShip() {
+
         final Duration oneFrameAmt = Duration.millis(MILLIS_PER_FRAME);
         RotatedShipImage startImage = directionalShips.get(uIndex);
         RotatedShipImage endImage = directionalShips.get(vIndex);
@@ -351,7 +396,7 @@ public class Ship extends Sprite {
 
             final Node displayNode = currImage;
 
-            KeyFrame oneFrame = new KeyFrame(oneFrameAmt.multiply(i), (ActionEvent event) -> {
+            KeyFrame oneFrame = new KeyFrame(oneFrameAmt.multiply(i), (javafx.event.ActionEvent event) -> {
                 // make all ship images invisible
                 for (RotatedShipImage shipImg : directionalShips) {
                     shipImg.setVisible(false);
@@ -360,7 +405,7 @@ public class Ship extends Sprite {
                 displayNode.setVisible(true);
 
                 // update the current index
-                //uIndex = directionalShips.indexOf(displayNode);
+//                    uIndex = directionalShips.indexOf(displayNode);
             }); // oneFrame
 
             frames.add(oneFrame);
@@ -383,10 +428,12 @@ public class Ship extends Sprite {
             rotateShipTimeline.getKeyFrames().addAll(frames);
         } else {
             // sets the game world's game loop (Timeline)
-            rotateShipTimeline = new Timeline();
-            rotateShipTimeline.getKeyFrames().addAll(frames);
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().addAll(frames);
+            rotateShipTimeline = timeline;
         }
         rotateShipTimeline.playFromStart();
+
     }
 
     /**
@@ -405,17 +452,18 @@ public class Ship extends Sprite {
         float slowDownAmt = 0;
         int scaleBeginningMissle;
         if (KeyCode.DIGIT2 == keyCode) {
-            fireMissile = new Missile(ResourcesManager.ROCKET_SMALL);
+            fireMissile = new Missile(ResourcesManager.ROCKET_FIRE);
             slowDownAmt = 1.3f;
             scaleBeginningMissle = 11;
         } else {
             fireMissile = new Missile(ResourcesManager.ROCKET_SMALL);
             scaleBeginningMissle = 8;
         }
+
         //fireMissile.setPosition(getNode().getLayoutX()+ 10, getNode().getLayoutY() - 20);
         // velocity vector of the missile
         fireMissile.setVelocityX(Math.cos(Math.toRadians(uIndex * UNIT_ANGLE_PER_FRAME)) * (MISSILE_THRUST_AMOUNT - slowDownAmt));
-        fireMissile.setVelocityY(Math.sin(Math.toRadians(uIndex * UNIT_ANGLE_PER_FRAME)) * (MISSILE_THRUST_AMOUNT - slowDownAmt));
+        fireMissile.setVelocityY(Math.sin(Math.toRadians(-vIndex * UNIT_ANGLE_PER_FRAME)) * (MISSILE_THRUST_AMOUNT - slowDownAmt));
 
         // make the missile launch in the direction of the current direction of the ship nose. based on the
         // current frame (uIndex) into the list of image view nodes.
@@ -436,7 +484,6 @@ public class Ship extends Sprite {
     }
 
     public void shieldToggle() {
-
         if (shield == null) {
             RotatedShipImage shipImage = getCurrentShipImage();
             double x = shipImage.getBoundsInLocal().getWidth() / 2;
@@ -477,9 +524,6 @@ public class Ship extends Sprite {
             flipBook.getChildren().remove(shield);
             shieldFade.stop();
             setCollisionBounds(hitBounds);
-
         }
-
     }
-
 }
