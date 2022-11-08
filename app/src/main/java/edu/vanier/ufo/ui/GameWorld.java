@@ -210,15 +210,14 @@ public class GameWorld extends GameEngine {
     /**
      * Change the direction of the moving object when it encounters the walls.
      *
-     * @param sprite The sprite to update based on the wall boundaries. TODO The
-     * ship has got issues.
+     * @param sprite The sprite to update based on the wall boundaries.
      */
     private void bounceOffWalls(Sprite sprite) {
         // bounce off the walls when outside of boundaries
 
         Node displayNode;
         if (sprite instanceof Ship) {
-            displayNode = sprite.getNode();//((Ship)sprite).getCurrentShipImage();
+            return;
         } else {
             displayNode = sprite.getNode();
         }
