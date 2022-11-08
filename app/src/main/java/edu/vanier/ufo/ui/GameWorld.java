@@ -4,6 +4,7 @@ import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.engine.*;
 import edu.vanier.ufo.game.*;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -14,9 +15,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.Random;
 import javafx.scene.image.ImageView;
 
@@ -51,6 +55,7 @@ public class GameWorld extends GameEngine {
         // Sets the window title
         primaryStage.setTitle(getWindowTitle());
         //primaryStage.setFullScreen(true);
+
 
         // Create the scene
         setSceneNodes(new Group());

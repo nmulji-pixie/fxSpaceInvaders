@@ -1,10 +1,16 @@
 package edu.vanier.ufo.ui;
 
+import edu.vanier.ufo.controller.Controller;
 import edu.vanier.ufo.engine.GameEngine;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * The main driver of the game.
@@ -14,7 +20,7 @@ import javafx.stage.Stage;
 public class SpaceInvadersApp extends Application {
 
     GameEngine gameWorld;
-
+    Controller controller = new Controller();
     /**
      * @param args the command line arguments
      */
@@ -24,12 +30,19 @@ public class SpaceInvadersApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        gameWorld = new GameWorld(ResourcesManager.FRAMES_PER_SECOND, "JavaFX Space Invaders");
+
         // Setup title, scene, stats, controls, and actors.
-        gameWorld.initialize(primaryStage);
-        // kick off the game loop
-        gameWorld.beginGameLoop();
-        // display window
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main_page.fxml"));
+        loader.setController(controller);
+        Pane root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Scene scene = new Scene(root);
+        controller.setPrimaryStage(primaryStage);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
