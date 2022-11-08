@@ -37,6 +37,8 @@ public class ResourcesManager {
     public static final String SOUND_LASER = SOUNDS_FOLDER + "laser_2.mp3";    
     //public static final String SOUND_LASER = SOUNDS_FOLDER + "alienMove2.wav";    
     
+    // Special effects
+    public static final String EXPLOSION = IMAGES_FOLDER + "explosion.gif";    
     
     public static final String[] INADER_SPRITES_PATH = {			
 			INVADER_UFO, INVADER_CHICKEN, INVADER_BEE,INVADER_SCI_FI
