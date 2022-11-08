@@ -3,16 +3,11 @@ package edu.vanier.ufo.game;
 import edu.vanier.ufo.engine.GameEngine;
 import edu.vanier.ufo.engine.Sprite;
 import edu.vanier.ufo.helpers.ResourcesManager;
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.media.AudioClip;
 import javafx.util.Duration;
 
 /**
@@ -61,12 +56,12 @@ public class Atom extends Sprite {
      *
      * @param gameWorld - game world
      */
-    public void implode(final GameEngine gameWorld) throws URISyntaxException {
+    public void implode(final GameEngine gameWorld) {
         vX = vY = 0;
         Node currentNode = getNode();
         /* TODO: fix this code to add explosing effect*/
-        Sprite explosion = new Atom(ResourcesManager.ROCKET_FIRE);                
-        gameWorld.getSceneNodes().getChildren().add(explosion.getNode());
+        //Sprite explosion = new Atom(ResourcesManager.ROCKET_FIRE);                
+        //gameWorld.getSceneNodes().getChildren().add(explosion.getNode());
         FadeTransition ft = new FadeTransition(Duration.millis(300), currentNode);
         ft.setFromValue(vX);
         ft.setToValue(0);
@@ -75,17 +70,11 @@ public class Atom extends Sprite {
             gameWorld.getSceneNodes().getChildren().remove(currentNode);
         });
         ft.play();
-        AudioClip explosion_sound = new AudioClip(new File(getClass().getResource(ResourcesManager.SOUND_EXPLOSION).toURI()).toURI().toString());
-        explosion_sound.play();
     }
 
     @Override
     public void handleDeath(GameEngine gameWorld) {
-        try {
-            implode(gameWorld);
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(Atom.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        implode(gameWorld);
         super.handleDeath(gameWorld);
     }
 }
