@@ -7,7 +7,8 @@ import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;;
+import javafx.scene.Scene;
+;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -29,6 +30,8 @@ import javafx.scene.image.ImageView;
  *
  * @author cdea
  */
+
+
 public class GameWorld extends GameEngine {
 
     // mouse pt label
@@ -80,10 +83,9 @@ public class GameWorld extends GameEngine {
         row2.getChildren().add(mousePressPtLabel);
         stats.getChildren().add(row1);
         stats.getChildren().add(row2);
-        
+
         //TODO: Add the HUD here.
         getSceneNodes().getChildren().add(0, stats);
-
 
         // load sound files
         getSoundManager().loadSoundEffects("laser", getClass().getClassLoader().getResource(ResourcesManager.SOUND_LASER));
@@ -271,8 +273,21 @@ public class GameWorld extends GameEngine {
      */
     @Override
     protected boolean handleCollision(Sprite spriteA, Sprite spriteB) {
-        //TODO: implement collision detection here.
-
+        if (
+            spriteA != spriteB &&
+            spriteA.collide(spriteB) &&
+            !(spriteA == spaceShip && spriteB instanceof Missile) &&
+            !(spriteB == spaceShip && spriteA instanceof Missile) &&
+            !(spriteA.getClass() == spriteB.getClass())
+        ) {
+            if (spriteA != spaceShip) {
+                spriteA.handleDeath(this);
+            }
+            if (spriteB != spaceShip) {
+                spriteB.handleDeath(this);
+            }
+            return true;
+        }
         return false;
     }
 }
