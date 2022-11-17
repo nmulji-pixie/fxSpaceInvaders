@@ -129,10 +129,32 @@ public class GameWorld extends GameEngine {
                 spaceShip.plotCourse(event.getX(), event.getY(), true);
             }
         };
+        EventHandler move = (EventHandler<KeyEvent>) (KeyEvent event) -> {
+            CustomVector movement = new CustomVector(0, 0);
+            if (event.getCode() == KeyCode.UP){
+                movement.y += 1;
+            }
 
-        // Initialize input
-        primaryStage.getScene().setOnMousePressed(fireOrMove);
+            if (event.getCode() == KeyCode.DOWN){
+                movement.y -= 1;
+            }
 
+            if (event.getCode() == KeyCode.RIGHT){
+                movement.x += 1;
+            }
+
+            if (event.getCode() == KeyCode.LEFT){
+                movement.x -= 1;
+            }
+
+            spaceShip.plotCourse(movement, true);
+        };
+                // Initialize input
+        //primaryStage.getScene().setOnMousePressed(fireOrMove);
+        primaryStage.getScene().setOnKeyPressed(move);
+        primaryStage.getScene().setOnKeyReleased(event -> {
+
+        });
         // set up stats
         EventHandler changeWeapons = (EventHandler<KeyEvent>) (KeyEvent event) -> {
             if (KeyCode.SPACE == event.getCode()) {
@@ -141,7 +163,7 @@ public class GameWorld extends GameEngine {
             }
             spaceShip.changeWeapon(event.getCode());
         };
-        primaryStage.getScene().setOnKeyPressed(changeWeapons);
+        //primaryStage.getScene().setOnKeyPressed(changeWeapons);
 
         // set up stats
         EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {

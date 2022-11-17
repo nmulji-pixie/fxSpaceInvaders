@@ -15,6 +15,8 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+
 import javafx.event.EventHandler;
 
 /**
@@ -323,6 +325,66 @@ public class Ship extends Sprite {
 
         // get user's new turn position based on mouse click
         CustomVector v = new CustomVector(screenX, screenY, sx, sy);
+        if (u == null) {
+            u = new CustomVector(1, 0);
+        }
+
+        double atan2RadiansU = Math.atan2(u.y, u.x);
+        double atan2DegreesU = Math.toDegrees(atan2RadiansU);
+
+        double atan2RadiansV = Math.atan2(v.y, v.x);
+        double atan2DegreesV = Math.toDegrees(atan2RadiansV);
+
+        double angleBetweenUAndV = atan2DegreesV - atan2DegreesU;
+
+        // if abs value is greater than 180 move counter clockwise
+        //(or opposite of what is determined)
+        double absAngleBetweenUAndV = Math.abs(angleBetweenUAndV);
+        boolean goOtherWay = false;
+        if (absAngleBetweenUAndV > 180) {
+            if (angleBetweenUAndV < 0) {
+                turnDirection = DIRECTION.COUNTER_CLOCKWISE;
+                goOtherWay = true;
+            } else if (angleBetweenUAndV > 0) {
+                turnDirection = DIRECTION.CLOCKWISE;
+                goOtherWay = true;
+            } else {
+                turnDirection = Ship.DIRECTION.NEITHER;
+            }
+        } else {
+            if (angleBetweenUAndV < 0) {
+                turnDirection = Ship.DIRECTION.CLOCKWISE;
+            } else if (angleBetweenUAndV > 0) {
+                turnDirection = Ship.DIRECTION.COUNTER_CLOCKWISE;
+            } else {
+                turnDirection = Ship.DIRECTION.NEITHER;
+            }
+        }
+
+        double degreesToMove = absAngleBetweenUAndV;
+        if (goOtherWay) {
+            degreesToMove = TWO_PI_DEGREES - absAngleBetweenUAndV;
+        }
+
+        //int q = v.quadrant();
+        uIndex = Math.round((float) (atan2DegreesU / UNIT_ANGLE_PER_FRAME));
+        if (uIndex < 0) {
+            uIndex = NUM_DIRECTIONS + uIndex;
+        }
+        vIndex = Math.round((float) (atan2DegreesV / UNIT_ANGLE_PER_FRAME));
+        if (vIndex < 0) {
+            vIndex = NUM_DIRECTIONS + vIndex;
+        }
+        if (thrust) {
+            vX = Math.cos(atan2RadiansV) * THRUST_AMOUNT;
+            vY = -Math.sin(atan2RadiansV) * THRUST_AMOUNT;
+        }
+        turnShip();
+
+        u = v;
+    }
+
+    public void plotCourse(CustomVector v, boolean thrust){
         if (u == null) {
             u = new CustomVector(1, 0);
         }

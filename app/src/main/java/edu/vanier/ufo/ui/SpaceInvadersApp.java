@@ -17,7 +17,8 @@ import java.io.IOException;
  *
  * @author cdea
  */
-public class SpaceInvadersApp extends Application {
+public class
+SpaceInvadersApp extends Application {
 
     GameEngine gameWorld;
     Controller controller = new Controller();
