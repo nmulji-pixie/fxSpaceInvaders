@@ -14,7 +14,9 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javafx.event.EventHandler;
@@ -66,7 +68,7 @@ public class Ship extends Sprite {
      * Velocity amount used vector when ship moves forward. scale vector of
      * ship. See flipBook translateX and Y.
      */
-    private final static float THRUST_AMOUNT = 4.3f;
+    private final static float THRUST_AMOUNT = 2.3f;
 
     /**
      *
@@ -384,11 +386,28 @@ public class Ship extends Sprite {
         u = v;
     }
 
-    public void plotCourse(CustomVector v, boolean thrust){
+    public void plotCourse(Map<KeyCode, Boolean> vKeys, boolean thrust){
         if (u == null) {
             u = new CustomVector(1, 0);
         }
 
+        CustomVector v = new CustomVector(
+            (
+                (vKeys.getOrDefault(KeyCode.LEFT, false) ? -1 : 0) +
+                (vKeys.getOrDefault(KeyCode.RIGHT, false) ? 1 : 0)
+            ),
+            (
+                (vKeys.getOrDefault(KeyCode.DOWN, false) ? -1 : 0) +
+                (vKeys.getOrDefault(KeyCode.UP, false) ? 1 : 0)
+            )
+        );
+        
+        if (v.x == 0 && v.y == 0) {
+            vX = 0;
+            vY = 0;
+            return;
+        }
+        
         double atan2RadiansU = Math.atan2(u.y, u.x);
         double atan2DegreesU = Math.toDegrees(atan2RadiansU);
 

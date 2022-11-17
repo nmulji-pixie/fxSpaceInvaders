@@ -22,6 +22,92 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Random;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import java.util.Random;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import java.util.Random;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import java.util.Random;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import java.io.IOException;
+import java.util.Random;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import java.util.Random;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import java.util.Random;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import java.util.Random;
 import javafx.scene.image.ImageView;
 
@@ -65,7 +151,7 @@ public class GameWorld extends GameEngine {
         setGameSurface(new Scene(getSceneNodes(), 1000, 600));
 
         // Change the background of the main scene.
-        getGameSurface().setFill(Color.BLACK);
+        getGameSurface().setFill(new ImagePattern(new Image(ResourcesManager.BACKGROUND)));
 
         primaryStage.setScene(getGameSurface());
 
@@ -129,30 +215,18 @@ public class GameWorld extends GameEngine {
                 spaceShip.plotCourse(event.getX(), event.getY(), true);
             }
         };
+        
+        HashMap<KeyCode, Boolean> vKeys = new HashMap();
         EventHandler move = (EventHandler<KeyEvent>) (KeyEvent event) -> {
-            CustomVector movement = new CustomVector(0, 0);
-            if (event.getCode() == KeyCode.UP){
-                movement.y += 1;
-            }
-
-            if (event.getCode() == KeyCode.DOWN){
-                movement.y -= 1;
-            }
-
-            if (event.getCode() == KeyCode.RIGHT){
-                movement.x += 1;
-            }
-
-            if (event.getCode() == KeyCode.LEFT){
-                movement.x -= 1;
-            }
-
-            spaceShip.plotCourse(movement, true);
+            vKeys.put(event.getCode(), true);
+            spaceShip.plotCourse(vKeys, true);
         };
                 // Initialize input
         //primaryStage.getScene().setOnMousePressed(fireOrMove);
         primaryStage.getScene().setOnKeyPressed(move);
         primaryStage.getScene().setOnKeyReleased(event -> {
+            vKeys.put(event.getCode(), false);
+            spaceShip.plotCourse(vKeys, true);
 
         });
         // set up stats
