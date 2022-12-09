@@ -4,51 +4,11 @@ import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.engine.*;
 import edu.vanier.ufo.game.*;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Random;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.Random;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.Random;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -60,56 +20,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.util.Random;
-import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.io.IOException;
-import java.util.Random;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.Random;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.Random;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.Random;
-import javafx.scene.image.ImageView;
 
 /**
  * This is a simple game world simulating a bunch of spheres looking like atomic
@@ -128,7 +38,7 @@ public class GameWorld extends GameEngine {
     Label mousePtLabel = new Label();
     // mouse press pt label
     Label mousePressPtLabel = new Label();
-    Ship spaceShip = new Ship();
+    Tank playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
 
     public GameWorld(int fps, String title) {
         super(fps, title);
@@ -161,8 +71,8 @@ public class GameWorld extends GameEngine {
         // Create many spheres
         generateManySpheres(5);
 
-        getSpriteManager().addSprites(spaceShip);
-        getSceneNodes().getChildren().add(0, spaceShip.getNode());
+        getSpriteManager().addSprites(playerTank);
+        getSceneNodes().getChildren().add(0, playerTank.getNode());
         // mouse point
         VBox stats = new VBox();
 
@@ -179,7 +89,7 @@ public class GameWorld extends GameEngine {
         getSceneNodes().getChildren().add(0, stats);
 
         // load sound files
-        getSoundManager().loadSoundEffects("laser", getClass().getClassLoader().getResource(ResourcesManager.SOUND_LASER));
+        //getSoundManager().loadSoundEffects("laser", getClass().getClassLoader().getResource(ResourcesManager.SOUND_LASER));
     }
 
     /**
@@ -188,17 +98,14 @@ public class GameWorld extends GameEngine {
      * @param primaryStage The primary stage (app window).
      */
     private void setupInput(Stage primaryStage) {
-        System.out.println("Ship's center is (" + spaceShip.getCenterX() + ", " + spaceShip.getCenterY() + ")");
+        System.out.println("Ship's center is (" + playerTank.getCenterX() + ", " + playerTank.getCenterY() + ")");
 
         EventHandler fireOrMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
             mousePressPtLabel.setText("Mouse Press PT = (" + event.getX() + ", " + event.getY() + ")");
             if (event.getButton() == MouseButton.PRIMARY) {
 
-                // Aim
-                spaceShip.plotCourse(event.getX(), event.getY(), false);
-
                 // fire
-                Missile missile = spaceShip.fire();
+                Missile missile = playerTank.fire();
                 getSpriteManager().addSprites(missile);
 
                 // play sound
@@ -206,41 +113,25 @@ public class GameWorld extends GameEngine {
 
                 getSceneNodes().getChildren().add(0, missile.getNode());
 
-            } else if (event.getButton() == MouseButton.SECONDARY) {
-                // determine when all atoms are not on the game surface. Ship should be one sprite left.
-
-                // stop ship from moving forward
-                spaceShip.applyTheBrakes(event.getX(), event.getY());
-                // move forward and rotate ship
-                spaceShip.plotCourse(event.getX(), event.getY(), true);
             }
         };
         
         HashMap<KeyCode, Boolean> vKeys = new HashMap();
-        EventHandler move = (EventHandler<KeyEvent>) (KeyEvent event) -> {
+        primaryStage.getScene().setOnMousePressed(fireOrMove);
+        primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
             vKeys.put(event.getCode(), true);
-            spaceShip.plotCourse(vKeys, true);
-        };
-                // Initialize input
-        //primaryStage.getScene().setOnMousePressed(fireOrMove);
-        primaryStage.getScene().setOnKeyPressed(move);
+            playerTank.plotCourse(vKeys, true);
+        });
+        
         primaryStage.getScene().setOnKeyReleased(event -> {
             vKeys.put(event.getCode(), false);
-            spaceShip.plotCourse(vKeys, true);
+            playerTank.plotCourse(vKeys, true);
 
         });
-        // set up stats
-        EventHandler changeWeapons = (EventHandler<KeyEvent>) (KeyEvent event) -> {
-            if (KeyCode.SPACE == event.getCode()) {
-                spaceShip.shieldToggle();
-                return;
-            }
-            spaceShip.changeWeapon(event.getCode());
-        };
-        //primaryStage.getScene().setOnKeyPressed(changeWeapons);
 
         // set up stats
         EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
+            playerTank.aimAt(event.getSceneX(), event.getSceneY());
             mousePtLabel.setText("Mouse PT = (" + event.getX() + ", " + event.getY() + ")");
         };
 
@@ -257,13 +148,9 @@ public class GameWorld extends GameEngine {
         Random rnd = new Random();
         Scene gameSurface = getGameSurface();
         for (int i = 0; i < numSpheres; i++) {
-            Atom atom = new Atom(ResourcesManager.INVADER_SCI_FI);
-            ImageView atomImage = atom.getImageViewNode();
-            // random 0 to 2 + (.0 to 1) * random (1 or -1)
-            // Randomize the location of each newly generated atom.
-            atom.setVelocityX((rnd.nextInt(2) + rnd.nextDouble()) * (rnd.nextBoolean() ? 1 : -1));
-            atom.setVelocityY((rnd.nextInt(2) + rnd.nextDouble()) * (rnd.nextBoolean() ? 1 : -1));
-
+            ResourcesManager.TankColor colors[] = ResourcesManager.TankColor.values();
+            ResourcesManager.BarrelType barrelTypes[] = ResourcesManager.BarrelType.values();
+            
             // random x between 0 to width of scene
             double newX = rnd.nextInt((int) gameSurface.getWidth() - 100);
 
@@ -275,14 +162,18 @@ public class GameWorld extends GameEngine {
             if (newY > (gameSurface.getHeight() - (rnd.nextInt(15) + 5 * 2))) {
                 newY = gameSurface.getHeight() - (rnd.nextInt(15) + 5 * 2);
             }
-
-            atomImage.setTranslateX(newX);
-            atomImage.setTranslateY(newY);
-            atomImage.setVisible(true);
-            atomImage.setId("invader");
-            atomImage.setCache(true);
-            atomImage.setCacheHint(CacheHint.SPEED);
-            atomImage.setManaged(false);
+            
+            TankBot atom = new TankBot(
+                colors[rnd.nextInt(colors.length)],
+                barrelTypes[rnd.nextInt(barrelTypes.length)],
+                newX,
+                newY
+            );
+            
+            // random 0 to 2 + (.0 to 1) * random (1 or -1)
+            // Randomize the location of each newly generated atom.
+            atom.setVelocityX((rnd.nextInt(2) + rnd.nextDouble()) * (rnd.nextBoolean() ? 1 : -1));
+            atom.setVelocityY((rnd.nextInt(2) + rnd.nextDouble()) * (rnd.nextBoolean() ? 1 : -1));
 
             // add to actors in play (sprite objects)
             getSpriteManager().addSprites(atom);
@@ -317,7 +208,7 @@ public class GameWorld extends GameEngine {
         // bounce off the walls when outside of boundaries
 
         Node displayNode;
-        if (sprite instanceof Ship) {
+        if (sprite instanceof Tank) {
             return;
         } else {
             displayNode = sprite.getNode();
@@ -376,14 +267,14 @@ public class GameWorld extends GameEngine {
         if (
             spriteA != spriteB &&
             spriteA.collide(spriteB) &&
-            !(spriteA == spaceShip && spriteB instanceof Missile) &&
-            !(spriteB == spaceShip && spriteA instanceof Missile) &&
+            !(spriteA == playerTank && spriteB instanceof Missile) &&
+            !(spriteB == playerTank && spriteA instanceof Missile) &&
             !(spriteA.getClass() == spriteB.getClass())
         ) {
-            if (spriteA != spaceShip) {
+            if (spriteA != playerTank) {
                 spriteA.handleDeath(this);
             }
-            if (spriteB != spaceShip) {
+            if (spriteB != playerTank) {
                 spriteB.handleDeath(this);
             }
             return true;
