@@ -1,14 +1,23 @@
 package edu.vanier.ufo.engine;
 
+import edu.vanier.ufo.helpers.ResourcesManager;
+import edu.vanier.ufo.level.GameLevel;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This application demonstrates a JavaFX Game Loop. Shown below are the methods
@@ -47,6 +56,19 @@ public abstract class GameEngine {
      * Title in the application window.
      */
     private final String windowTitle;
+    protected GameLevel level;
+    protected int currentLevel;
+    protected static Stage primaryStage;
+
+
+
+    public GameLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(GameLevel level) {
+        this.level = level;
+    }
 
     /**
      * The sprite manager.
@@ -54,6 +76,7 @@ public abstract class GameEngine {
     private final SpriteManager spriteManager;
 
     private final SoundManager soundManager;
+    protected List<Sprite> deadSprites;
 
     /**
      * Constructor that is called by the derived class. This will set the frames
@@ -67,6 +90,7 @@ public abstract class GameEngine {
         windowTitle = title;
         spriteManager = new SpriteManager();
         soundManager = new SoundManager(3);
+        deadSprites = new ArrayList<>();
         // create and set timeline for the game loop
         buildAndSetGameLoop();
     }
@@ -84,12 +108,27 @@ public abstract class GameEngine {
              checkCollisions();
             // removed dead sprites.
             cleanupSprites();
+            try {
+                if (isGameOver()){
+                    shutdown();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         };
         final KeyFrame gameFrame = new KeyFrame(frameDuration, onFinished);
         // sets the game world's game loop (Timeline)
         Timeline gameLoop = new Timeline(gameFrame);
         gameLoop.setCycleCount(Animation.INDEFINITE);
         setGameLoop(gameLoop);
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 
     /**
@@ -263,6 +302,13 @@ public abstract class GameEngine {
 
     protected SoundManager getSoundManager() {
         return soundManager;
+    }
+    public boolean isGameOver() throws IOException {
+        if (deadSprites.isEmpty()){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**

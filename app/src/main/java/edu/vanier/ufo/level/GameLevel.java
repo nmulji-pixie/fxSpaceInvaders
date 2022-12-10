@@ -11,10 +11,10 @@ public class GameLevel {
     private int numberOfSprites;
     private int maxLevel = 4;
 
-    public GameLevel(int level_number, int numberOfSprites) {
+    public GameLevel(int level_number) {
         this.level_number = level_number;
-        this.numberOfSprites = numberOfSprites;
         setShip(generateShip());
+        setNumberOfSprites(generateNumberOfSprites());
     }
 
     public Ship getShip() {
@@ -56,6 +56,20 @@ public class GameLevel {
             return this.getShip();
         }else {
             return null;
+        }
+    }
+
+    public int generateNumberOfSprites(){
+        if (this.level_number == 1){
+            return 10;
+        } else if (this.level_number == 2) {
+            return 15;
+        } else if (this.level_number == 3) {
+            return 20;
+        } else if (this.level_number == 4) {
+            return 25;
+        }else {
+            return 0;
         }
     }
 }
