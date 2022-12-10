@@ -6,33 +6,14 @@ import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
-
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
 
-/**
- * A tank with 32 directions When two atoms collide each will fade and
- * become removed from the scene. The method called implode() implements a fade
- * transition effect.
- *
- * @author cdea
- */
 public class Tank extends Sprite {
     private final static float THRUST_AMOUNT = 2.3f;
 
@@ -61,8 +42,8 @@ public class Tank extends Sprite {
         this.color = color;
         this.barrelType = barrelType;
         
-        this.tankSprite = new RotatedImageView(ResourcesManager.getTankBody(this.color), -90, new Point2D(0, 0));
-        this.barrelSprite = new RotatedImageView(ResourcesManager.getTankBarrel(this.color, this.barrelType), -90, new Point2D(-2, 0.5));
+        this.tankSprite = new RotatedImageView(ResourcesManager.getTankBody(this.color), -90, new Point2D(0.5, 0.5));
+        this.barrelSprite = new RotatedImageView(ResourcesManager.getTankBarrel(this.color, this.barrelType), 90, new Point2D(0.5, 1));
         
         flipBook.getChildren().addAll(this.tankSprite, this.barrelSprite);
         
@@ -127,13 +108,13 @@ public class Tank extends Sprite {
 
     public void plotCourse(Map<KeyCode, Boolean> vKeys, boolean thrust){
         this.vX = (
-            (vKeys.getOrDefault(KeyCode.LEFT, false) ? -1 : 0) +
-            (vKeys.getOrDefault(KeyCode.RIGHT, false) ? 1 : 0)
+            (vKeys.getOrDefault(KeyCode.A, false) ? -1 : 0) +
+            (vKeys.getOrDefault(KeyCode.D, false) ? 1 : 0)
         );
         
         this.vY = (
-            (vKeys.getOrDefault(KeyCode.DOWN, false) ? 1 : 0) +
-            (vKeys.getOrDefault(KeyCode.UP, false) ? -1 : 0)
+            (vKeys.getOrDefault(KeyCode.W, false) ? -1 : 0) +
+            (vKeys.getOrDefault(KeyCode.S, false) ? 1 : 0)
         );
 
         if (vX == 0 && vY == 0)

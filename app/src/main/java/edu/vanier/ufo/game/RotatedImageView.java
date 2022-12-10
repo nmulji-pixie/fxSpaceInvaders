@@ -1,53 +1,54 @@
 package edu.vanier.ufo.game;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
+import javafx.scene.transform.Rotate;
 
-public class RotatedImageView extends Group {
-    private final Point2D pivotPoint;
+public final class RotatedImageView extends Group {
     private final double baseRotate;
     private final ImageView imageView;
+    private final Rotate rotation;
     
     public RotatedImageView(String imagePath, double baseRotate, Point2D pivot) {
         super();
         
+        this.rotation = new Rotate();
         this.imageView = new ImageView(imagePath);
+        this.imageView.getTransforms().add(this.rotation);
+
+        this.setPivot(pivot);
+        this.baseRotate = baseRotate;
+        
         
         this.getChildren().add(imageView);
-        
-        this.baseRotate = baseRotate;
-        this.pivotPoint = pivot;
-        
-        this.getChildren().add(new Circle(1, this.getWidth() * this.pivotPoint.getX(), this.getHeight() * this.pivotPoint.getY()));
+                
     }
     
     public void turnToScene(double sceneX, double sceneY) {
-        double px = this.getWidth() * this.pivotPoint.getX();
-        double py = this.getHeight() * this.pivotPoint.getY();
+        Point2D scene = this.imageView.localToScene(
+            this.rotation.getPivotX(),
+            this.rotation.getPivotY()
+        );
         
-        Point2D scene = this.imageView.localToScene(px, py);
-        
-        this.turnToDirection(scene.getX() - sceneX, scene.getY() - sceneY);
+        this.turnToDirection(sceneX - scene.getX(), sceneY - scene.getY());
     }
     
     public void turnToDirection(double x, double y) {
-        double angle = Math.atan2(y, x);
+        if (x == 0 && y == 0)
+            return;
         
-        this.imageView.setTranslateX(
-            Math.cos(angle) * (this.imageView.getTranslateX() - this.pivotPoint.getX()) -
-            Math.sin(angle) * (this.imageView.getTranslateY() - this.pivotPoint.getY()) +
-            this.pivotPoint.getX()
-        );
+        final double angle = Math.atan2(y, x);
         
-        this.imageView.setTranslateY(
-            Math.sin(angle) * (this.imageView.getTranslateX() - this.pivotPoint.getX()) +
-            Math.cos(angle) * (this.imageView.getTranslateY() - this.pivotPoint.getY()) +
-            this.pivotPoint.getY()
-        );
-        
-        this.imageView.setRotate(Math.toDegrees(angle) + baseRotate);
+        this.rotation.setAngle(Math.toDegrees(angle) + baseRotate);
+    }
+    
+    public void setPivot(Point2D pivot) {
+        this.rotation.setPivotX(pivot.getX() * this.getWidth());
+        this.rotation.setPivotY(pivot.getY() * this.getHeight());
+        this.imageView.setTranslateX(-this.rotation.getPivotX());
+        this.imageView.setTranslateY(-this.rotation.getPivotY());
     }
     
     public double getWidth() {
