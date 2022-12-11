@@ -32,7 +32,7 @@ public class Missile extends Atom {
     protected void handleDeath() {
         Explosion explosion = new Explosion(ResourcesManager.ExplosionKind.SMOKE, this.getCenterX(), this.getCenterY());
         explosion.setScale(0.4);
-        this.getEngine().addSprites(explosion);
+        this.getEngine().queueAddSprites(explosion);
     }
     
     public Tank getOwner() {

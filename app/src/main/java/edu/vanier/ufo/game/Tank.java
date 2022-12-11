@@ -5,7 +5,6 @@ import edu.vanier.ufo.engine.Sprite;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.scene.CacheHint;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -13,6 +12,8 @@ import javafx.util.Duration;
 import java.util.Map;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 
 public class Tank extends Sprite {
@@ -33,7 +34,7 @@ public class Tank extends Sprite {
     private Circle hitBounds;
     
     private final ResourcesManager.TankColor color;
-    private final ResourcesManager.BarrelType barrelType;
+    private ResourcesManager.BarrelType barrelType;
     
     private final RotatedImageView tankSprite;
     private final RotatedImageView barrelSprite;
@@ -42,7 +43,6 @@ public class Tank extends Sprite {
     private static final int SHOT_TICKS = (int) (0.1 * ResourcesManager.FRAMES_PER_SECOND);
     private int shotTicks;
     
-    private int COOLDOWN_TICKS = 3 * ResourcesManager.FRAMES_PER_SECOND;
     private int cooldownTicks;
     
     private double health;
@@ -166,7 +166,7 @@ public class Tank extends Sprite {
         
         this.shotSprite.setVisible(true);
         this.shotTicks = SHOT_TICKS;
-        this.cooldownTicks = COOLDOWN_TICKS;
+        this.cooldownTicks = this.barrelType.getCooldownFrames();
         
         Missile missile = new Missile(
             ResourcesManager.getTankBullet(this.color, this.barrelType), this, 90
@@ -193,12 +193,24 @@ public class Tank extends Sprite {
             (missile.getImageViewNode().getHeight() / 2)
         );
         
-        this.getEngine().addSprites(missile);
+        this.getEngine().queueAddSprites(missile);
         this.getEngine().playSound("shoot");
     }
 
-    public void changeWeapon(KeyCode keyCode) {
-        this.keyCode = keyCode;
+    public void changeWeapon() {
+        int i;
+        
+        if (this.cooldownTicks != 0)
+            return;
+        
+        final ResourcesManager.BarrelType barrelTypes[] =
+            ResourcesManager.BarrelType.values();
+        
+        for (i = 0; i < barrelTypes.length; ++i)
+            if (this.barrelType == barrelTypes[i])
+                break;
+
+        this.setBarrelType(barrelTypes[++i % barrelTypes.length]);
     }
 
     public void shieldToggle() {
@@ -245,7 +257,7 @@ public class Tank extends Sprite {
     }
     
     public double getCooldown() {
-        return (double)this.cooldownTicks / (double)COOLDOWN_TICKS;
+        return (double)this.cooldownTicks / (double)this.barrelType.getCooldownFrames();
     }
 
     @Override
@@ -256,7 +268,7 @@ public class Tank extends Sprite {
             this.getCenterY()
         );
         
-        this.getEngine().addSprites(explosion);
+        this.getEngine().queueAddSprites(explosion);
     }
     
     public double getHealth() {
@@ -290,6 +302,26 @@ public class Tank extends Sprite {
             (int)(color.getRed() * 255),
             (int)(color.getGreen() * 255),
             (int)(color.getBlue() * 255)
+        ));
+    }
+    
+    private void setBarrelType(ResourcesManager.BarrelType newBarrelType) {
+        this.barrelType = newBarrelType;
+        
+        this.barrelSprite.setImage(
+            new Image(
+                ResourcesManager.getTankBarrel(this.color, this.barrelType)
+            )
+        );
+        
+        this.shotSprite.setImage(
+            new Image(
+                ResourcesManager.getTankShot(this.barrelType)
+            )
+        );
+        
+        this.shotSprite.setPivot(new Point2D(
+            0.5, -this.barrelSprite.getHeight() / this.shotSprite.getHeight()
         ));
     }
 }

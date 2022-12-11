@@ -7,6 +7,7 @@ import javafx.scene.transform.Rotate;
 public final class RotatedImageView extends ImageView {
     private final double baseRotate;
     private final Rotate rotation;
+    private Point2D pivotMultiplier;
     
     public RotatedImageView(String imagePath, double baseRotate, Point2D pivot) {
         super(imagePath);
@@ -16,6 +17,10 @@ public final class RotatedImageView extends ImageView {
 
         this.setPivot(pivot);
         this.baseRotate = baseRotate;
+        
+        this.imageProperty().addListener((observable, oldValue, newValue) -> {
+            this.setPivot(this.pivotMultiplier);
+        });
     }
     
     public void turnToScene(double sceneX, double sceneY) {
@@ -37,6 +42,8 @@ public final class RotatedImageView extends ImageView {
     }
     
     public void setPivot(Point2D pivot) {
+        this.pivotMultiplier = pivot;
+        
         this.rotation.setPivotX(pivot.getX() * this.getWidth());
         this.rotation.setPivotY(pivot.getY() * this.getHeight());
         

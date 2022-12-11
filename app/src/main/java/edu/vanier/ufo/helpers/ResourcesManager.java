@@ -31,24 +31,36 @@ public class ResourcesManager {
     }
     
     public enum BarrelType {
-        NORMAL(2, 25),
-        THICK(1, 50),
-        LONG(3, 30);
+        NORMAL(2, 1, 25, (int)(0.2 * FRAMES_PER_SECOND)),
+        THICK(1, 2, 50, (int)(FRAMES_PER_SECOND)),
+        LONG(3, 3, 30, (int)(0.4 * FRAMES_PER_SECOND));
         
-        private final int pathIndex;
+        private final int barrelIndex;
+        private final int bulletIndex;
         private final double damage;
+        private final int cooldownFrames;
  
-        BarrelType(int pathIndex, double damage) {
-            this.pathIndex = pathIndex;
+        BarrelType(int barrelIndex, int bulletIndex, double damage, int cooldownFrames) {
+            this.barrelIndex = barrelIndex;
+            this.bulletIndex = bulletIndex;
             this.damage = damage;
+            this.cooldownFrames = cooldownFrames;
         }
 
-        public int getPathIndex() {
-            return this.pathIndex;
+        public int getBarrelIndex() {
+            return this.barrelIndex;
+        }
+        
+        public int getBulletIndex() {
+            return this.bulletIndex;
         }
         
         public double getDamage() {
             return this.damage;
+        }
+        
+        public int getCooldownFrames() {
+            return this.cooldownFrames;
         }
     }
     
@@ -111,11 +123,11 @@ public class ResourcesManager {
     }
     
     public static String getTankBarrel(TankColor color, BarrelType barrelType) {
-        return String.format(TANK_BARREL_FMT, StringHelper.toTitleCase(color.getPathValue()), barrelType.getPathIndex());
+        return String.format(TANK_BARREL_FMT, StringHelper.toTitleCase(color.getPathValue()), barrelType.getBarrelIndex());
     }
     
     public static String getTankBullet(TankColor color, BarrelType barrelType) {
-        return String.format(TANK_BULLET_FMT, StringHelper.toTitleCase(color.getPathValue()), barrelType.getPathIndex());
+        return String.format(TANK_BULLET_FMT, StringHelper.toTitleCase(color.getPathValue()), barrelType.getBulletIndex());
     }
     
     public static String getTankShot(BarrelType barrelType) {

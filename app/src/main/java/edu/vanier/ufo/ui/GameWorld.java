@@ -34,7 +34,7 @@ import javafx.scene.control.ProgressBar;
 
 
 public class GameWorld extends GameEngine {
-    private Tank playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
+    private Tank playerTank;
     private ProgressBar cooldownTimer;
     
     public GameWorld(int fps, String title) {
@@ -67,7 +67,9 @@ public class GameWorld extends GameEngine {
         // Create many spheres
         generateManySpheres(2);
 
-        this.addSprites(playerTank);
+        this.playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
+        this.playerTank.addId("player");
+        this.queueAddSprites(playerTank);
         
         this.cooldownTimer = new ProgressBar();
         
@@ -94,6 +96,9 @@ public class GameWorld extends GameEngine {
         primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
             vKeys.put(event.getCode(), true);
             playerTank.plotCourse(vKeys, true);
+            
+            if (event.getCode() == KeyCode.SPACE)
+                playerTank.changeWeapon();
         });
         
         primaryStage.getScene().setOnKeyReleased(event -> {
@@ -148,7 +153,7 @@ public class GameWorld extends GameEngine {
             atom.setVelocityY((rnd.nextInt(2) + rnd.nextDouble()) * (rnd.nextBoolean() ? 1 : -1));
 
             // add to actors in play (sprite objects)
-            this.addSprites(atom);
+            this.queueAddSprites(atom);
         }
     }
 

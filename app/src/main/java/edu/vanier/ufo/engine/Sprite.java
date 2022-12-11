@@ -1,5 +1,7 @@
 package edu.vanier.ufo.engine;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.Node;
@@ -17,6 +19,7 @@ public abstract class Sprite {
     private double height;
     private boolean isDead;
     private GameEngine engine;
+    private List<String> ids;
 
     protected Node collidingNode;
 
@@ -25,6 +28,19 @@ public abstract class Sprite {
         this.vY = 0;
         this.isDead = false;
         this.engine = null;
+        this.ids = new ArrayList<>();
+    }
+    
+    public void addId(String id) {
+        this.ids.add(id);
+    }
+    
+    public void removeId(String id) {
+        this.ids.remove(id);
+    }
+    
+    public boolean isId(String id) {
+        return this.ids.contains(id);
     }
 
     public void setImage(Image inImage) {

@@ -1,5 +1,9 @@
 package edu.vanier.ufo.engine;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -53,6 +57,8 @@ public abstract class GameEngine {
      */
     private final SpriteManager spriteManager;
 
+    private final List<Sprite> queuedSprites;
+    
     private final SoundManager soundManager;
 
     /**
@@ -68,6 +74,7 @@ public abstract class GameEngine {
         this.spriteManager = new SpriteManager();
         this.soundManager = new SoundManager(3);
         this.sceneNodes = new Group();
+        this.queuedSprites = new LinkedList<>();
         // create and set timeline for the game loop
         buildAndSetGameLoop();
     }
@@ -85,6 +92,8 @@ public abstract class GameEngine {
             checkCollisions();
             // removed dead sprites.
             cleanupSprites();
+            // add queued sprites
+            addQueuedSprites();
         };
         final KeyFrame gameFrame = new KeyFrame(frameDuration, onFinished);
         // sets the game world's game loop (Timeline)
@@ -212,17 +221,27 @@ public abstract class GameEngine {
         GameEngine.gameLoop = gameLoop;
     }
     
-    public void addSprites(Sprite... sprites) {
-        for (Sprite sprite : sprites) {
+    public void queueAddSprites(Sprite... sprites) {
+        this.queuedSprites.addAll(Arrays.asList(sprites));
+    }
+    
+    private void addQueuedSprites() {
+        for (Sprite sprite : this.queuedSprites) {
             sprite.setEngine(this);
             this.sceneNodes.getChildren().add(sprite.getNode());
         }
         
-        this.spriteManager.addSprites(sprites);
+        this.spriteManager.addSprites(this.queuedSprites);
+        
+        this.queuedSprites.clear();
     }
     
     public void removeSprites(Sprite... sprites) {
         this.spriteManager.addSpritesToBeRemoved(sprites);
+    }
+    
+    public List<Sprite> getSpritesById(String id) {
+        return this.spriteManager.getAllSprites().stream().filter((s) -> s.isId(id)).toList();
     }
 
     /**

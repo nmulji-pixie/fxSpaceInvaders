@@ -16,19 +16,19 @@ public class SpriteManager {
     /**
      * All the sprite objects currently in play
      */
-    private final static List<Sprite> sprites = new ArrayList<>();
+    private final List<Sprite> sprites = new ArrayList<>();
 
     /**
      * A global single threaded list used to check collision against other
      * sprite objects.
      */
-    private final static List<Sprite> collisionList = new ArrayList<>();
+    private final List<Sprite> collisionList = new ArrayList<>();
 
     /**
      * A global single threaded set used to cleanup or remove sprite objects in
      * play.
      */
-    private final static Set<Sprite> spritesToBeRemoved = new HashSet<>();
+    private final Set<Sprite> spritesToBeRemoved = new HashSet<>();
 
     /**
      * Get the list of sprites.
@@ -44,11 +44,20 @@ public class SpriteManager {
      * @param inSprites
      */
     public void addSprites(Sprite... inSprites) {        
+        this.addSprites(Arrays.asList(inSprites));
+    }
+    
+    /**
+     * VarArgs of sprite objects to be added to the game.
+     *
+     * @param inSprites
+     */
+    public void addSprites(List<Sprite> inSprites) {        
         for (Sprite sprite : inSprites)
             if (sprite.getCollisionBounds() != null)
                 this.collisionList.add(sprite);
         
-        sprites.addAll(Arrays.asList(inSprites));
+        sprites.addAll(inSprites);
     }
 
     /**
