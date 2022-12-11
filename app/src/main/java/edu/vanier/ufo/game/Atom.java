@@ -60,32 +60,9 @@ public class Atom extends Sprite {
 
     /**
      * Animate an implosion. Once done remove from the game world
-     *
-     * @param gameWorld - game world
      */
-    public void implode(final GameEngine gameWorld) {
-        vX = vY = 0;
-        Node currentNode = getNode();
-
-        //Sprite explosion = new Atom(ResourcesManager.EXPLOSION);
-        //explosion.getNode().setTranslateX(currentNode.getTranslateX());
-        //explosion.getNode().setTranslateY(currentNode.getTranslateY());
-        //gameWorld.getSceneNodes().getChildren().add(explosion.getNode());
-
-        FadeTransition ft = new FadeTransition(Duration.millis(300), currentNode);
-        ft.setFromValue(1);
-        ft.setToValue(0);
-        ft.setOnFinished((ActionEvent event) -> {
-            isDead = true;
-            //gameWorld.getSceneNodes().getChildren().removeAll(currentNode, explosion.getNode());
-        });
-        ft.play();
-    }
-
     @Override
-    public void handleDeath(GameEngine gameWorld) {
-        implode(gameWorld);
-        super.handleDeath(gameWorld);
+    protected void handleDeath() {
     }
 
     public boolean isRotationFollowVelocity() {

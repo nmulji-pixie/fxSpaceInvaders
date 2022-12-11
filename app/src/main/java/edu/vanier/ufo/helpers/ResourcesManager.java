@@ -1,6 +1,8 @@
 package edu.vanier.ufo.helpers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -17,7 +19,7 @@ public class ResourcesManager {
         BLUE("blue"),
         DARK("dark");
         
-        private String pathValue;
+        private final String pathValue;
  
         TankColor(String pathValue) {
             this.pathValue = pathValue;
@@ -33,7 +35,7 @@ public class ResourcesManager {
         THICK(1),
         LONG(3);
         
-        private int pathIndex;
+        private final int pathIndex;
  
         BarrelType(int pathIndex) {
             this.pathIndex = pathIndex;
@@ -41,6 +43,27 @@ public class ResourcesManager {
 
         public int getPathIndex() {
             return this.pathIndex;
+        }
+    }
+    
+    public enum ExplosionKind {
+        NORMAL(5, ""),
+        SMOKE(5, "Smoke");
+        
+        private final int length;
+        private final String type;
+        
+        ExplosionKind(int length, String type) {
+            this.type = type;
+            this.length = length;
+        }
+        
+        public String getType() {
+            return this.type;
+        }
+        
+        public int getLength() {
+            return this.length;
         }
     }
     
@@ -63,6 +86,9 @@ public class ResourcesManager {
 
     // Sounds
     public static final String SOUND_SHOOT = SOUNDS_FOLDER + "shoot.wav";
+    
+    // Explosions
+    private static final String EXPLOSION_FMT = IMAGES_FOLDER + "explosion%s%d.png";
     
     public static HashMap<Integer, String> getInvaderSprites() {
         HashMap<Integer, String> invaders = new HashMap<Integer, String>();
@@ -92,5 +118,14 @@ public class ResourcesManager {
                 default -> "Large";
             }
         );
+    }
+    
+    public static List<String> getExplosion(ExplosionKind explosionType) {
+        List<String> explosionSprites = new ArrayList<>(explosionType.getLength());
+        
+        for (int i = 1; i <= explosionType.getLength(); ++i)
+            explosionSprites.add(String.format(EXPLOSION_FMT, explosionType.getType(), i));
+        
+        return explosionSprites;
     }
 }

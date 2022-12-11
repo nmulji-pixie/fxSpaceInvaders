@@ -54,7 +54,6 @@ public class GameWorld extends GameEngine {
 
 
         // Create the scene
-        setSceneNodes(new Group());
         setGameSurface(new Scene(getSceneNodes(), 1000, 600));
 
         // Change the background of the main scene.
@@ -66,10 +65,9 @@ public class GameWorld extends GameEngine {
         setupInput(primaryStage);
 
         // Create many spheres
-        generateManySpheres(5);
+        generateManySpheres(15);
 
-        getSpriteManager().addSprites(playerTank);
-        getSceneNodes().getChildren().add(0, playerTank.getNode());
+        this.addSprites(playerTank);
         
         this.cooldownTimer = new ProgressBar();
         
@@ -94,13 +92,10 @@ public class GameWorld extends GameEngine {
                 if (missile == null)
                     return;
                 
-                getSpriteManager().addSprites(missile);
+                this.addSprites(missile);
 
                 // play sound
                 getSoundManager().playSound("laser");
-
-                getSceneNodes().getChildren().add(0, missile.getNode());
-
             }
         };
         
@@ -163,10 +158,7 @@ public class GameWorld extends GameEngine {
             atom.setVelocityY((rnd.nextInt(2) + rnd.nextDouble()) * (rnd.nextBoolean() ? 1 : -1));
 
             // add to actors in play (sprite objects)
-            getSpriteManager().addSprites(atom);
-
-            // add sprite's 
-            getSceneNodes().getChildren().add(atom.getNode());
+            this.addSprites(atom);
         }
     }
 
@@ -227,16 +219,14 @@ public class GameWorld extends GameEngine {
                 - missile.getNode().getBoundsInParent().getWidth())
                 || missile.getNode().getTranslateX() < 0) {
 
-            getSpriteManager().addSpritesToBeRemoved(missile);
-            getSceneNodes().getChildren().remove(missile.getNode());
+            this.removeSprites(missile);
 
         }
         if (missile.getNode().getTranslateY() > getGameSurface().getHeight()
                 - missile.getNode().getBoundsInParent().getHeight()
                 || missile.getNode().getTranslateY() < 0) {
 
-            getSpriteManager().addSpritesToBeRemoved(missile);
-            getSceneNodes().getChildren().remove(missile.getNode());
+            this.removeSprites(missile);
         }
     }
 
@@ -256,16 +246,20 @@ public class GameWorld extends GameEngine {
         if (
             spriteA != spriteB &&
             spriteA.collide(spriteB) &&
-            !(spriteA == playerTank && spriteB instanceof Missile) &&
-            !(spriteB == playerTank && spriteA instanceof Missile) &&
-            !(spriteA.getClass() == spriteB.getClass())
+            (
+                spriteA instanceof Missile &&
+                !(spriteB instanceof Missile) &&
+                ((Missile)spriteA).getOwner() != spriteB
+            )
         ) {
             if (spriteA != playerTank) {
-                spriteA.handleDeath(this);
+                spriteA.die();
             }
+            
             if (spriteB != playerTank) {
-                spriteB.handleDeath(this);
+                spriteB.die();
             }
+            
             return true;
         }
         return false;

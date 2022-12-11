@@ -44,16 +44,11 @@ public class SpriteManager {
      * @param inSprites
      */
     public void addSprites(Sprite... inSprites) {        
+        for (Sprite sprite : inSprites)
+            if (sprite.getCollisionBounds() != null)
+                this.collisionList.add(sprite);
+        
         sprites.addAll(Arrays.asList(inSprites));
-    }
-
-    /**
-     * VarArgs of sprite objects to be removed from the game.
-     *
-     * @param inSprites
-     */
-    public void removeSprites(Sprite... inSprites) {
-        sprites.removeAll(Arrays.asList(inSprites));
     }
 
     /**
@@ -86,16 +81,7 @@ public class SpriteManager {
      * @return CHECK_COLLISION_LIST
      */
     public List<Sprite> getCollisionsToCheck() {
-        return collisionList;
-    }
-
-    /**
-     * Clears the list of sprite objects in the collision check collection
-     * (CHECK_COLLISION_LIST).
-     */
-    public void resetCollisionsToCheck() {
-        collisionList.clear();
-        collisionList.addAll(sprites);
+        return this.collisionList;
     }
 
     /**
@@ -104,11 +90,11 @@ public class SpriteManager {
      * list of all sprite objects called (GAME_ACTORS).
      */
     public void cleanupSprites() {
-
         // remove from actors list
-        sprites.removeAll(spritesToBeRemoved);
-
+        this.sprites.removeAll(spritesToBeRemoved);
+        this.collisionList.removeAll(spritesToBeRemoved);
+        
         // reset the clean up sprites
-        spritesToBeRemoved.clear();
+        this.spritesToBeRemoved.clear();
     }
 }

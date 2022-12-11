@@ -15,13 +15,16 @@ public abstract class Sprite {
     protected double vY;
     private double width;
     private double height;
-    public boolean isDead = false;
+    private boolean isDead;
+    private GameEngine engine;
 
     protected Node collidingNode;
 
     public Sprite() {
-        vX = 0;
-        vY = 0;
+        this.vX = 0;
+        this.vY = 0;
+        this.isDead = false;
+        this.engine = null;
     }
 
     public void setImage(Image inImage) {
@@ -132,7 +135,28 @@ public abstract class Sprite {
         this.collidingNode = collisionBounds;
     }
 
-    public void handleDeath(GameEngine gameWorld) {
-        gameWorld.getSpriteManager().addSpritesToBeRemoved(this);
+    public void die() {
+        if (this.isDead)
+            return;
+        
+        this.isDead = true;
+        this.handleDeath();
+    }
+    
+    abstract protected void handleDeath();    
+    
+    public boolean isDead() {
+        return this.isDead;
+    }
+    
+    protected final GameEngine getEngine() {
+        return this.engine;
+    }
+    
+    public final void setEngine(GameEngine engine) {
+        if (this.engine != null)
+            throw new IllegalStateException("Engine for sprite already set");
+        
+        this.engine = engine;
     }
 }

@@ -166,7 +166,7 @@ public class Tank extends Sprite {
         this.cooldownTicks = COOLDOWN_TICKS;
         
         Missile fireMissile = new Missile(
-            ResourcesManager.getTankBullet(this.color, this.barrelType), 90
+            ResourcesManager.getTankBullet(this.color, this.barrelType), this, 90
         );
         
         fireMissile.setVelocityX(Math.cos(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
@@ -244,5 +244,12 @@ public class Tank extends Sprite {
     
     public double getCooldown() {
         return (double)this.cooldownTicks / (double)COOLDOWN_TICKS;
+    }
+
+    @Override
+    protected void handleDeath() {
+        Explosion explosion = new Explosion(ResourcesManager.ExplosionKind.NORMAL, this.flipBook.getTranslateX(), this.flipBook.getTranslateY());
+        
+        this.getEngine().addSprites(explosion);
     }
 }

@@ -63,10 +63,11 @@ public abstract class GameEngine {
      * @param title - Title of the application window.
      */
     public GameEngine(final int fps, final String title) {
-        framesPerSecond = fps;
-        windowTitle = title;
-        spriteManager = new SpriteManager();
-        soundManager = new SoundManager(3);
+        this.framesPerSecond = fps;
+        this.windowTitle = title;
+        this.spriteManager = new SpriteManager();
+        this.soundManager = new SoundManager(3);
+        this.sceneNodes = new Group();
         // create and set timeline for the game loop
         buildAndSetGameLoop();
     }
@@ -81,7 +82,7 @@ public abstract class GameEngine {
             // update actors
             updateSprites();
             // check for collision.
-             checkCollisions();
+            checkCollisions();
             // removed dead sprites.
             cleanupSprites();
         };
@@ -134,9 +135,6 @@ public abstract class GameEngine {
      * handleCollision() method.
      */
     protected void checkCollisions() {
-        //FIXME: handle collision with the spaceship.
-        // check other sprite's collisions
-        spriteManager.resetCollisionsToCheck();
         // check each sprite against other sprite objects.
         for (Sprite spriteA : spriteManager.getCollisionsToCheck()) {
             for (Sprite spriteB : spriteManager.getAllSprites()) {
@@ -167,6 +165,11 @@ public abstract class GameEngine {
      * Sprites to be cleaned up.
      */
     protected void cleanupSprites() {
+        spriteManager.getSpritesToBeRemoved().addAll(
+            spriteManager.getAllSprites().stream().filter(Sprite::isDead).toList()
+        );
+        
+        spriteManager.getSpritesToBeRemoved().forEach((x) -> this.sceneNodes.getChildren().remove(x.getNode()));
         spriteManager.cleanupSprites();
     }
 
@@ -208,15 +211,18 @@ public abstract class GameEngine {
     protected static void setGameLoop(Timeline gameLoop) {
         GameEngine.gameLoop = gameLoop;
     }
-
-    /**
-     * Returns the sprite manager containing the sprite objects to manipulate in
-     * the game.
-     *
-     * @return SpriteManager The sprite manager.
-     */
-    public SpriteManager getSpriteManager() {
-        return spriteManager;
+    
+    public void addSprites(Sprite... sprites) {
+        for (Sprite sprite : sprites) {
+            sprite.setEngine(this);
+            this.sceneNodes.getChildren().add(sprite.getNode());
+        }
+        
+        this.spriteManager.addSprites(sprites);
+    }
+    
+    public void removeSprites(Sprite... sprites) {
+        this.spriteManager.addSpritesToBeRemoved(sprites);
     }
 
     /**
@@ -248,17 +254,6 @@ public abstract class GameEngine {
      */
     public Group getSceneNodes() {
         return sceneNodes;
-    }
-
-    /**
-     * Sets the JavaFX Group that will hold all JavaFX nodes which are rendered
-     * onto the game surface(Scene) is a JavaFX Group object.
-     *
-     * @param sceneNodes The root container having many children nodes to be
-     * displayed into the Scene area.
-     */
-    protected void setSceneNodes(Group sceneNodes) {
-        this.sceneNodes = sceneNodes;
     }
 
     protected SoundManager getSoundManager() {

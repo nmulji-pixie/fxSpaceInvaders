@@ -22,6 +22,10 @@ public class Controller {
         gameWorld.initialize(primaryStage);
         gameWorld.beginGameLoop();
         primaryStage.setScene(gameWorld.getGameSurface());
+        
+        primaryStage.setOnCloseRequest((event) -> {
+            gameWorld.shutdown();
+        });
     }
 
     public Stage getPrimaryStage() {
