@@ -34,7 +34,6 @@ public class GameWorld extends GameEngine {
     private Tank playerTank;
     private ProgressBar cooldownTimer;
     private int currentLevel;
-    private StackPane tileSet;
     private GridPane levelTile;
 
     public GameWorld(int fps, String title) {
@@ -48,11 +47,6 @@ public class GameWorld extends GameEngine {
         this.playerTank = playerTank;
         this.currentLevel = currentLevel;
         this.levelTile = levelTile;
-        if (!isGameOver()) {
-            buildAndSetGameLoop();
-        }
-
-
     }
 
     /**
@@ -67,9 +61,10 @@ public class GameWorld extends GameEngine {
         primaryStage.setTitle(getWindowTitle());
         //primaryStage.setFullScreen(true);
 
-        StackPane stackPane = new StackPane(this.levelTile, getSceneNodes());
+        getSceneNodes().getChildren().add(this.levelTile);
+        
         // Create the scene
-        setGameSurface(new Scene(stackPane, 1000, 600));
+        setGameSurface(new Scene(getSceneNodes(), 1000, 600));
 
         // Change the background of the main scene.
         getGameSurface().setFill(new ImagePattern(new Image(ResourcesManager.BACKGROUND)));
@@ -100,37 +95,37 @@ public class GameWorld extends GameEngine {
      * @param primaryStage The primary stage (app window).
      */
     private void setupInput(Stage primaryStage) {
-            HashMap<KeyCode, Boolean> vKeys = new HashMap();
+        HashMap<KeyCode, Boolean> vKeys = new HashMap();
 
-            primaryStage.getScene().setOnMousePressed((MouseEvent event) -> {
-                if (!isGameOver()) {
-                    if (event.getButton() == MouseButton.PRIMARY) {
-                        playerTank.fire();
-                    }
+        primaryStage.getScene().setOnMousePressed((MouseEvent event) -> {
+            if (!isGameOver()) {
+                if (event.getButton() == MouseButton.PRIMARY) {
+                    playerTank.fire();
                 }
-            });
+            }
+        });
 
-            primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
-                vKeys.put(event.getCode(), true);
-                playerTank.plotCourse(vKeys, true);
+        primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
+            vKeys.put(event.getCode(), true);
+            playerTank.plotCourse(vKeys, true);
 
-                if (event.getCode() == KeyCode.SPACE)
-                    playerTank.changeWeapon();
-            });
+            if (event.getCode() == KeyCode.SPACE)
+                playerTank.changeWeapon();
+        });
 
-            primaryStage.getScene().setOnKeyReleased(event -> {
-                vKeys.put(event.getCode(), false);
-                playerTank.plotCourse(vKeys, true);
+        primaryStage.getScene().setOnKeyReleased(event -> {
+            vKeys.put(event.getCode(), false);
+            playerTank.plotCourse(vKeys, true);
 
-            });
+        });
 
-            // set up stats
-            EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
-                playerTank.aimAt(event.getSceneX(), event.getSceneY());
-            };
+        // set up stats
+        EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
+            playerTank.aimAt(event.getSceneX(), event.getSceneY());
+        };
 
-            primaryStage.getScene().setOnMouseMoved(showMouseMove);
-        }
+        primaryStage.getScene().setOnMouseMoved(showMouseMove);
+    }
 
 
     /**
@@ -291,30 +286,5 @@ public class GameWorld extends GameEngine {
 
     public boolean isGameOver() {
         return this.playerTank.isDead();
-    }
-
-
-    public int getSprites() {
-        return sprites;
-    }
-
-    public void setSprites(int sprites) {
-        this.sprites = sprites;
-    }
-
-    public Tank getPlayerTank() {
-        return playerTank;
-    }
-
-    public void setPlayerTank(Tank playerTank) {
-        this.playerTank = playerTank;
-    }
-
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-
-    public void setCurrentLevel(int currentLevel) {
-        this.currentLevel = currentLevel;
     }
 }

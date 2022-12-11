@@ -37,7 +37,7 @@ public abstract class GameEngine {
     /**
      * All nodes to be displayed in the game window.
      */
-    private Group sceneNodes;
+    private final Group sceneNodes;
     /**
      * The game loop using JavaFX's <code>Timeline</code> API.
      */
@@ -78,7 +78,7 @@ public abstract class GameEngine {
         this.queuedSprites = new LinkedList<>();
         // create and set timeline for the game loop
 
-
+        buildAndSetGameLoop();
     }
 
 
