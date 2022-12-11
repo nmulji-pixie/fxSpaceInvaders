@@ -73,7 +73,8 @@ public class GameWorld extends GameEngine {
         
         getSceneNodes().getChildren().add(this.cooldownTimer);
         // load sound files
-        getSoundManager().loadSoundEffects("laser", getClass().getClassLoader().getResource(ResourcesManager.SOUND_SHOOT));
+        getSoundManager().loadSoundEffects("shoot", getClass().getClassLoader().getResource(ResourcesManager.SOUND_SHOOT));
+        getSoundManager().loadSoundEffects("explosion", getClass().getClassLoader().getResource(ResourcesManager.SOUND_EXPLOSION));
     }
 
     /**
@@ -82,25 +83,14 @@ public class GameWorld extends GameEngine {
      * @param primaryStage The primary stage (app window).
      */
     private void setupInput(Stage primaryStage) {
-        System.out.println("Ship's center is (" + playerTank.getCenterX() + ", " + playerTank.getCenterY() + ")");
-
-        EventHandler fireOrMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-
-                // fire
-                Missile missile = playerTank.fire();
-                if (missile == null)
-                    return;
-                
-                this.addSprites(missile);
-
-                // play sound
-                getSoundManager().playSound("laser");
-            }
-        };
-        
         HashMap<KeyCode, Boolean> vKeys = new HashMap();
-        primaryStage.getScene().setOnMousePressed(fireOrMove);
+        
+        primaryStage.getScene().setOnMousePressed((MouseEvent event) -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                playerTank.fire();
+            }
+        });
+        
         primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
             vKeys.put(event.getCode(), true);
             playerTank.plotCourse(vKeys, true);
@@ -189,7 +179,7 @@ public class GameWorld extends GameEngine {
         // bounce off the walls when outside of boundaries
 
         Node displayNode;
-        if (sprite instanceof Tank) {
+        if (sprite == this.playerTank) {
             return;
         } else {
             displayNode = sprite.getNode();
@@ -248,17 +238,15 @@ public class GameWorld extends GameEngine {
             spriteA.collide(spriteB) &&
             (
                 spriteA instanceof Missile &&
-                !(spriteB instanceof Missile) &&
+                spriteB instanceof Tank &&
                 ((Missile)spriteA).getOwner() != spriteB
             )
         ) {
-            if (spriteA != playerTank) {
-                spriteA.die();
-            }
+            spriteA.die();
             
-            if (spriteB != playerTank) {
-                spriteB.die();
-            }
+            ((Tank)spriteB).takeDamage(
+                ((Missile)spriteA).getOwner().getBarrelType().getDamage()
+            );
             
             return true;
         }

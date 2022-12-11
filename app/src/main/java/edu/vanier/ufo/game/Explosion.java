@@ -31,6 +31,9 @@ public class Explosion extends Sprite {
 
     @Override
     public void update() {
+        if (this.intervalTicks == 0)
+            this.getEngine().playSound("explosion");
+        
         if (this.intervalTicks / INTERVAL_TICKS >= this.explosions.size())
             this.die();
         else if (this.intervalTicks % INTERVAL_TICKS == 0)

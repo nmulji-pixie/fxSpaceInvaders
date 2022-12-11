@@ -14,8 +14,11 @@ import javafx.util.Duration;
 import java.util.Map;
 import java.util.Timer;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
@@ -24,7 +27,7 @@ public class Tank extends Sprite {
 
     private final static float MISSILE_THRUST_AMOUNT = 6.3F;
 
-    private final StackPane flipBook = new StackPane();
+    private final StackPane flipBook;
 
     private KeyCode keyCode;
 
@@ -48,28 +51,47 @@ public class Tank extends Sprite {
     
     private int COOLDOWN_TICKS = 3 * ResourcesManager.FRAMES_PER_SECOND;
     private int cooldownTicks;
+    
+    private double health;
+    private ProgressBar healthBar;
 
     public Tank(ResourcesManager.TankColor color, ResourcesManager.BarrelType barrelType, double x, double y) {
         // Load one image.
         this.color = color;
         this.barrelType = barrelType;
         
+        this.health = ResourcesManager.MAX_HEALTH;
+        
+        
         this.tankSprite = new RotatedImageView(ResourcesManager.getTankBody(this.color), -90, new Point2D(0.5, 0.5));
+        
         this.barrelSprite = new RotatedImageView(ResourcesManager.getTankBarrel(this.color, this.barrelType), 90, new Point2D(0.5, 1));
+        
         this.shotSprite = new RotatedImageView(ResourcesManager.getTankShot(this.barrelType), -90, new Point2D(0.5, 0.5));
-        
         this.shotSprite.setPivot(new Point2D(0.5, -this.barrelSprite.getHeight() / this.shotSprite.getHeight()));
-        
         this.shotSprite.setVisible(false);
         
-        flipBook.getChildren().addAll(this.tankSprite, this.barrelSprite, this.shotSprite);
+        
+        this.healthBar = new ProgressBar(this.health / ResourcesManager.MAX_HEALTH);
+
+        this.healthBar.setPrefWidth(this.tankSprite.getWidth() * 0.8);
+        this.healthBar.setTranslateY(-this.tankSprite.getHeight());
+        
+        this.setHealthBarColor(Color.LIME);
+        
+        this.flipBook = new StackPane(
+            this.tankSprite,
+            this.barrelSprite,
+            this.shotSprite,
+            this.healthBar
+        );
         
         setNode(flipBook);
         flipBook.setTranslateX(x);
         flipBook.setTranslateY(y);
         flipBook.setCache(true);
         flipBook.setCacheHint(CacheHint.SPEED);
-        flipBook.setManaged(false);
+        //flipBook.setManaged(false);
         //flipBook.setAutoSizeChildren(false);
         
         initHitZone();
@@ -157,42 +179,41 @@ public class Tank extends Sprite {
         this.shotSprite.turnToScene(sceneX, sceneY);
     }
 
-    public Missile fire() {
+    public void fire() {
         if (this.cooldownTicks != 0)
-            return null;
+            return;
         
         this.shotSprite.setVisible(true);
         this.shotTicks = SHOT_TICKS;
         this.cooldownTicks = COOLDOWN_TICKS;
         
-        Missile fireMissile = new Missile(
+        Missile missile = new Missile(
             ResourcesManager.getTankBullet(this.color, this.barrelType), this, 90
         );
         
-        fireMissile.setVelocityX(Math.cos(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
-        fireMissile.setVelocityY(Math.sin(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
+        missile.setVelocityX(Math.cos(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
+        missile.setVelocityY(Math.sin(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
 
-        System.out.println(this.flipBook.getTranslateX());
-        
-        fireMissile.getNode().setTranslateX(
-            this.flipBook.getTranslateX() +
+        missile.getNode().setTranslateX(
+            this.getCenterX() +
             (
                 Math.cos(Math.toRadians(this.barrelSprite.getRotation())) *
                 this.barrelSprite.getHeight()
             ) -
-            (fireMissile.getImageViewNode().getWidth() / 2)
+            (missile.getImageViewNode().getWidth() / 2)
         );
         
-        fireMissile.getNode().setTranslateY(
-            this.flipBook.getTranslateY() +
+        missile.getNode().setTranslateY(
+            this.getCenterY() +
             (
                 Math.sin(Math.toRadians(this.barrelSprite.getRotation())) *
                 this.barrelSprite.getHeight()
             ) -
-            (fireMissile.getImageViewNode().getHeight() / 2)
+            (missile.getImageViewNode().getHeight() / 2)
         );
         
-        return fireMissile;
+        this.getEngine().addSprites(missile);
+        this.getEngine().playSound("shoot");
     }
 
     public void changeWeapon(KeyCode keyCode) {
@@ -248,8 +269,46 @@ public class Tank extends Sprite {
 
     @Override
     protected void handleDeath() {
-        Explosion explosion = new Explosion(ResourcesManager.ExplosionKind.NORMAL, this.flipBook.getTranslateX(), this.flipBook.getTranslateY());
+        Explosion explosion = new Explosion(
+            ResourcesManager.ExplosionKind.NORMAL,
+            this.getCenterX(),
+            this.getCenterY()
+        );
         
         this.getEngine().addSprites(explosion);
+    }
+    
+    public double getHealth() {
+        return this.health;
+    }
+    
+    public void takeDamage(double damage) {
+        if (damage < 0)
+            throw new IllegalArgumentException("Can't have negative damage");
+
+        this.health -= damage;
+        this.healthBar.setProgress(this.health / ResourcesManager.MAX_HEALTH);
+        
+        if (this.health <= 0) {
+            this.health = 0;
+            this.die();
+        }
+    }
+
+    public ResourcesManager.TankColor getColor() {
+        return color;
+    }
+
+    public ResourcesManager.BarrelType getBarrelType() {
+        return barrelType;
+    }
+    
+    protected void setHealthBarColor(Color color) {
+        this.healthBar.setStyle(String.format(
+            "-fx-accent: #%02x%02x%02x",
+            (int)(color.getRed() * 255),
+            (int)(color.getGreen() * 255),
+            (int)(color.getBlue() * 255)
+        ));
     }
 }

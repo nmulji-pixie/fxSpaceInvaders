@@ -31,18 +31,24 @@ public class ResourcesManager {
     }
     
     public enum BarrelType {
-        NORMAL(2),
-        THICK(1),
-        LONG(3);
+        NORMAL(2, 25),
+        THICK(1, 50),
+        LONG(3, 30);
         
         private final int pathIndex;
+        private final double damage;
  
-        BarrelType(int pathIndex) {
+        BarrelType(int pathIndex, double damage) {
             this.pathIndex = pathIndex;
+            this.damage = damage;
         }
 
         public int getPathIndex() {
             return this.pathIndex;
+        }
+        
+        public double getDamage() {
+            return this.damage;
         }
     }
     
@@ -71,6 +77,8 @@ public class ResourcesManager {
      * Used to control the speed of the game.
      */
     public static final int FRAMES_PER_SECOND = 85;
+    public static final double MAX_HEALTH = 100;
+    
     private static final String RESOURCES_FOLDER = "";
     private static final String IMAGES_FOLDER = RESOURCES_FOLDER + "images/tank_kenney/Retina/";
     private static final String SOUNDS_FOLDER = RESOURCES_FOLDER + "sounds/";
@@ -85,7 +93,8 @@ public class ResourcesManager {
     public static final String BACKGROUND = IMAGES_FOLDER + "tileGrass_transitionS.png";
 
     // Sounds
-    public static final String SOUND_SHOOT = SOUNDS_FOLDER + "shoot.wav";
+    public static final String SOUND_SHOOT = SOUNDS_FOLDER + "explosions/explosion02.wav";
+    public static final String SOUND_EXPLOSION = SOUNDS_FOLDER + "explosions/explosion01.wav";
     
     // Explosions
     private static final String EXPLOSION_FMT = IMAGES_FOLDER + "explosion%s%d.png";

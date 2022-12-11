@@ -259,6 +259,10 @@ public abstract class GameEngine {
     protected SoundManager getSoundManager() {
         return soundManager;
     }
+    
+    public void playSound(String id) {
+        this.soundManager.playSound(id);
+    }
 
     /**
      * Stop threads and stop media from playing.
