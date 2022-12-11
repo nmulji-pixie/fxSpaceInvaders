@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -76,8 +77,10 @@ public abstract class GameEngine {
         this.sceneNodes = new Group();
         this.queuedSprites = new LinkedList<>();
         // create and set timeline for the game loop
-        buildAndSetGameLoop();
+
+
     }
+
 
     /**
      * Builds and sets the game loop ready to be started.
@@ -290,5 +293,6 @@ public abstract class GameEngine {
         // Stop the game's animation.
         getGameLoop().stop();
         getSoundManager().shutdown();
+
     }
 }

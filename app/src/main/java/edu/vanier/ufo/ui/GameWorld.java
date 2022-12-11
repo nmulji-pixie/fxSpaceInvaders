@@ -1,23 +1,19 @@
 package edu.vanier.ufo.ui;
-
 import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.engine.*;
 import edu.vanier.ufo.game.*;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import java.util.HashMap;
 import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.util.Random;
 import javafx.scene.control.ProgressBar;
@@ -34,11 +30,29 @@ import javafx.scene.control.ProgressBar;
 
 
 public class GameWorld extends GameEngine {
+    private int sprites;
     private Tank playerTank;
     private ProgressBar cooldownTimer;
-    
+    private int currentLevel;
+    private StackPane tileSet;
+    private GridPane levelTile;
+
     public GameWorld(int fps, String title) {
         super(fps, title);
+    }
+
+    public GameWorld(int fps, String title, int sprites, Tank playerTank, int currentLevel, GridPane levelTile) {
+        super(fps, title);
+
+        this.sprites = sprites;
+        this.playerTank = playerTank;
+        this.currentLevel = currentLevel;
+        this.levelTile = levelTile;
+        if (!isGameOver()) {
+            buildAndSetGameLoop();
+        }
+
+
     }
 
     /**
@@ -48,13 +62,14 @@ public class GameWorld extends GameEngine {
      */
     @Override
     public void initialize(final Stage primaryStage) {
+
         // Sets the window title
         primaryStage.setTitle(getWindowTitle());
         //primaryStage.setFullScreen(true);
 
-
+        StackPane stackPane = new StackPane(this.levelTile, getSceneNodes());
         // Create the scene
-        setGameSurface(new Scene(getSceneNodes(), 1000, 600));
+        setGameSurface(new Scene(stackPane, 1000, 600));
 
         // Change the background of the main scene.
         getGameSurface().setFill(new ImagePattern(new Image(ResourcesManager.BACKGROUND)));
@@ -65,14 +80,14 @@ public class GameWorld extends GameEngine {
         setupInput(primaryStage);
 
         // Create many spheres
-        generateManySpheres(2);
+        generateManySpheres(this.sprites);
 
         this.playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
         this.playerTank.addId("player");
         this.queueAddSprites(playerTank);
-        
+
         this.cooldownTimer = new ProgressBar();
-        
+
         getSceneNodes().getChildren().add(this.cooldownTimer);
         // load sound files
         getSoundManager().loadSoundEffects("shoot", getClass().getClassLoader().getResource(ResourcesManager.SOUND_SHOOT));
@@ -85,35 +100,38 @@ public class GameWorld extends GameEngine {
      * @param primaryStage The primary stage (app window).
      */
     private void setupInput(Stage primaryStage) {
-        HashMap<KeyCode, Boolean> vKeys = new HashMap();
-        
-        primaryStage.getScene().setOnMousePressed((MouseEvent event) -> {
-            if (event.getButton() == MouseButton.PRIMARY) {
-                playerTank.fire();
-            }
-        });
-        
-        primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
-            vKeys.put(event.getCode(), true);
-            playerTank.plotCourse(vKeys, true);
-            
-            if (event.getCode() == KeyCode.SPACE)
-                playerTank.changeWeapon();
-        });
-        
-        primaryStage.getScene().setOnKeyReleased(event -> {
-            vKeys.put(event.getCode(), false);
-            playerTank.plotCourse(vKeys, true);
+            HashMap<KeyCode, Boolean> vKeys = new HashMap();
 
-        });
+            primaryStage.getScene().setOnMousePressed((MouseEvent event) -> {
+                if (!isGameOver()) {
+                    if (event.getButton() == MouseButton.PRIMARY) {
+                        playerTank.fire();
+                    }
+                }
+            });
 
-        // set up stats
-        EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
-            playerTank.aimAt(event.getSceneX(), event.getSceneY());
-        };
+            primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
+                vKeys.put(event.getCode(), true);
+                playerTank.plotCourse(vKeys, true);
 
-        primaryStage.getScene().setOnMouseMoved(showMouseMove);
-    }
+                if (event.getCode() == KeyCode.SPACE)
+                    playerTank.changeWeapon();
+            });
+
+            primaryStage.getScene().setOnKeyReleased(event -> {
+                vKeys.put(event.getCode(), false);
+                playerTank.plotCourse(vKeys, true);
+
+            });
+
+            // set up stats
+            EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
+                playerTank.aimAt(event.getSceneX(), event.getSceneY());
+            };
+
+            primaryStage.getScene().setOnMouseMoved(showMouseMove);
+        }
+
 
     /**
      * Make some more space spheres (Atomic particles)
@@ -127,7 +145,7 @@ public class GameWorld extends GameEngine {
         for (int i = 0; i < numSpheres; i++) {
             ResourcesManager.TankColor colors[] = ResourcesManager.TankColor.values();
             ResourcesManager.BarrelType barrelTypes[] = ResourcesManager.BarrelType.values();
-            
+
             // random x between 0 to width of scene
             double newX = rnd.nextInt((int) gameSurface.getWidth() - 100);
 
@@ -139,14 +157,14 @@ public class GameWorld extends GameEngine {
             if (newY > (gameSurface.getHeight() - (rnd.nextInt(15) + 5 * 2))) {
                 newY = gameSurface.getHeight() - (rnd.nextInt(15) + 5 * 2);
             }
-            
+
             TankBot atom = new TankBot(
                 colors[rnd.nextInt(colors.length)],
                 barrelTypes[rnd.nextInt(barrelTypes.length)],
                 newX,
                 newY
             );
-            
+
             // random 0 to 2 + (.0 to 1) * random (1 or -1)
             // Randomize the location of each newly generated atom.
             atom.setVelocityX((rnd.nextInt(2) + rnd.nextDouble()) * (rnd.nextBoolean() ? 1 : -1));
@@ -164,14 +182,19 @@ public class GameWorld extends GameEngine {
      */
     @Override
     protected void handleUpdate(Sprite sprite) {
-        this.cooldownTimer.setProgress(this.playerTank.getCooldown());
-        
-        // advance object
-        sprite.update();
-        if (sprite instanceof Missile) {
-            removeMissiles((Missile) sprite);
+        if (isGameOver()) {
+            this.shutdown();
         } else {
-            bounceOffWalls(sprite);
+            this.cooldownTimer.setProgress(this.playerTank.getCooldown());
+
+
+            // advance object
+            sprite.update();
+            if (sprite instanceof Missile) {
+                removeMissiles((Missile) sprite);
+            } else {
+                bounceOffWalls(sprite);
+            }
         }
     }
 
@@ -257,12 +280,41 @@ public class GameWorld extends GameEngine {
             ) {
                 spriteA.die();
                 spriteB.die();
-                
+
                 return false;
             }
             
             return true;
         }
         return false;
+    }
+
+    public boolean isGameOver() {
+        return this.playerTank.isDead();
+    }
+
+
+    public int getSprites() {
+        return sprites;
+    }
+
+    public void setSprites(int sprites) {
+        this.sprites = sprites;
+    }
+
+    public Tank getPlayerTank() {
+        return playerTank;
+    }
+
+    public void setPlayerTank(Tank playerTank) {
+        this.playerTank = playerTank;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 }
