@@ -10,15 +10,14 @@ import javafx.scene.Scene;
 import java.util.HashMap;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 import javafx.scene.control.ProgressBar;
 
@@ -36,9 +35,26 @@ import javafx.scene.control.ProgressBar;
 public class GameWorld extends GameEngine {
     private Tank playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
     private ProgressBar cooldownTimer;
+    private int currentLevel;
+    private List tankBots;
+    private boolean finished;
+
+
+
+
+
+
+
+
+
+
+
+
     
     public GameWorld(int fps, String title) {
         super(fps, title);
+
+
     }
 
     /**
@@ -66,7 +82,7 @@ public class GameWorld extends GameEngine {
         setupInput(primaryStage);
 
         // Create many spheres
-        generateManySpheres(5);
+        this.tankBots = generateManySpheres(5);
 
         getSpriteManager().addSprites(playerTank);
         getSceneNodes().getChildren().add(0, playerTank.getNode());
@@ -131,7 +147,8 @@ public class GameWorld extends GameEngine {
      * @param numSpheres The number of random sized, color, and velocity atoms
      * to generate.
      */
-    private void generateManySpheres(int numSpheres) {
+    private List generateManySpheres(int numSpheres) {
+        List<TankBot> tankBots = new LinkedList<>();
         Random rnd = new Random();
         Scene gameSurface = getGameSurface();
         for (int i = 0; i < numSpheres; i++) {
@@ -156,6 +173,7 @@ public class GameWorld extends GameEngine {
                 newX,
                 newY
             );
+            tankBots.add(atom);
             
             // random 0 to 2 + (.0 to 1) * random (1 or -1)
             // Randomize the location of each newly generated atom.
@@ -168,6 +186,7 @@ public class GameWorld extends GameEngine {
             // add sprite's 
             getSceneNodes().getChildren().add(atom.getNode());
         }
+        return tankBots;
     }
 
     /**
@@ -178,12 +197,15 @@ public class GameWorld extends GameEngine {
     @Override
     protected void handleUpdate(Sprite sprite) {
         this.cooldownTimer.setProgress(this.playerTank.getCooldown());
-        
+        if (isGameOver()){
+            this.finished = true;
+            this.shutdown();
+    }
         // advance object
         sprite.update();
         if (sprite instanceof Missile) {
             removeMissiles((Missile) sprite);
-        } else {
+        } else if (sprite instanceof TankBot){
             bounceOffWalls(sprite);
         }
     }
@@ -197,10 +219,10 @@ public class GameWorld extends GameEngine {
         // bounce off the walls when outside of boundaries
 
         Node displayNode;
-        if (sprite instanceof Tank) {
-            return;
-        } else {
+        if (sprite instanceof TankBot) {
             displayNode = sprite.getNode();
+        } else {
+            return;
         }
         // Get the group node's X and Y but use the ImageView to obtain the width.
         if (sprite.getNode().getTranslateX() > (getGameSurface().getWidth() - displayNode.getBoundsInParent().getWidth())
@@ -262,12 +284,22 @@ public class GameWorld extends GameEngine {
         ) {
             if (spriteA != playerTank) {
                 spriteA.handleDeath(this);
+                this.tankBots.remove(spriteA);
             }
             if (spriteB != playerTank) {
                 spriteB.handleDeath(this);
+                this.tankBots.remove(spriteB);
             }
             return true;
         }
         return false;
+    }
+
+    public boolean isGameOver(){
+        return tankBots.isEmpty();
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 }

@@ -63,6 +63,9 @@ public class ResourcesManager {
 
     // Sounds
     public static final String SOUND_SHOOT = SOUNDS_FOLDER + "shoot.wav";
+
+    //GIF
+    public static final String EXPLOSION = RESOURCES_FOLDER + "images/tank_kenney/gif/explosion.gif";
     
     public static HashMap<Integer, String> getInvaderSprites() {
         HashMap<Integer, String> invaders = new HashMap<Integer, String>();

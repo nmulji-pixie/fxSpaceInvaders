@@ -11,24 +11,20 @@ public class Controller {
     @FXML
     Button btnPlay;
 
-    GameEngine gameWorld;
-    private Stage primaryStage;
+    GameWorld gameWorld;
     public void initialize(){
 
     }
 
     public void handlePlayButton(){
         gameWorld = new GameWorld(ResourcesManager.FRAMES_PER_SECOND, "JavaFX Space Invaders");
-        gameWorld.initialize(primaryStage);
-        gameWorld.beginGameLoop();
-        primaryStage.setScene(gameWorld.getGameSurface());
     }
 
-    public Stage getPrimaryStage() {
-        return primaryStage;
+    public GameWorld getGameWorld() {
+        return gameWorld;
     }
 
-    public void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public void setGameWorld(GameWorld gameWorld) {
+        this.gameWorld = gameWorld;
     }
 }
