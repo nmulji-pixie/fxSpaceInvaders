@@ -19,7 +19,6 @@ import java.io.IOException;
  */
 public class SpaceInvadersApp extends Application {
 
-    GameEngine gameWorld;
     Controller controller = new Controller();
     /**
      * @param args the command line arguments
@@ -49,7 +48,6 @@ public class SpaceInvadersApp extends Application {
     @Override
     public void stop() throws Exception {
         Platform.exit();
-        gameWorld.shutdown();
     }
 
 }

@@ -2,12 +2,10 @@ package edu.vanier.ufo.game;
 
 import edu.vanier.ufo.engine.GameEngine;
 import edu.vanier.ufo.engine.Sprite;
-import edu.vanier.ufo.helpers.ResourcesManager;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 /**
@@ -18,19 +16,25 @@ import javafx.util.Duration;
  * @author cdea
  */
 public class Atom extends Sprite {
-
+    private boolean rotationFollowVelocity;
+    
     /**
-     * Constructor will create a optionally create a gradient fill circle shape.
-     * This sprite will contain a JavaFX Circle node.
+     * Constructor will create a optionally create a gradient fill circle shape.This sprite will contain a JavaFX Circle node.
      *
      * @param imagePath the path of the image to be embedded in the node object.
+     * @param baseRotate
+     * @param pivot
      */
-    public Atom(String imagePath) {
-        ImageView newAtom = new ImageView();
-        Image shipImage = new Image(imagePath, true);        
-        newAtom.setImage(shipImage);        
+    public Atom(String imagePath, double baseRotate, Point2D pivot) {
+        RotatedImageView newAtom = new RotatedImageView(imagePath, baseRotate, pivot);
         this.node = newAtom;
         this.collidingNode = newAtom;
+        this.rotationFollowVelocity = false;
+    }
+    
+    
+    public Atom(String imagePath) {
+        this(imagePath, 0, new Point2D(0.5, 0.5));
     }
 
     /**
@@ -40,6 +44,9 @@ public class Atom extends Sprite {
     public void update() {
         getNode().setTranslateX(getNode().getTranslateX() + vX);
         getNode().setTranslateY(getNode().getTranslateY() + vY);
+        
+        if (this.rotationFollowVelocity)
+            this.getImageViewNode().turnToDirection(vX, vY);
     }
 
     /**
@@ -47,8 +54,8 @@ public class Atom extends Sprite {
      *
      * @return Circle shape representing JavaFX node for convenience.
      */
-    public ImageView getImageViewNode() {
-        return (ImageView) getNode();
+    public RotatedImageView getImageViewNode() {
+        return (RotatedImageView) getNode();
     }
 
     /**
@@ -79,5 +86,13 @@ public class Atom extends Sprite {
     public void handleDeath(GameEngine gameWorld) {
         implode(gameWorld);
         super.handleDeath(gameWorld);
+    }
+
+    public boolean isRotationFollowVelocity() {
+        return this.rotationFollowVelocity;
+    }
+
+    public void setRotationFollowVelocity(boolean rotationFollowVelocity) {
+        this.rotationFollowVelocity = rotationFollowVelocity;
     }
 }

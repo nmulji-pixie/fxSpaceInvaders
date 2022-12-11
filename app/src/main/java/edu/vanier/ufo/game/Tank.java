@@ -12,14 +12,19 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.Map;
+import java.util.Timer;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 
 public class Tank extends Sprite {
     private final static float THRUST_AMOUNT = 2.3f;
 
     private final static float MISSILE_THRUST_AMOUNT = 6.3F;
 
-    private final Group flipBook = new Group();
+    private final StackPane flipBook = new StackPane();
 
     private KeyCode keyCode;
 
@@ -36,6 +41,13 @@ public class Tank extends Sprite {
     
     private final RotatedImageView tankSprite;
     private final RotatedImageView barrelSprite;
+    private final RotatedImageView shotSprite;
+    
+    private static final int SHOT_TICKS = (int) (0.1 * ResourcesManager.FRAMES_PER_SECOND);
+    private int shotTicks;
+    
+    private int COOLDOWN_TICKS = 3 * ResourcesManager.FRAMES_PER_SECOND;
+    private int cooldownTicks;
 
     public Tank(ResourcesManager.TankColor color, ResourcesManager.BarrelType barrelType, double x, double y) {
         // Load one image.
@@ -44,8 +56,13 @@ public class Tank extends Sprite {
         
         this.tankSprite = new RotatedImageView(ResourcesManager.getTankBody(this.color), -90, new Point2D(0.5, 0.5));
         this.barrelSprite = new RotatedImageView(ResourcesManager.getTankBarrel(this.color, this.barrelType), 90, new Point2D(0.5, 1));
+        this.shotSprite = new RotatedImageView(ResourcesManager.getTankShot(this.barrelType), -90, new Point2D(0.5, 0.5));
         
-        flipBook.getChildren().addAll(this.tankSprite, this.barrelSprite);
+        this.shotSprite.setPivot(new Point2D(0.5, -this.barrelSprite.getHeight() / this.shotSprite.getHeight()));
+        
+        this.shotSprite.setVisible(false);
+        
+        flipBook.getChildren().addAll(this.tankSprite, this.barrelSprite, this.shotSprite);
         
         setNode(flipBook);
         flipBook.setTranslateX(x);
@@ -53,7 +70,7 @@ public class Tank extends Sprite {
         flipBook.setCache(true);
         flipBook.setCacheHint(CacheHint.SPEED);
         flipBook.setManaged(false);
-        flipBook.setAutoSizeChildren(false);
+        //flipBook.setAutoSizeChildren(false);
         
         initHitZone();
     }
@@ -84,6 +101,13 @@ public class Tank extends Sprite {
     public void update() {
         flipBook.setTranslateX(flipBook.getTranslateX() + vX);
         flipBook.setTranslateY(flipBook.getTranslateY() + vY);
+        
+        if (this.shotSprite.isVisible())
+            if (--shotTicks == 0)
+                this.shotSprite.setVisible(false);
+        
+        if (this.cooldownTicks != 0)
+            --cooldownTicks;
     }
 
     /**
@@ -93,7 +117,7 @@ public class Tank extends Sprite {
      * @return The scene or screen X coordinate.
      */
     public double getCenterX() {
-        return this.flipBook.getTranslateX() + this.tankSprite.getWidth()/ 2;
+        return this.flipBook.getTranslateX() + this.tankSprite.getWidth() / 2;
     }
 
     /**
@@ -103,7 +127,7 @@ public class Tank extends Sprite {
      * @return The scene or screen Y coordinate.
      */
     public double getCenterY() {
-        return this.flipBook.getTranslateY() + this.tankSprite.getHeight()/ 2;
+        return this.flipBook.getTranslateY() + this.tankSprite.getHeight() / 2;
     }
 
     public void plotCourse(Map<KeyCode, Boolean> vKeys, boolean thrust){
@@ -130,36 +154,45 @@ public class Tank extends Sprite {
     
     public void aimAt(double sceneX, double sceneY) {
         this.barrelSprite.turnToScene(sceneX, sceneY);
+        this.shotSprite.turnToScene(sceneX, sceneY);
     }
 
     public Missile fire() {
-        Missile fireMissile = new Missile(ResourcesManager.getTankBullet(this.color, this.barrelType));
-        /*float slowDownAmt = 0;
-        int scaleBeginningMissle;
-        if (KeyCode.DIGIT2 == keyCode) {
-            slowDownAmt = 1.3f;
-            scaleBeginningMissle = 11;
-        } else {
-            scaleBeginningMissle = 8;
-        }
+        if (this.cooldownTicks != 0)
+            return null;
+        
+        this.shotSprite.setVisible(true);
+        this.shotTicks = SHOT_TICKS;
+        this.cooldownTicks = COOLDOWN_TICKS;
+        
+        Missile fireMissile = new Missile(
+            ResourcesManager.getTankBullet(this.color, this.barrelType), 90
+        );
+        
+        fireMissile.setVelocityX(Math.cos(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
+        fireMissile.setVelocityY(Math.sin(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
 
-        //fireMissile.setPosition(getNode().getLayoutX()+ 10, getNode().getLayoutY() - 20);
-        // velocity vector of the missile
-        fireMissile.setVelocityX(Math.cos(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT - slowDownAmt));
-        fireMissile.setVelocityY(Math.sin(Math.toRadians(-this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT - slowDownAmt));
-
-        // make the missile launch in the direction of the current direction of the tank nose. based on the
-        // current frame (uIndex) into the list of image view nodes.
-        RotatedImage barrelImage = this.barrelSprite.getCurrentImage();
-
-        // start to appear in the center of the tank to come out the direction of the nose of the tank.
-        double offsetX = (barrelImage.getBoundsInLocal().getWidth() - fireMissile.getNode().getBoundsInLocal().getWidth()) / 2;
-        double offsetY = (barrelImage.getBoundsInLocal().getHeight() - fireMissile.getNode().getBoundsInLocal().getHeight()) / 2;
-
-        // initial launch of the missile   (multiply vector by 4 makes it appear at the nose of the tank)
-        fireMissile.getNode().setTranslateX(getNode().getTranslateX() + (offsetX + (fireMissile.getVelocityX() * scaleBeginningMissle)));
-        fireMissile.getNode().setTranslateY(getNode().getTranslateY() + (offsetY + (fireMissile.getVelocityY() * scaleBeginningMissle)));
-        */return fireMissile;
+        System.out.println(this.flipBook.getTranslateX());
+        
+        fireMissile.getNode().setTranslateX(
+            this.flipBook.getTranslateX() +
+            (
+                Math.cos(Math.toRadians(this.barrelSprite.getRotation())) *
+                this.barrelSprite.getHeight()
+            ) -
+            (fireMissile.getImageViewNode().getWidth() / 2)
+        );
+        
+        fireMissile.getNode().setTranslateY(
+            this.flipBook.getTranslateY() +
+            (
+                Math.sin(Math.toRadians(this.barrelSprite.getRotation())) *
+                this.barrelSprite.getHeight()
+            ) -
+            (fireMissile.getImageViewNode().getHeight() / 2)
+        );
+        
+        return fireMissile;
     }
 
     public void changeWeapon(KeyCode keyCode) {
@@ -207,5 +240,9 @@ public class Tank extends Sprite {
             shieldFade.stop();
             setCollisionBounds(hitBounds);
         }
+    }
+    
+    public double getCooldown() {
+        return (double)this.cooldownTicks / (double)COOLDOWN_TICKS;
     }
 }

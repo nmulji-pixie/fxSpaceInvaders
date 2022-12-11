@@ -20,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.util.Random;
+import javafx.scene.control.ProgressBar;
 
 /**
  * This is a simple game world simulating a bunch of spheres looking like atomic
@@ -33,13 +34,9 @@ import java.util.Random;
 
 
 public class GameWorld extends GameEngine {
-
-    // mouse pt label
-    Label mousePtLabel = new Label();
-    // mouse press pt label
-    Label mousePressPtLabel = new Label();
-    Tank playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
-
+    private Tank playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
+    private ProgressBar cooldownTimer;
+    
     public GameWorld(int fps, String title) {
         super(fps, title);
     }
@@ -73,23 +70,12 @@ public class GameWorld extends GameEngine {
 
         getSpriteManager().addSprites(playerTank);
         getSceneNodes().getChildren().add(0, playerTank.getNode());
-        // mouse point
-        VBox stats = new VBox();
-
-        HBox row1 = new HBox();
-        mousePtLabel.setTextFill(Color.WHITE);
-        row1.getChildren().add(mousePtLabel);
-        HBox row2 = new HBox();
-        mousePressPtLabel.setTextFill(Color.WHITE);
-        row2.getChildren().add(mousePressPtLabel);
-        stats.getChildren().add(row1);
-        stats.getChildren().add(row2);
-
-        //TODO: Add the HUD here.
-        getSceneNodes().getChildren().add(0, stats);
-
+        
+        this.cooldownTimer = new ProgressBar();
+        
+        getSceneNodes().getChildren().add(this.cooldownTimer);
         // load sound files
-        //getSoundManager().loadSoundEffects("laser", getClass().getClassLoader().getResource(ResourcesManager.SOUND_LASER));
+        getSoundManager().loadSoundEffects("laser", getClass().getClassLoader().getResource(ResourcesManager.SOUND_SHOOT));
     }
 
     /**
@@ -101,11 +87,13 @@ public class GameWorld extends GameEngine {
         System.out.println("Ship's center is (" + playerTank.getCenterX() + ", " + playerTank.getCenterY() + ")");
 
         EventHandler fireOrMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
-            mousePressPtLabel.setText("Mouse Press PT = (" + event.getX() + ", " + event.getY() + ")");
             if (event.getButton() == MouseButton.PRIMARY) {
 
                 // fire
                 Missile missile = playerTank.fire();
+                if (missile == null)
+                    return;
+                
                 getSpriteManager().addSprites(missile);
 
                 // play sound
@@ -132,7 +120,6 @@ public class GameWorld extends GameEngine {
         // set up stats
         EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
             playerTank.aimAt(event.getSceneX(), event.getSceneY());
-            mousePtLabel.setText("Mouse PT = (" + event.getX() + ", " + event.getY() + ")");
         };
 
         primaryStage.getScene().setOnMouseMoved(showMouseMove);
@@ -190,6 +177,8 @@ public class GameWorld extends GameEngine {
      */
     @Override
     protected void handleUpdate(Sprite sprite) {
+        this.cooldownTimer.setProgress(this.playerTank.getCooldown());
+        
         // advance object
         sprite.update();
         if (sprite instanceof Missile) {

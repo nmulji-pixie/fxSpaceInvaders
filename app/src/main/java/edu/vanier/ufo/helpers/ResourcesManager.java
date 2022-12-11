@@ -56,11 +56,14 @@ public class ResourcesManager {
     private static final String TANK_BODY_FMT = IMAGES_FOLDER + "tankBody_%s_outline.png"; 
     private static final String TANK_BARREL_FMT = IMAGES_FOLDER + "tank%s_barrel%d_outline.png"; 
     private static final String TANK_BULLET_FMT = IMAGES_FOLDER + "bullet%s%d.png";
+    private static final String TANK_SHOT_FMT = IMAGES_FOLDER + "shot%s.png";
 
     // Background
     public static final String BACKGROUND = IMAGES_FOLDER + "tileGrass_transitionS.png";
 
-//    public static final String ROCKET_SMALL = IMAGES_FOLDER + "rocket.png";
+    // Sounds
+    public static final String SOUND_SHOOT = SOUNDS_FOLDER + "shoot.wav";
+    
     public static HashMap<Integer, String> getInvaderSprites() {
         HashMap<Integer, String> invaders = new HashMap<Integer, String>();
         invaders.put(1, ResourcesManager.IMAGES_FOLDER + "large_invader_b.png");
@@ -78,5 +81,16 @@ public class ResourcesManager {
     
     public static String getTankBullet(TankColor color, BarrelType barrelType) {
         return String.format(TANK_BULLET_FMT, StringHelper.toTitleCase(color.getPathValue()), barrelType.getPathIndex());
+    }
+    
+    public static String getTankShot(BarrelType barrelType) {
+        return String.format(TANK_SHOT_FMT,
+            switch (barrelType) {
+                case LONG -> "Orange";
+                case NORMAL -> "Thin";
+                case THICK -> "Red";
+                default -> "Large";
+            }
+        );
     }
 }

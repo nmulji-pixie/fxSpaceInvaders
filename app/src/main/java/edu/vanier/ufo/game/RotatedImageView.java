@@ -1,33 +1,25 @@
 package edu.vanier.ufo.game;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 
-public final class RotatedImageView extends Group {
+public final class RotatedImageView extends ImageView {
     private final double baseRotate;
-    private final ImageView imageView;
     private final Rotate rotation;
     
     public RotatedImageView(String imagePath, double baseRotate, Point2D pivot) {
-        super();
+        super(imagePath);
         
         this.rotation = new Rotate();
-        this.imageView = new ImageView(imagePath);
-        this.imageView.getTransforms().add(this.rotation);
+        this.getTransforms().add(this.rotation);
 
         this.setPivot(pivot);
         this.baseRotate = baseRotate;
-        
-        
-        this.getChildren().add(imageView);
-                
     }
     
     public void turnToScene(double sceneX, double sceneY) {
-        Point2D scene = this.imageView.localToScene(
+        Point2D scene = this.localToScene(
             this.rotation.getPivotX(),
             this.rotation.getPivotY()
         );
@@ -47,15 +39,20 @@ public final class RotatedImageView extends Group {
     public void setPivot(Point2D pivot) {
         this.rotation.setPivotX(pivot.getX() * this.getWidth());
         this.rotation.setPivotY(pivot.getY() * this.getHeight());
-        this.imageView.setTranslateX(-this.rotation.getPivotX());
-        this.imageView.setTranslateY(-this.rotation.getPivotY());
+        
+        this.setTranslateX(this.getWidth() / 2 - this.rotation.getPivotX());
+        this.setTranslateY(this.getHeight() / 2 - this.rotation.getPivotY());
     }
     
     public double getWidth() {
-        return this.imageView.getImage().getWidth();
+        return this.getImage().getWidth();
     }
     
     public double getHeight() {
-        return this.imageView.getImage().getHeight();
+        return this.getImage().getHeight();
+    }
+    
+    public double getRotation() {
+        return this.rotation.getAngle() - this.baseRotate;
     }
 }
