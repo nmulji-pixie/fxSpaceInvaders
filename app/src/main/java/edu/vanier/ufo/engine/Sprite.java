@@ -20,7 +20,7 @@ public abstract class Sprite {
     private boolean isDead;
     private GameEngine engine;
     private List<String> ids;
-
+    private double prevTranslateX, prevTranslateY;
     protected Node collidingNode;
 
     public Sprite() {
@@ -80,7 +80,21 @@ public abstract class Sprite {
         );
     }
 
-    public abstract void update();
+    public final void update() {
+        prevTranslateX = getNode().getTranslateX();
+        prevTranslateY = getNode().getTranslateY();
+        getNode().setTranslateX(getNode().getTranslateX() + vX);
+        getNode().setTranslateY(getNode().getTranslateY() + vY);
+        
+        this.handleUpdate();
+    }
+    
+    public final void undoUpdate() {
+        getNode().setTranslateX(prevTranslateX);
+        getNode().setTranslateY(prevTranslateY);
+    }
+    
+    protected abstract void handleUpdate();
 
     public Image getImage() {
         return image;

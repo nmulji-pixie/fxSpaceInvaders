@@ -41,10 +41,7 @@ public class Atom extends Sprite {
      * Change the velocity of the current atom particle.
      */
     @Override
-    public void update() {
-        getNode().setTranslateX(getNode().getTranslateX() + vX);
-        getNode().setTranslateY(getNode().getTranslateY() + vY);
-        
+    public void handleUpdate() {
         if (this.rotationFollowVelocity)
             this.getImageViewNode().turnToDirection(vX, vY);
     }

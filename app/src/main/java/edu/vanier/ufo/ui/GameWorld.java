@@ -238,20 +238,28 @@ public class GameWorld extends GameEngine {
      */
     @Override
     protected boolean handleCollision(Sprite spriteA, Sprite spriteB) {
-        if (
-            spriteA != spriteB &&
-            spriteA.collide(spriteB) &&
-            (
+        if (spriteA != spriteB && spriteA.collide(spriteB)) {
+            if (
                 spriteA instanceof Missile &&
-                spriteB instanceof Tank &&
-                ((Missile)spriteA).getOwner() != spriteB
-            )
-        ) {
-            spriteA.die();
-            
-            ((Tank)spriteB).takeDamage(
-                ((Missile)spriteA).getOwner().getBarrelType().getDamage()
-            );
+                spriteB instanceof Tank
+            ) {
+                if (((Missile)spriteA).getOwner() == spriteB)
+                    return false;
+                
+                spriteA.die();
+
+                ((Tank)spriteB).takeDamage(
+                    ((Missile)spriteA).getOwner().getBarrelType().getDamage()
+                );
+            } else if (
+                spriteA instanceof Missile &&
+                spriteB instanceof Missile
+            ) {
+                spriteA.die();
+                spriteB.die();
+                
+                return false;
+            }
             
             return true;
         }

@@ -96,15 +96,12 @@ public class Tank extends Sprite {
         
         this.setHealthBarColor(Color.LIME);
     }
-
+    
     /**
      * Change the velocity of the atom particle.
      */
     @Override
-    public void update() {
-        flipBook.setTranslateX(flipBook.getTranslateX() + vX);
-        flipBook.setTranslateY(flipBook.getTranslateY() + vY);
-        
+    public void handleUpdate() {
         if (this.shotSprite.isVisible())
             if (--shotTicks == 0)
                 this.shotSprite.setVisible(false);
@@ -323,5 +320,9 @@ public class Tank extends Sprite {
         this.shotSprite.setPivot(new Point2D(
             0.5, -this.barrelSprite.getHeight() / this.shotSprite.getHeight()
         ));
+    }
+    
+    protected void setCooldownTicks(int newValue) {
+        this.cooldownTicks = newValue;
     }
 }

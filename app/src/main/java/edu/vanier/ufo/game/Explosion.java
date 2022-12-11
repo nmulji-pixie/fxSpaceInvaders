@@ -30,7 +30,7 @@ public class Explosion extends Sprite {
     }
 
     @Override
-    public void update() {
+    public void handleUpdate() {
         if (this.intervalTicks == 0)
             this.getEngine().playSound("explosion");
         
