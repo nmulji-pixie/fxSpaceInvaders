@@ -65,7 +65,7 @@ public class GameWorld extends GameEngine {
         setupInput(primaryStage);
 
         // Create many spheres
-        generateManySpheres(15);
+        generateManySpheres(2);
 
         this.addSprites(playerTank);
         

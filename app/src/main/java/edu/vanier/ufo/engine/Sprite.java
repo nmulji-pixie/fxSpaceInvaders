@@ -56,32 +56,15 @@ public abstract class Sprite {
      * false.
      */
     public boolean collide(Sprite other) {
-        return collidingNode.getBoundsInParent().intersects(other.node.getBoundsInParent());
-        /*if (collidingNode == null || other.collidingNode == null) {
-            return false;
-        }
-
-        // determine it's size
-        Node otherSphere = other.collidingNode;
-        Node thisSphere = collidingNode;
-        Point2D otherCenter = otherSphere.localToScene(otherSphere.getCenterX(), otherSphere.getCenterY());
-        Point2D thisCenter = thisSphere.localToScene(thisSphere.getCenterX(), thisSphere.getCenterY());
-        double dx = otherCenter.getX() - thisCenter.getX();
-        double dy = otherCenter.getY() - thisCenter.getY();
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        double minDist = otherSphere.getRadius() + thisSphere.getRadius();
-
-        return (distance < minDist);*/
+        return this.getCollisionBounds().intersects(
+            this.getCollisionBounds().sceneToLocal(
+            other.getCollisionBounds().localToScene(
+                other.getCollisionBounds().getBoundsInLocal()
+            ))
+        );
     }
 
     public abstract void update();
-
-    public boolean intersects(Sprite s) {
-        //return s.getBoundary().intersects(this.getBoundary());        
-        Bounds sBounds = s.getNode().localToScene(s.getNode().getBoundsInLocal());
-        return node.intersects(sBounds);
-
-    }
 
     public Image getImage() {
         return image;

@@ -137,7 +137,7 @@ public abstract class GameEngine {
     protected void checkCollisions() {
         // check each sprite against other sprite objects.
         for (Sprite spriteA : spriteManager.getCollisionsToCheck()) {
-            for (Sprite spriteB : spriteManager.getAllSprites()) {
+            for (Sprite spriteB : spriteManager.getCollisionsToCheck()) {
                 if (handleCollision(spriteA, spriteB)) {
                     // The break helps optimize the collisions
                     //  The break statement means one object only hits another

@@ -5,22 +5,15 @@ import edu.vanier.ufo.engine.Sprite;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.scene.CacheHint;
-import javafx.scene.Group;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.Map;
-import java.util.Timer;
 import javafx.geometry.Point2D;
-import javafx.geometry.Pos;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
 
 public class Tank extends Sprite {
     private final static float THRUST_AMOUNT = 2.3f;
@@ -71,13 +64,7 @@ public class Tank extends Sprite {
         this.shotSprite.setPivot(new Point2D(0.5, -this.barrelSprite.getHeight() / this.shotSprite.getHeight()));
         this.shotSprite.setVisible(false);
         
-        
-        this.healthBar = new ProgressBar(this.health / ResourcesManager.MAX_HEALTH);
-
-        this.healthBar.setPrefWidth(this.tankSprite.getWidth() * 0.8);
-        this.healthBar.setTranslateY(-this.tankSprite.getHeight());
-        
-        this.setHealthBarColor(Color.LIME);
+        this.initHealthBar();
         
         this.flipBook = new StackPane(
             this.tankSprite,
@@ -94,26 +81,20 @@ public class Tank extends Sprite {
         //flipBook.setManaged(false);
         //flipBook.setAutoSizeChildren(false);
         
-        initHitZone();
+        this.setCollisionBounds(this.tankSprite);
     }
 
     /**
-     * Initialize the collision region for the space tank. It's just an
-     * inscribed circle.
+     * Initialize health bar
      */
-    private void initHitZone() {
-        // build hit zone
-        if (hitBounds == null) {
-            hitBounds = new Circle();
-            hitBounds.setCenterX(this.tankSprite.getWidth());
-            hitBounds.setCenterY(this.tankSprite.getHeight());
-            hitBounds.setStroke(Color.PINK);
-            hitBounds.setFill(Color.RED);
-            hitBounds.setRadius(this.tankSprite.getHeight()/ 2);
-            hitBounds.setOpacity(0);
-            flipBook.getChildren().add(hitBounds);
-            setCollisionBounds(hitBounds);
-        }
+    private void initHealthBar() {
+        this.healthBar = new ProgressBar(this.health / ResourcesManager.MAX_HEALTH);
+
+        this.healthBar.setPrefWidth(this.tankSprite.getWidth() * 0.8);
+        this.healthBar.setTranslateY(-this.tankSprite.getHeight());
+        this.healthBar.setTranslateY(-this.tankSprite.getHeight());
+        
+        this.setHealthBarColor(Color.LIME);
     }
 
     /**
