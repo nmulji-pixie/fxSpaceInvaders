@@ -1,13 +1,7 @@
 package edu.vanier.ufo.ui;
 
-import edu.vanier.ufo.controller.Controller;
-import edu.vanier.ufo.engine.GameEngine;
-import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.level.Level;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,7 +19,10 @@ import java.io.IOException;
 public class SpaceInvadersApp extends Application {
 
     @FXML
-    Button btnPlay;
+    private Button btnPlay;
+    
+    private Level currentLevel;
+    
     /**
      * @param args the command line arguments
      */
@@ -41,24 +38,29 @@ public class SpaceInvadersApp extends Application {
         loader.setController(this);
 
         Pane root = loader.load();
-        btnPlay.setOnAction(playing(primaryStage));
-
-
-
+        btnPlay.setOnAction((e) -> {
+            this.shutdown();
+            this.currentLevel = new Level(1, primaryStage, () -> {
+                System.out.println("game over");
+            });
+        });
+        
+        
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
     @Override
-    public void stop() throws Exception {
-        Platform.exit();
+    public void stop() {
+        this.shutdown();
     }
-
-    public EventHandler<ActionEvent> playing(Stage primaryStage){
-        EventHandler<ActionEvent> play = (ActionEvent) -> {
-            Level level = new Level(1, primaryStage);
-        };
-        return play;
+    
+    private void shutdown() {
+        if (this.currentLevel == null)
+            return;
+        
+        this.currentLevel.shutdown();
+        this.currentLevel = null;
     }
 }

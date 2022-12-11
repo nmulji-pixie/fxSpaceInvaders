@@ -1,6 +1,10 @@
 package edu.vanier.ufo.engine;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Sprite manager is responsible for holding all sprite objects, and cleaning up

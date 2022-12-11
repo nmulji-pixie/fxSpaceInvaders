@@ -41,7 +41,7 @@ public abstract class GameEngine {
     /**
      * The game loop using JavaFX's <code>Timeline</code> API.
      */
-    private static Timeline gameLoop;
+    private Timeline gameLoop;
 
     /**
      * Number of frames per second.
@@ -62,20 +62,27 @@ public abstract class GameEngine {
     
     private final SoundManager soundManager;
 
+    private final Runnable shutdownCallback;
+    
+    private boolean isShutdown;
+    
     /**
-     * Constructor that is called by the derived class. This will set the frames
-     * per second, title, and setup the game loop.
+     * Constructor that is called by the derived class.This will set the frames
+ per second, title, and setup the game loop.
      *
      * @param fps - Frames per second.
      * @param title - Title of the application window.
+     * @param shutdownCallback - Callback when shutdown is called
      */
-    public GameEngine(final int fps, final String title) {
+    public GameEngine(final int fps, final String title, Runnable shutdownCallback) {
         this.framesPerSecond = fps;
         this.windowTitle = title;
         this.spriteManager = new SpriteManager();
         this.soundManager = new SoundManager(3);
         this.sceneNodes = new Group();
         this.queuedSprites = new LinkedList<>();
+        this.shutdownCallback = shutdownCallback;
+        this.isShutdown = false;
         // create and set timeline for the game loop
 
         buildAndSetGameLoop();
@@ -100,9 +107,8 @@ public abstract class GameEngine {
         };
         final KeyFrame gameFrame = new KeyFrame(frameDuration, onFinished);
         // sets the game world's game loop (Timeline)
-        Timeline gameLoop = new Timeline(gameFrame);
+        gameLoop = new Timeline(gameFrame);
         gameLoop.setCycleCount(Animation.INDEFINITE);
-        setGameLoop(gameLoop);
     }
 
     /**
@@ -210,7 +216,7 @@ public abstract class GameEngine {
      * @return Timeline An animation running indefinitely representing the game
      * loop.
      */
-    protected static Timeline getGameLoop() {
+    protected Timeline getGameLoop() {
         return gameLoop;
     }
 
@@ -220,8 +226,8 @@ public abstract class GameEngine {
      * @param gameLoop Timeline object of an animation running indefinitely
      * representing the game loop.
      */
-    protected static void setGameLoop(Timeline gameLoop) {
-        GameEngine.gameLoop = gameLoop;
+    protected void setGameLoop(Timeline gameLoop) {
+        this.gameLoop = gameLoop;
     }
     
     public void queueAddSprites(Sprite... sprites) {
@@ -290,9 +296,14 @@ public abstract class GameEngine {
      * Stop threads and stop media from playing.
      */
     public void shutdown() {
+        if (this.isShutdown)
+            return;
+        
+        this.isShutdown = true;
+        
         // Stop the game's animation.
         getGameLoop().stop();
         getSoundManager().shutdown();
-
+        this.shutdownCallback.run();
     }
 }

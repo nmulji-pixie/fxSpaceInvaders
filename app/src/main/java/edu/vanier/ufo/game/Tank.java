@@ -2,7 +2,6 @@ package edu.vanier.ufo.game;
 
 import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.engine.Sprite;
-import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.scene.CacheHint;
 import javafx.scene.paint.Color;
@@ -10,6 +9,7 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.Map;
+import javafx.animation.FadeTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -23,15 +23,11 @@ public class Tank extends Sprite {
 
     private final StackPane flipBook;
 
-    private KeyCode keyCode;
-
     private boolean shieldOn;
 
     private Circle shield;
 
     private FadeTransition shieldFade;
-
-    private Circle hitBounds;
     
     private final ResourcesManager.TankColor color;
     private ResourcesManager.BarrelType barrelType;
@@ -65,12 +61,14 @@ public class Tank extends Sprite {
         this.shotSprite.setVisible(false);
         
         this.initHealthBar();
+        this.initShield();
         
         this.flipBook = new StackPane(
             this.tankSprite,
             this.barrelSprite,
             this.shotSprite,
-            this.healthBar
+            this.healthBar,
+            this.shield
         );
         
         setNode(flipBook);
@@ -97,6 +95,35 @@ public class Tank extends Sprite {
         this.setHealthBarColor(Color.LIME);
     }
     
+    private void initShield() {
+        this.shield = new Circle();
+        
+        // add shield
+        shield = new Circle();
+        shield.setRadius(60);
+        shield.setStrokeWidth(5);
+        shield.setStroke(Color.LIMEGREEN);
+        shield.setOpacity(.70);
+        setCollisionBounds(shield);
+        //--
+        shieldFade = new FadeTransition();
+        shieldFade.setFromValue(1);
+        shieldFade.setToValue(.40);
+        shieldFade.setDuration(Duration.millis(1000));
+        shieldFade.setCycleCount(12);
+        shieldFade.setAutoReverse(true);
+        shieldFade.setNode(shield);
+        shieldFade.setOnFinished((ActionEvent actionEvent) -> {
+            shieldOn = false;
+            shieldFade.stop();
+            shield.setVisible(false);
+            setCollisionBounds(this.tankSprite);
+        });
+        shieldFade.playFromStart();
+        
+        this.shield.setVisible(false);
+    }
+    
     /**
      * Change the velocity of the atom particle.
      */
@@ -117,7 +144,7 @@ public class Tank extends Sprite {
      * @return The scene or screen X coordinate.
      */
     public double getCenterX() {
-        return this.flipBook.getTranslateX() + this.tankSprite.getWidth() / 2;
+        return this.flipBook.getTranslateX() + this.flipBook.getWidth() / 2;
     }
 
     /**
@@ -127,7 +154,7 @@ public class Tank extends Sprite {
      * @return The scene or screen Y coordinate.
      */
     public double getCenterY() {
-        return this.flipBook.getTranslateY() + this.tankSprite.getHeight() / 2;
+        return this.flipBook.getTranslateY() + this.flipBook.getHeight() / 2;
     }
 
     public void plotCourse(Map<KeyCode, Boolean> vKeys, boolean thrust){
@@ -211,45 +238,13 @@ public class Tank extends Sprite {
     }
 
     public void shieldToggle() {
-        if (shield == null) {
-            double x = this.tankSprite.getBoundsInLocal().getWidth() / 2;
-            double y = this.tankSprite.getBoundsInLocal().getHeight() / 2;
-
-            // add shield
-            shield = new Circle();
-            shield.setRadius(60);
-            shield.setStrokeWidth(5);
-            shield.setStroke(Color.LIMEGREEN);
-            shield.setCenterX(x);
-            shield.setCenterY(y);
-            shield.setOpacity(.70);
-            setCollisionBounds(shield);
-            //--
-            shieldFade = new FadeTransition();
-            shieldFade.setFromValue(1);
-            shieldFade.setToValue(.40);
-            shieldFade.setDuration(Duration.millis(1000));
-            shieldFade.setCycleCount(12);
-            shieldFade.setAutoReverse(true);
-            shieldFade.setNode(shield);
-            shieldFade.setOnFinished((ActionEvent actionEvent) -> {
-                shieldOn = false;
-                flipBook.getChildren().remove(shield);
-                shieldFade.stop();
-                setCollisionBounds(hitBounds);
-            });
-            shieldFade.playFromStart();
-
-        }
         shieldOn = !shieldOn;
         if (shieldOn) {
             setCollisionBounds(shield);
-            flipBook.getChildren().add(0, shield);
+            shield.setVisible(true);
             shieldFade.playFromStart();
         } else {
-            flipBook.getChildren().remove(shield);
             shieldFade.stop();
-            setCollisionBounds(hitBounds);
         }
     }
     
@@ -275,6 +270,8 @@ public class Tank extends Sprite {
     public void takeDamage(double damage) {
         if (damage < 0)
             throw new IllegalArgumentException("Can't have negative damage");
+        else if (this.shieldOn)
+            return;
 
         this.health -= damage;
         this.healthBar.setProgress(this.health / ResourcesManager.MAX_HEALTH);

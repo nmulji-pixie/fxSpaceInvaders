@@ -1,14 +1,16 @@
 package edu.vanier.ufo.ui;
+import edu.vanier.ufo.engine.GameEngine;
+import edu.vanier.ufo.engine.Sprite;
+import edu.vanier.ufo.game.Missile;
+import edu.vanier.ufo.game.Tank;
+import edu.vanier.ufo.game.TankBot;
 import edu.vanier.ufo.helpers.ResourcesManager;
-import edu.vanier.ufo.engine.*;
-import edu.vanier.ufo.game.*;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import java.util.HashMap;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,6 +18,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.util.Random;
+import javafx.event.ActionEvent;
 import javafx.scene.control.ProgressBar;
 
 /**
@@ -36,12 +39,12 @@ public class GameWorld extends GameEngine {
     private int currentLevel;
     private GridPane levelTile;
 
-    public GameWorld(int fps, String title) {
-        super(fps, title);
+    public GameWorld(int fps, String title, Runnable shutdownCallback) {
+        super(fps, title, shutdownCallback);
     }
 
-    public GameWorld(int fps, String title, int sprites, Tank playerTank, int currentLevel, GridPane levelTile) {
-        super(fps, title);
+    public GameWorld(int fps, String title, Runnable shutdownCallback, int sprites, Tank playerTank, int currentLevel, GridPane levelTile) {
+        super(fps, title, shutdownCallback);
 
         this.sprites = sprites;
         this.playerTank = playerTank;
@@ -111,6 +114,8 @@ public class GameWorld extends GameEngine {
 
             if (event.getCode() == KeyCode.SPACE)
                 playerTank.changeWeapon();
+            else if (event.getCode() == KeyCode.F)
+                playerTank.shieldToggle();
         });
 
         primaryStage.getScene().setOnKeyReleased(event -> {
