@@ -1,6 +1,7 @@
 package edu.vanier.ufo.ui;
 
 import edu.vanier.ufo.level.Level;
+import edu.vanier.ufo.level.LevelScreen;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,11 @@ public class SpaceInvadersApp extends Application {
         btnPlay.setOnAction((e) -> {
             this.shutdown();
             this.currentLevel = new Level(1, primaryStage, () -> {
-                System.out.println("game over");
+                try {
+                   LevelScreen screen = new LevelScreen(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             });
         });
         
