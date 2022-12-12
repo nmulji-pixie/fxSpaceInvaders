@@ -15,20 +15,25 @@ import java.util.*;
 public class ResourcesManager {
 
     public enum TankColor {
-        SAND("sand"),
-        GREEN("green"),
-        RED("red"),
-        BLUE("blue"),
-        DARK("dark");
+        SAND("sand", 20),
+        GREEN("green", 20),
+        RED("red", 20),
+        BLUE("blue", 20),
+        DARK("dark", 20);
         
         private final String pathValue;
+        private final int points;
  
-        TankColor(String pathValue) {
-            this.pathValue = pathValue;
+        TankColor(String pathValue, int points) {
+            this.pathValue = pathValue; this.points = points;
         }
 
         public String getPathValue() {
             return this.pathValue;
+        }
+
+        public int getPoints() {
+            return points;
         }
     }
     

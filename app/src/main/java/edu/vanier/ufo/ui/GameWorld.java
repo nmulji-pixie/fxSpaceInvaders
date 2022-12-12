@@ -6,11 +6,15 @@ import edu.vanier.ufo.game.Tank;
 import edu.vanier.ufo.game.TankBot;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import java.util.HashMap;
+
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -36,6 +40,10 @@ public class GameWorld extends GameEngine {
     private int sprites;
     private Tank playerTank;
     private ProgressBar cooldownTimer;
+    private HBox HUD;
+    private Label currentLevelLabel;
+    private String score;
+    private Label scoreLabel;
     private int currentLevel;
     private GridPane levelTile;
 
@@ -50,6 +58,7 @@ public class GameWorld extends GameEngine {
         this.playerTank = playerTank;
         this.currentLevel = currentLevel;
         this.levelTile = levelTile;
+        this.score = String.valueOf(this.playerTank.getPoints());
     }
 
     /**
@@ -80,13 +89,17 @@ public class GameWorld extends GameEngine {
         // Create many spheres
         generateManySpheres(this.sprites);
 
-        this.playerTank = new Tank(ResourcesManager.TankColor.BLUE, ResourcesManager.BarrelType.NORMAL, 350, 450);
+        this.currentLevelLabel = new Label("Level " + this.currentLevel);
+        this.scoreLabel = new Label("Score " + this.score);
+        this.HUD = new HBox(this.currentLevelLabel, this.scoreLabel);
+        this.HUD.setLayoutX(900);
         this.playerTank.addId("player");
         this.queueAddSprites(playerTank);
 
         this.cooldownTimer = new ProgressBar();
 
         getSceneNodes().getChildren().add(this.cooldownTimer);
+        getSceneNodes().getChildren().add(this.HUD);
         // load sound files
         getSoundManager().loadSoundEffects("shoot", getClass().getClassLoader().getResource(ResourcesManager.SOUND_SHOOT));
         getSoundManager().loadSoundEffects("explosion", getClass().getClassLoader().getResource(ResourcesManager.SOUND_EXPLOSION));
@@ -270,7 +283,8 @@ public class GameWorld extends GameEngine {
                     return false;
                 
                 spriteA.die();
-
+                if (spriteB instanceof TankBot)
+                    this.updateScore();
                 ((Tank)spriteB).takeDamage(
                     ((Missile)spriteA).getOwner().getBarrelType().getDamage()
                 );
@@ -283,7 +297,6 @@ public class GameWorld extends GameEngine {
 
                 return false;
             }
-            
             return true;
         }
         return false;
@@ -291,5 +304,10 @@ public class GameWorld extends GameEngine {
 
     public boolean isGameOver() {
         return this.playerTank.isDead();
+    }
+
+    public void updateScore(){
+        this.score = String.valueOf(Integer.valueOf(this.score) + 20);
+        this.scoreLabel.setText("Score " + this.score);
     }
 }

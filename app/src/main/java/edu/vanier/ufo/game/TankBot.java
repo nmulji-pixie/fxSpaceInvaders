@@ -9,7 +9,7 @@ public class TankBot extends Tank {
     public TankBot(ResourcesManager.TankColor color, ResourcesManager.BarrelType barrelType, double x, double y) {
         super(color, barrelType, x, y);
         this.setHealthBarColor(Color.RED);
-        
+        this.setPoints(color.getPoints());
         this.setCooldownTicks(5 * ResourcesManager.FRAMES_PER_SECOND);
     }
     
@@ -27,4 +27,6 @@ public class TankBot extends Tank {
         
         this.fire();
     }
+
+
 }
