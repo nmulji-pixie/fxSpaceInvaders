@@ -146,6 +146,14 @@ public class GameWorld extends GameEngine {
 
         primaryStage.getScene().setOnMouseMoved(showMouseMove);
     }
+    
+    @Override
+    protected void deinitialize() {
+        this.getGameSurface().setOnMousePressed(null);
+        this.getGameSurface().setOnMousePressed(null);
+        this.getGameSurface().setOnKeyReleased(null);
+        this.getGameSurface().setOnMouseMoved(null);
+    }
 
 
     /**

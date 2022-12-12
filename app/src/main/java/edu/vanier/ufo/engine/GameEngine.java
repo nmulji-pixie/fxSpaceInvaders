@@ -119,6 +119,13 @@ public abstract class GameEngine {
      * @param primaryStage The main window containing the JavaFX Scene.
      */
     public abstract void initialize(final Stage primaryStage);
+    
+    /**
+     * Deinitialize the game world by update the JavaFX Stage.
+     *
+     * @param primaryStage The main window containing the JavaFX Scene.
+     */
+    protected abstract void deinitialize();
 
     /**
      * Kicks off (plays) the Timeline objects containing one key frame that
@@ -300,6 +307,8 @@ public abstract class GameEngine {
     public void shutdown() {
         if (this.isShutdown)
             return;
+        
+        this.deinitialize();
         
         this.isShutdown = true;
         
