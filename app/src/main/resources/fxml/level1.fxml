@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.shape.ClosePath?>
+<?import javafx.scene.shape.CubicCurveTo?>
+<?import javafx.scene.shape.HLineTo?>
+<?import javafx.scene.shape.LineTo?>
+<?import javafx.scene.shape.MoveTo?>
+<?import javafx.scene.shape.Path?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+	  <TilePane disable="true" prefColumns="7" prefRows="7">
+		 <children>
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass1.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerLR.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerLL.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass1.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerLR.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCrossingRound.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerLL.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadNorth.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerLR.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerUL.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerUR.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerUL.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass1.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadNorth.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadNorth.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass1.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass1.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass1.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadNorth.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadSplitE.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadSplitW.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadNorth.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass1.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadNorth.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass2.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerUR.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadEast.png" />
+	</image>
+</ImageView>
+
+
+<ImageView smooth="false">
+	<image>
+		<Image url="@../images/tank_kenney/Retina/tileGrass_roadCornerUL.png" />
+	</image>
+</ImageView>
+
+		 </children>
+	  </TilePane>
+      <Path fill="DODGERBLUE" stroke="BLACK" strokeType="INSIDE" visible="false">
+         <elements>
+            <MoveTo x="192.0" y="576.0" />
+            <HLineTo x="832.0" />
+            <ClosePath />
+         </elements>
+      </Path>
+      <Path fill="DODGERBLUE" stroke="BLACK" strokeType="INSIDE" visible="false">
+          <elements>
+              <MoveTo x="576.0" y="64.0" />
+            <LineTo x="704.0" y="64.0" />
+            <CubicCurveTo controlX1="832.0" controlX2="832.0" controlY1="64.0" controlY2="64.0" x="832.0" y="192.0" />
+              <ClosePath />
+          </elements>
+      </Path>
+   </children>
+</Pane>

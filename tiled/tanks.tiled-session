@@ -1,0 +1,42 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "kenney.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.5,
+            "scaleInEditor": 1
+        },
+        "level1.tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1934,
+                "y": 705
+            }
+        }
+    },
+    "last.exportedFilePath": "C:/Users/admin/Documents/Projects/fxSpaceInvaders/app/src/main/resources/fxml",
+    "last.imagePath": "C:/Users/admin/Documents/Projects/fxSpaceInvaders/app/src/main/resources/images/tank_kenney/Retina",
+    "map.lastUsedExportFilter": "Java FX FXML (*.fxml)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 128,
+    "map.tileWidth": 128,
+    "openFiles": [
+        "level1.tmx",
+        "kenney.tsx"
+    ],
+    "project": "tanks.tiled-project",
+    "recentFiles": [
+        "level1.tmx",
+        "kenney.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}

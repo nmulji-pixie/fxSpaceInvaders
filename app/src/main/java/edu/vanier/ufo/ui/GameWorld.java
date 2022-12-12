@@ -80,7 +80,6 @@ public class GameWorld extends GameEngine {
 
         // Change the background of the main scene.
         getGameSurface().setFill(new ImagePattern(new Image(ResourcesManager.BACKGROUND)));
-
         primaryStage.setScene(getGameSurface());
 
         // Setup Game input

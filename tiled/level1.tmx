@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="7" height="7" tilewidth="128" tileheight="128" infinite="0" nextlayerid="5" nextobjectid="5">
+ <editorsettings>
+  <export target="level1.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="kenney.tsx"/>
+ <layer id="1" name="ground" width="7" height="7">
+  <data encoding="csv">
+160,159,160,136,141,141,135,
+160,159,136,140,135,160,142,
+160,136,137,138,137,159,142,
+160,142,159,159,159,160,142,
+160,143,141,141,141,141,146,
+160,142,159,160,160,160,142,
+160,138,141,141,141,141,137
+</data>
+ </layer>
+ <layer id="3" name="trees" width="7" height="7">
+  <data encoding="csv">
+182,0,0,0,0,0,0,
+0,0,0,0,0,182,0,
+0,0,0,0,0,0,0,
+0,0,182,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,185,0,0,182,0,
+0,184,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="tank1" width="7" height="7">
+  <data encoding="csv">
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,
+0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>
