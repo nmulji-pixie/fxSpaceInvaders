@@ -1,5 +1,6 @@
 package edu.vanier.ufo.engine;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -9,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -304,6 +306,14 @@ public abstract class GameEngine {
         // Stop the game's animation.
         getGameLoop().stop();
         getSoundManager().shutdown();
-        this.shutdownCallback.run();
+        try {
+            Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
+            getSceneNodes().getChildren().add(game_OVer);
+            game_OVer.setOnMouseClicked(e -> {
+                this.shutdownCallback.run();
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

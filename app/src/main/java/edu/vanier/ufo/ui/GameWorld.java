@@ -308,11 +308,6 @@ public class GameWorld extends GameEngine {
     public boolean isGameOver() {
         if (this.playerTank.isDead()){
             this.isWon = false;
-            try {
-                getSceneNodes().getChildren().add(new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             return true;
         }
         return false;
