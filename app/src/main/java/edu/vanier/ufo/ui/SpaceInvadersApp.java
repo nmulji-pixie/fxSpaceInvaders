@@ -44,6 +44,7 @@ public class SpaceInvadersApp extends Application {
             this.currentLevel = new Level(1, primaryStage, () -> {
                 try {
                    LevelScreen screen = new LevelScreen(primaryStage);
+                   primaryStage.show();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }

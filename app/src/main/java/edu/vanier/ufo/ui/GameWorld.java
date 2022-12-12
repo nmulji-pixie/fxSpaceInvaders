@@ -6,9 +6,12 @@ import edu.vanier.ufo.game.Tank;
 import edu.vanier.ufo.game.TankBot;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+
+import java.io.IOException;
 import java.util.HashMap;
 
 import javafx.scene.control.Label;
@@ -46,6 +49,7 @@ public class GameWorld extends GameEngine {
     private Label scoreLabel;
     private int currentLevel;
     private GridPane levelTile;
+    private boolean isWon;
 
     public GameWorld(int fps, String title, Runnable shutdownCallback) {
         super(fps, title, shutdownCallback);
@@ -302,7 +306,16 @@ public class GameWorld extends GameEngine {
     }
 
     public boolean isGameOver() {
-        return this.playerTank.isDead();
+        if (this.playerTank.isDead()){
+            this.isWon = false;
+            try {
+                getSceneNodes().getChildren().add(new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return true;
+        }
+        return false;
     }
 
     public void updateScore(){
