@@ -49,7 +49,6 @@ public class GameWorld extends GameEngine {
     private Label scoreLabel;
     private int currentLevel;
     private GridPane levelTile;
-    private boolean isWon;
 
     public GameWorld(int fps, String title, Runnable shutdownCallback) {
         super(fps, title, shutdownCallback);

@@ -67,7 +67,7 @@ public abstract class GameEngine {
     private final Runnable shutdownCallback;
     
     private boolean isShutdown;
-    
+    protected boolean isWon;
     /**
      * Constructor that is called by the derived class.This will set the frames
  per second, title, and setup the game loop.
@@ -306,14 +306,16 @@ public abstract class GameEngine {
         // Stop the game's animation.
         getGameLoop().stop();
         getSoundManager().shutdown();
-        try {
-            Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
-            getSceneNodes().getChildren().add(game_OVer);
-            game_OVer.setOnMouseClicked(e -> {
-                this.shutdownCallback.run();
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (!this.isWon) {
+            try {
+                Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
+                getSceneNodes().getChildren().add(game_OVer);
+                game_OVer.setOnMouseClicked(e -> {
+                    this.shutdownCallback.run();
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
