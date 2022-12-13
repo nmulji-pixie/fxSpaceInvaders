@@ -1,7 +1,6 @@
 package edu.vanier.ufo.ui;
 
-import edu.vanier.ufo.level.Level;
-import edu.vanier.ufo.level.LevelScreen;
+import edu.vanier.ufo.level.LevelSelectionScene;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +21,7 @@ public class SpaceInvadersApp extends Application {
     @FXML
     private Button btnPlay;
     
-    private Level currentLevel;
+    private LevelSelectionScene levelScene;
     
     /**
      * @param args the command line arguments
@@ -37,35 +36,13 @@ public class SpaceInvadersApp extends Application {
         // Setup title, scene, stats, controls, and actors.
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main_page.fxml"));
         loader.setController(this);
-
+        this.levelScene = new LevelSelectionScene(primaryStage);
+        
         Pane root = loader.load();
         btnPlay.setOnAction((e) -> {
             this.shutdown();
-            this.currentLevel = new Level(1, primaryStage, (engine) -> {
-                if (!(engine instanceof GameWorld))
-                    throw new IllegalStateException("Must be GameWorld");
-                
-                GameWorld world = (GameWorld)engine;
-                
-                if (!world.isWon()) {
-                    try {
-                        Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
-                        world.getSceneNodes().getChildren().add(game_OVer);
-                        game_OVer.setOnMouseClicked((event) -> {
-                            try {
-                                LevelScreen screen = new LevelScreen(primaryStage);
-                                primaryStage.show();
-                             } catch (IOException ex) {
-                                 throw new RuntimeException(ex);
-                             }
-                        });
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-                
-                
-            });
+            
+            primaryStage.setScene(this.levelScene);
         });
         
         
@@ -80,10 +57,9 @@ public class SpaceInvadersApp extends Application {
     }
     
     private void shutdown() {
-        if (this.currentLevel == null)
+        if (this.levelScene == null)
             return;
         
-        this.currentLevel.shutdown();
-        this.currentLevel = null;
+        this.levelScene.shutdown();
     }
 }

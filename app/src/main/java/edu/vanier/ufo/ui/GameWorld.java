@@ -5,6 +5,7 @@ import edu.vanier.ufo.game.Missile;
 import edu.vanier.ufo.game.Tank;
 import edu.vanier.ufo.game.TankBot;
 import edu.vanier.ufo.helpers.ResourcesManager;
+import edu.vanier.ufo.level.Level;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -41,29 +42,19 @@ import javafx.scene.control.ProgressBar;
 
 
 public class GameWorld extends GameEngine {
-    private int sprites;
-    private Tank playerTank;
     private ProgressBar cooldownTimer;
     private HBox HUD;
     private Label currentLevelLabel;
-    private String score;
+    private double score;
     private Label scoreLabel;
-    private int currentLevel;
-    private GridPane levelTile;
     private boolean isWon;
+    private final Level level;
 
-    public GameWorld(int fps, String title, Consumer<? super GameEngine> shutdownCallback) {
-        super(fps, title, shutdownCallback);
-    }
-
-    public GameWorld(int fps, String title, Consumer<? super GameEngine> shutdownCallback, int sprites, Tank playerTank, int currentLevel, GridPane levelTile) {
+    public GameWorld(int fps, String title, Runnable shutdownCallback, Level level) {
         super(fps, title, shutdownCallback);
 
-        this.sprites = sprites;
-        this.playerTank = playerTank;
-        this.currentLevel = currentLevel;
-        this.levelTile = levelTile;
-        this.score = String.valueOf(this.playerTank.getPoints());
+        this.level = level;
+        this.score = 0;
     }
 
     /**
@@ -78,7 +69,7 @@ public class GameWorld extends GameEngine {
         primaryStage.setTitle(getWindowTitle());
         //primaryStage.setFullScreen(true);
 
-        getSceneNodes().getChildren().add(this.levelTile);
+        getSceneNodes().getChildren().add(this.level.getBackground());
         
         // Create the scene
         setGameSurface(new Scene(getSceneNodes(), 1000, 600));
@@ -91,14 +82,14 @@ public class GameWorld extends GameEngine {
         setupInput(primaryStage);
 
         // Create many spheres
-        generateManySpheres(this.sprites);
+        generateManySpheres(this.level.getSprites());
 
-        this.currentLevelLabel = new Label("Level " + this.currentLevel);
+        this.currentLevelLabel = new Label("Level " + this.level.getLevelNumber());
         this.scoreLabel = new Label("Score " + this.score);
         this.HUD = new HBox(this.currentLevelLabel, this.scoreLabel);
         this.HUD.setLayoutX(900);
-        this.playerTank.addId("player");
-        this.queueAddSprites(playerTank);
+        this.level.getTank().addId("player");
+        this.queueAddSprites(this.level.getTank());
 
         this.cooldownTimer = new ProgressBar();
 
@@ -120,30 +111,30 @@ public class GameWorld extends GameEngine {
         primaryStage.getScene().setOnMousePressed((MouseEvent event) -> {
             if (!isGameOver()) {
                 if (event.getButton() == MouseButton.PRIMARY) {
-                    playerTank.fire();
+                    this.level.getTank().fire();
                 }
             }
         });
 
         primaryStage.getScene().setOnKeyPressed((KeyEvent event) -> {
             vKeys.put(event.getCode(), true);
-            playerTank.plotCourse(vKeys, true);
+            this.level.getTank().plotCourse(vKeys, true);
 
             if (event.getCode() == KeyCode.SPACE)
-                playerTank.changeWeapon();
+                this.level.getTank().changeWeapon();
             else if (event.getCode() == KeyCode.F)
-                playerTank.shieldToggle();
+                this.level.getTank().shieldToggle();
         });
 
         primaryStage.getScene().setOnKeyReleased(event -> {
             vKeys.put(event.getCode(), false);
-            playerTank.plotCourse(vKeys, true);
+            this.level.getTank().plotCourse(vKeys, true);
 
         });
 
         // set up stats
         EventHandler showMouseMove = (EventHandler<MouseEvent>) (MouseEvent event) -> {
-            playerTank.aimAt(event.getSceneX(), event.getSceneY());
+            this.level.getTank().aimAt(event.getSceneX(), event.getSceneY());
         };
 
         primaryStage.getScene().setOnMouseMoved(showMouseMove);
@@ -211,7 +202,7 @@ public class GameWorld extends GameEngine {
         if (isGameOver()) {
             this.shutdown();
         } else {
-            this.cooldownTimer.setProgress(this.playerTank.getCooldown());
+            this.cooldownTimer.setProgress(this.level.getTank().getCooldown());
 
             // advance object
             sprite.update();
@@ -232,7 +223,7 @@ public class GameWorld extends GameEngine {
         // bounce off the walls when outside of boundaries
 
         Node displayNode;
-        if (sprite == this.playerTank) {
+        if (sprite == this.level.getTank()) {
             return;
         } else {
             displayNode = sprite.getNode();
@@ -315,7 +306,7 @@ public class GameWorld extends GameEngine {
     }
 
     private boolean isGameOver() {
-        if (this.playerTank.isDead()){
+        if (this.level.getTank().isDead()){
             this.isWon = false;
             return true;
         } else if (
@@ -331,7 +322,6 @@ public class GameWorld extends GameEngine {
     }
 
     public void updateScore(){
-        this.score = String.valueOf(Integer.valueOf(this.score) + 20);
         this.scoreLabel.setText("Score " + this.score);
     }
 

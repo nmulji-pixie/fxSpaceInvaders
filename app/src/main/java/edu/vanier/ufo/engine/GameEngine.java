@@ -1,7 +1,5 @@
 package edu.vanier.ufo.engine;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,10 +9,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -65,7 +61,7 @@ public abstract class GameEngine {
     
     private final SoundManager soundManager;
 
-    private final Consumer<? super GameEngine> shutdownCallback;
+    private final Runnable shutdownCallback;
     
     private boolean isShutdown;
     /**
@@ -76,7 +72,7 @@ public abstract class GameEngine {
      * @param title - Title of the application window.
      * @param shutdownCallback - Callback when shutdown is called
      */
-    public GameEngine(final int fps, final String title, Consumer<? super GameEngine> shutdownCallback) {
+    public GameEngine(final int fps, final String title, Runnable shutdownCallback) {
         this.framesPerSecond = fps;
         this.windowTitle = title;
         this.spriteManager = new SpriteManager();
@@ -316,6 +312,6 @@ public abstract class GameEngine {
         getGameLoop().stop();
         getSoundManager().shutdown();
         
-        this.shutdownCallback.accept(this);
+        this.shutdownCallback.run();
     }
 }

@@ -1,39 +1,25 @@
 package edu.vanier.ufo.level;
 
-import edu.vanier.ufo.engine.GameEngine;
 import edu.vanier.ufo.game.Tank;
 import edu.vanier.ufo.helpers.ResourcesManager;
-import edu.vanier.ufo.ui.GameWorld;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-
-
 import java.io.IOException;
-import java.util.function.Consumer;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.layout.Pane;
 
 public final class Level {
-    private GameWorld gameWorld;
     private final int levelNumber;
     private Tank tank;
     private int sprites;
-    private GridPane levelTile;
+    private final Pane background;
 
-    public Level(int levelNumber, Stage primaryStage, Consumer<? super GameEngine> shutdownCallback) {
+    public Level(int levelNumber) {
         this.levelNumber = levelNumber;
         this.tank = generateTank();
         this.sprites = generateNumberOfSprites();
-        this.levelTile = generateLevelBackground();
-        
-        this.gameWorld = new GameWorld(ResourcesManager.FRAMES_PER_SECOND, "TankInvaders", shutdownCallback, this.sprites,this.tank,this.levelNumber , this.levelTile);
-        primaryStage.setScene(this.gameWorld.getGameSurface());
-        this.gameWorld.initialize(primaryStage);
-        this.gameWorld.beginGameLoop();
+        this.background = this.generateLevelBackground();
     }
 
-    public Tank generateTank() {
+    private Tank generateTank() {
         switch (this.levelNumber) {
             case 1:
                 this.tank = new Tank(ResourcesManager.TankColor.GREEN, ResourcesManager.BarrelType.NORMAL, 350, 400);
@@ -50,7 +36,7 @@ public final class Level {
         return this.tank;
     }
 
-    public int generateNumberOfSprites(){
+    private int generateNumberOfSprites(){
         switch (this.levelNumber) {
             case 1:
                 this.sprites = 5;
@@ -67,19 +53,14 @@ public final class Level {
         return this.sprites;
     }
 
-    public GridPane generateLevelBackground(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/map1.fxml"));
+    private Pane generateLevelBackground(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/level1.fxml"));
         try {
-            GridPane pane = loader.load();
+            Pane pane = loader.load();
             return pane;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    public void shutdown() {
-        this.gameWorld.shutdown();
     }
 
     public Tank getTank() {
@@ -88,5 +69,13 @@ public final class Level {
 
     public int getSprites() {
         return sprites;
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public Pane getBackground() {
+        return background;
     }
 }
