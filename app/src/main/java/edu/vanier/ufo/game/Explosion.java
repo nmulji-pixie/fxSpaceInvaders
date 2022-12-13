@@ -26,7 +26,7 @@ public class Explosion extends Sprite {
         });
         
         this.setNode(this.view);
-        this.setCollisionBounds(null);
+        this.collisionBounds = null;
     }
 
     @Override

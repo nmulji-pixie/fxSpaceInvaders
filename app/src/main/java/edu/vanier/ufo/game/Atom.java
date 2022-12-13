@@ -1,12 +1,9 @@
 package edu.vanier.ufo.game;
 
-import edu.vanier.ufo.engine.GameEngine;
 import edu.vanier.ufo.engine.Sprite;
-import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.util.Duration;
+import javafx.scene.Group;
+import javafx.scene.shape.Rectangle;
 
 /**
  * A spherical looking object (Atom) with a random radius, color, and velocity.
@@ -17,6 +14,7 @@ import javafx.util.Duration;
  */
 public class Atom extends Sprite {
     private boolean rotationFollowVelocity;
+    private final RotatedImageView imageViewNode;
     
     /**
      * Constructor will create a optionally create a gradient fill circle shape.This sprite will contain a JavaFX Circle node.
@@ -26,10 +24,20 @@ public class Atom extends Sprite {
      * @param pivot
      */
     public Atom(String imagePath, double baseRotate, Point2D pivot) {
-        RotatedImageView newAtom = new RotatedImageView(imagePath, baseRotate, pivot);
-        this.node = newAtom;
-        this.collidingNode = newAtom;
+        this.imageViewNode = new RotatedImageView(imagePath, baseRotate, pivot);
+        this.collisionBounds = new Rectangle(
+            this.imageViewNode.getWidth(),
+            this.imageViewNode.getHeight()
+        );
+        
+        this.collisionBounds.getTransforms().add(
+            this.imageViewNode.getRotationTransform()
+        );
+
+        this.collisionBounds.setVisible(false);
+        
         this.rotationFollowVelocity = false;
+        this.node = new Group(this.imageViewNode, this.collisionBounds);
     }
     
     
@@ -52,7 +60,7 @@ public class Atom extends Sprite {
      * @return Circle shape representing JavaFX node for convenience.
      */
     public RotatedImageView getImageViewNode() {
-        return (RotatedImageView) getNode();
+        return this.imageViewNode;
     }
 
     /**

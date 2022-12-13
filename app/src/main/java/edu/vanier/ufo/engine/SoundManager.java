@@ -53,6 +53,13 @@ public class SoundManager {
         
         if (!soundEffects.containsKey(descriptor))
             this.loadSoundEffects(descriptor);
+        
+        if (descriptor.isLooping())
+            soundEffects
+                .values()
+                .stream()
+                .filter((x) -> x.getCycleCount() == AudioClip.INDEFINITE)
+                .forEach(AudioClip::stop);
 
         soundEffects.get(descriptor).play();
     }
@@ -63,5 +70,4 @@ public class SoundManager {
     public void shutdown() {
         soundEffects.values().forEach(AudioClip::stop);
     }
-
 }

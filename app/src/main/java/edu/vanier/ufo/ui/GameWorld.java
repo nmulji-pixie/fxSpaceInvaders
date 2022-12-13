@@ -276,6 +276,15 @@ public class GameWorld extends GameEngine {
     protected boolean handleCollision(Sprite spriteA, Sprite spriteB) {
         if (spriteA != spriteB && spriteA.collide(spriteB)) {
             if (
+                spriteA instanceof Tank &&
+                spriteB instanceof Missile
+            ) {
+                Sprite tmp = spriteA;
+                spriteA = spriteB;
+                spriteB = tmp;
+            }
+            
+            if (
                 spriteA instanceof Missile &&
                 spriteB instanceof Tank
             ) {
@@ -300,6 +309,7 @@ public class GameWorld extends GameEngine {
 
                 return false;
             }
+            
             return true;
         }
         return false;

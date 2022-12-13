@@ -59,7 +59,11 @@ public final class RotatedImageView extends ImageView {
         return this.getImage().getHeight();
     }
     
-    public double getRotation() {
+    public double getRotationAngle() {
         return this.rotation.getAngle() - this.baseRotate;
+    }
+    
+    public Rotate getRotationTransform() {
+        return this.rotation;
     }
 }

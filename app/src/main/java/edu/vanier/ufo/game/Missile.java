@@ -1,6 +1,5 @@
 package edu.vanier.ufo.game;
 
-import edu.vanier.ufo.engine.GameEngine;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import javafx.geometry.Point2D;
 
@@ -30,6 +29,7 @@ public class Missile extends Atom {
     
     @Override
     protected void handleDeath() {
+        this.collisionBounds = null;
         Explosion explosion = new Explosion(ResourcesManager.ExplosionKind.SMOKE, this.getCenterX(), this.getCenterY());
         explosion.setScale(0.4);
         this.getEngine().queueAddSprites(explosion);

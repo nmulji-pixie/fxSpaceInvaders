@@ -56,7 +56,7 @@ public abstract class GameEngine {
 
     private final List<Sprite> queuedSprites;
     
-    private final SoundManager soundManager;
+    private SoundManager soundManager;
 
     private final Runnable shutdownCallback;
     
@@ -155,14 +155,25 @@ public abstract class GameEngine {
      * handleCollision() method.
      */
     protected void checkCollisions() {
+        List<Sprite> sprites = this.spriteManager.getAllSprites();
+        
         // check each sprite against other sprite objects.
-        for (Sprite spriteA : spriteManager.getCollisionsToCheck()) {
-            for (Sprite spriteB : spriteManager.getCollisionsToCheck()) {
+        for (Sprite spriteA : sprites) {
+            if (spriteA.getCollisionBounds() == null)
+                continue;
+            
+            for (Sprite spriteB : sprites) {
+                if (spriteB.getCollisionBounds() == null)
+                    continue;
+                
                 if (handleCollision(spriteA, spriteB)) {
                     // The break helps optimize the collisions
                     //  The break statement means one object only hits another
                     // object as opposed to one hitting many objects.
                     // To be more accurate comment out the break statement.
+                    //spriteA.antiCollide(spriteB);
+                    //spriteB.antiCollide(spriteA);
+
                     break;
                 }
             }
@@ -272,6 +283,10 @@ public abstract class GameEngine {
 
     protected SoundManager getSoundManager() {
         return soundManager;
+    }
+    
+    public void setSoundManager(SoundManager soundManager) {
+        this.soundManager = soundManager;
     }
     
     public void playSound(ResourcesManager.SoundDescriptor sound) {

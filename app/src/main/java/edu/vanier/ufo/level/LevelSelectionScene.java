@@ -63,6 +63,7 @@ public final class LevelSelectionScene extends Scene {
             level
         );
         
+        this.world.setSoundManager(this.soundManager);
         this.world.initialize();
         this.setRoot(this.world.getSceneNodes());
         this.world.beginGameLoop();

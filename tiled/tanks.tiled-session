@@ -15,7 +15,7 @@
         },
         "level1..tmj": {
             "scale": 0.9616629464285714,
-            "selectedLayer": -1,
+            "selectedLayer": 0,
             "viewCenter": {
                 "x": 447.1421110659781,
                 "y": 448.70190912783613
@@ -25,16 +25,16 @@
             "scale": 0.9616629464285714,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 448.18197644055016,
+                "x": 449.2218418151222,
                 "y": 448.70190912783613
             }
         },
         "level1.tmx": {
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 1933,
-                "y": 703.5
+                "x": 393.33333333333337,
+                "y": 362
             }
         },
         "level2.tmx": {
@@ -44,16 +44,24 @@
                 "x": 1025.3619608588258,
                 "y": 576.887706631199
             }
+        },
+        "level3.tmx": {
+            "scale": 0.5609700520833333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 768.3119596123718,
+                "y": 876.1608541751292
+            }
         }
     },
     "last.exportedFilePath": "/home/ptrstr/Documents/Projects/fxSpaceInvaders/app/src/main/resources/fxml",
     "last.imagePath": "C:/Users/admin/Documents/Projects/fxSpaceInvaders/app/src/main/resources/images/tank_kenney/Retina",
-    "map.height": 9,
+    "map.height": 12,
     "map.lastUsedExportFilter": "Java FX FXML (*.fxml)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 128,
     "map.tileWidth": 128,
-    "map.width": 16,
+    "map.width": 12,
     "openFiles": [
         "level1.tmx",
         "kenney.tsx",
@@ -63,11 +71,11 @@
     ],
     "project": "tanks.tiled-project",
     "recentFiles": [
+        "level1.json",
+        "level1..tmj",
         "level1.tmx",
         "kenney.tsx",
-        "level2.tmx",
-        "level1.json",
-        "level1..tmj"
+        "level2.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

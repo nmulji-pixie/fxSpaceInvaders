@@ -15,6 +15,8 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 public class Tank extends Sprite {
     private final static float THRUST_AMOUNT = 2.3f;
@@ -36,6 +38,8 @@ public class Tank extends Sprite {
     private final RotatedImageView barrelSprite;
     private final RotatedImageView shotSprite;
     
+    private final Shape tankBounds;
+    
     private static final int SHOT_TICKS = (int) (0.1 * ResourcesManager.FRAMES_PER_SECOND);
     private int shotTicks;
     
@@ -52,6 +56,11 @@ public class Tank extends Sprite {
         this.health = ResourcesManager.MAX_HEALTH;
         this.tankSprite = new RotatedImageView(ResourcesManager.getTankBody(this.color), -90, new Point2D(0.5, 0.5));
         
+        this.collisionBounds = new Rectangle(this.tankSprite.getWidth(), this.tankSprite.getHeight());
+        this.collisionBounds.getTransforms().add(this.tankSprite.getRotationTransform());
+        this.collisionBounds.setVisible(false);
+        this.tankBounds = this.collisionBounds;
+                
         this.barrelSprite = new RotatedImageView(ResourcesManager.getTankBarrel(this.color, this.barrelType), 90, new Point2D(0.5, 0.8));
         
         this.shotSprite = new RotatedImageView(ResourcesManager.getTankShot(this.barrelType), -90, new Point2D(0.5, 0.5));
@@ -66,7 +75,8 @@ public class Tank extends Sprite {
             this.barrelSprite,
             this.shotSprite,
             this.healthBar,
-            this.shield
+            this.shield,
+            this.collisionBounds
         );
         
         setNode(flipBook);
@@ -76,8 +86,6 @@ public class Tank extends Sprite {
         flipBook.setCacheHint(CacheHint.SPEED);
         //flipBook.setManaged(false);
         //flipBook.setAutoSizeChildren(false);
-        
-        this.setCollisionBounds(this.tankSprite);
     }
 
     /**
@@ -102,7 +110,6 @@ public class Tank extends Sprite {
         shield.setStrokeWidth(5);
         shield.setStroke(Color.LIMEGREEN);
         shield.setOpacity(.70);
-        setCollisionBounds(shield);
         //--
         shieldFade = new FadeTransition();
         shieldFade.setFromValue(1);
@@ -115,7 +122,7 @@ public class Tank extends Sprite {
             shieldOn = false;
             shieldFade.stop();
             shield.setVisible(false);
-            setCollisionBounds(this.tankSprite);
+            this.collisionBounds = this.tankBounds;
         });
         shieldFade.playFromStart();
         
@@ -194,13 +201,13 @@ public class Tank extends Sprite {
             ResourcesManager.getTankBullet(this.color, this.barrelType), this, 90
         );
         
-        missile.setVelocityX(Math.cos(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
-        missile.setVelocityY(Math.sin(Math.toRadians(this.barrelSprite.getRotation())) * (MISSILE_THRUST_AMOUNT));
+        missile.setVelocityX(Math.cos(Math.toRadians(this.barrelSprite.getRotationAngle())) * (MISSILE_THRUST_AMOUNT));
+        missile.setVelocityY(Math.sin(Math.toRadians(this.barrelSprite.getRotationAngle())) * (MISSILE_THRUST_AMOUNT));
 
         missile.getNode().setTranslateX(
             this.getCenterX() +
             (
-                Math.cos(Math.toRadians(this.barrelSprite.getRotation())) *
+                Math.cos(Math.toRadians(this.barrelSprite.getRotationAngle())) *
                 this.barrelSprite.getHeight()
             ) -
             (missile.getImageViewNode().getWidth() / 2)
@@ -209,7 +216,7 @@ public class Tank extends Sprite {
         missile.getNode().setTranslateY(
             this.getCenterY() +
             (
-                Math.sin(Math.toRadians(this.barrelSprite.getRotation())) *
+                Math.sin(Math.toRadians(this.barrelSprite.getRotationAngle())) *
                 this.barrelSprite.getHeight()
             ) -
             (missile.getImageViewNode().getHeight() / 2)
@@ -240,7 +247,7 @@ public class Tank extends Sprite {
     public void shieldToggle() {
         shieldOn = !shieldOn;
         if (shieldOn) {
-            setCollisionBounds(shield);
+            this.collisionBounds = shield;
             shield.setVisible(true);
             shieldFade.playFromStart();
         } else {

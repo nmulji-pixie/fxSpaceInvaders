@@ -23,12 +23,6 @@ public class SpriteManager {
     private final List<Sprite> sprites = new ArrayList<>();
 
     /**
-     * A global single threaded list used to check collision against other
-     * sprite objects.
-     */
-    private final List<Sprite> collisionList = new ArrayList<>();
-
-    /**
      * A global single threaded set used to cleanup or remove sprite objects in
      * play.
      */
@@ -57,10 +51,6 @@ public class SpriteManager {
      * @param inSprites
      */
     public void addSprites(List<Sprite> inSprites) {        
-        for (Sprite sprite : inSprites)
-            if (sprite.getCollisionBounds() != null)
-                this.collisionList.add(sprite);
-        
         sprites.addAll(inSprites);
     }
 
@@ -87,17 +77,6 @@ public class SpriteManager {
     }
 
     /**
-     * Returns a list of sprite objects to assist in collision checks. This is a
-     * temporary and is a copy of all current sprite objects (copy of
-     * GAME_ACTORS).
-     *
-     * @return CHECK_COLLISION_LIST
-     */
-    public List<Sprite> getCollisionsToCheck() {
-        return this.collisionList;
-    }
-
-    /**
      * Removes sprite objects and nodes from all temporary collections such as:
      * CLEAN_UP_SPRITES. The sprite to be removed will also be removed from the
      * list of all sprite objects called (GAME_ACTORS).
@@ -105,7 +84,6 @@ public class SpriteManager {
     public void cleanupSprites() {
         // remove from actors list
         this.sprites.removeAll(spritesToBeRemoved);
-        this.collisionList.removeAll(spritesToBeRemoved);
         
         // reset the clean up sprites
         this.spritesToBeRemoved.clear();

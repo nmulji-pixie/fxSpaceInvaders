@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.geometry.Bounds;
 import javafx.scene.image.Image;
 import javafx.scene.Node;
+import javafx.scene.shape.Shape;
 
 /**
  * A class used to represent a sprite of any type on the scene.  
@@ -20,8 +21,7 @@ public abstract class Sprite {
     private boolean isDead;
     private GameEngine engine;
     private List<String> ids;
-    private double prevTranslateX, prevTranslateY;
-    protected Node collidingNode;
+    protected Shape collisionBounds;
 
     public Sprite() {
         this.vX = 0;
@@ -72,26 +72,35 @@ public abstract class Sprite {
      * false.
      */
     public boolean collide(Sprite other) {
-        return this.getCollisionBounds().intersects(
-            this.getCollisionBounds().sceneToLocal(
-            other.getCollisionBounds().localToScene(
-                other.getCollisionBounds().getBoundsInLocal()
-            ))
-        );
+        return !Shape.intersect(
+            this.collisionBounds,
+            other.getCollisionBounds()
+        ).getBoundsInLocal().isEmpty();
     }
 
     public final void update() {
-        prevTranslateX = getNode().getTranslateX();
-        prevTranslateY = getNode().getTranslateY();
-        getNode().setTranslateX(getNode().getTranslateX() + vX);
-        getNode().setTranslateY(getNode().getTranslateY() + vY);
+        this.getNode().setTranslateX(this.getNode().getTranslateX() + vX);
+        this.getNode().setTranslateY(this.getNode().getTranslateY() + vY);
         
         this.handleUpdate();
     }
     
-    public final void undoUpdate() {
-        getNode().setTranslateX(prevTranslateX);
-        getNode().setTranslateY(prevTranslateY);
+    public final void antiCollide(Sprite other) {
+        boolean xValid, yValid;
+        
+        this.getNode().setTranslateX(this.getNode().getTranslateX() - vX);
+        xValid = this.collide(other);
+        this.getNode().setTranslateX(this.getNode().getTranslateX() + vX);
+        
+        this.getNode().setTranslateY(this.getNode().getTranslateY() - vY);
+        yValid = this.collide(other);
+        this.getNode().setTranslateY(this.getNode().getTranslateY() + vY);
+        
+        if (!xValid)
+            this.getNode().setTranslateX(this.getNode().getTranslateX() - vX);
+        
+        if (!yValid)
+            this.getNode().setTranslateY(this.getNode().getTranslateY() - vY);
     }
     
     protected abstract void handleUpdate();
@@ -140,12 +149,8 @@ public abstract class Sprite {
         this.node = node;
     }
 
-    public Node getCollisionBounds() {
-        return collidingNode;
-    }
-
-    public void setCollisionBounds(Node collisionBounds) {
-        this.collidingNode = collisionBounds;
+    public Shape getCollisionBounds() {
+        return collisionBounds;
     }
 
     public void die() {
