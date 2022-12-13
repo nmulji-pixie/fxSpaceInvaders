@@ -1,5 +1,6 @@
 package edu.vanier.ufo.engine;
 
+import edu.vanier.ufo.helpers.ResourcesManager;
 import javafx.scene.media.AudioClip;
 
 import java.net.URL;
@@ -15,52 +16,52 @@ import java.util.concurrent.Executors;
  * User: cdea
  */
 public class SoundManager {
+    private final Map<ResourcesManager.SoundDescriptor, AudioClip> soundEffects;
 
-    ExecutorService soundPool = Executors.newFixedThreadPool(2);
-    Map<String, AudioClip> soundEffectsMap = new HashMap<>();
-
-    /**
-     * Constructor to create a simple thread pool.
-     *
-     * @param numberOfThreads - number of threads to use media players in the
-     * map.
-     */
-    public SoundManager(int numberOfThreads) {
-        soundPool = Executors.newFixedThreadPool(numberOfThreads);
+    public SoundManager() {
+        this.soundEffects = new HashMap<>();
     }
-
+    
     /**
      * Load a sound into a map to later be played based on the id.
      *
-     * @param id - The identifier for a sound.
-     * @param url - The url location of the media or audio resource. Usually in
-     * src/main/resources directory.
+     * @param descriptor
      */
-    public void loadSoundEffects(String id, URL url) {
-        AudioClip sound = new AudioClip(url.toExternalForm());
-        soundEffectsMap.put(id, sound);
+    public void loadSoundEffects(final ResourcesManager.SoundDescriptor descriptor) {
+        AudioClip sound = new AudioClip(
+            getClass().getResource(descriptor.getPath()).toExternalForm()
+        );
+
+        sound.setVolume(descriptor.getVolume());
+
+        if (descriptor.isLooping()) {
+            sound.setCycleCount(AudioClip.INDEFINITE);
+            sound.setPriority(1);
+        }
+
+        soundEffects.put(descriptor, sound);
     }
 
     /**
      * Lookup a name resource to play sound based on the id.
      *
-     * @param id identifier for a sound to be played.
+     * @param descriptor
      */
-    public void playSound(final String id) {
-        Runnable soundPlay = new Runnable() {
-            @Override
-            public void run() {
-                soundEffectsMap.get(id).play();
-            }
-        };
-        soundPool.execute(soundPlay);
+    public void playSound(final ResourcesManager.SoundDescriptor descriptor) {
+        if (descriptor == null)
+            return;
+        
+        if (!soundEffects.containsKey(descriptor))
+            this.loadSoundEffects(descriptor);
+
+        soundEffects.get(descriptor).play();
     }
 
     /**
      * Stop all threads and media players.
      */
     public void shutdown() {
-        soundPool.shutdown();
+        soundEffects.values().forEach(AudioClip::stop);
     }
 
 }

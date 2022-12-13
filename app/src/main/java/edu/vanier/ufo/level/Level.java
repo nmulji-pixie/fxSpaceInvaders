@@ -52,6 +52,15 @@ public final class Level {
         }
         return this.sprites;
     }
+    
+    public ResourcesManager.SoundDescriptor getMusic() {
+        return switch (this.levelNumber) {
+            case 1 -> ResourcesManager.SoundDescriptor.MUSIC_LEVEL1;
+            case 2 -> ResourcesManager.SoundDescriptor.MUSIC_LEVEL2;
+            case 3 -> ResourcesManager.SoundDescriptor.MUSIC_LEVEL3;
+            default -> null;
+        };
+    }
 
     private Pane generateLevelBackground(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/level1.fxml"));

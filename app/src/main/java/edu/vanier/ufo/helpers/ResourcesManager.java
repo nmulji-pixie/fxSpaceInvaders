@@ -1,11 +1,8 @@
 package edu.vanier.ufo.helpers;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.util.Pair;
-
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A resource manager providing useful resource definitions used in this game.
@@ -91,6 +88,37 @@ public class ResourcesManager {
             return this.length;
         }
     }
+    
+    public enum SoundDescriptor {
+        MUSIC_MENU(ResourcesManager.MUSIC_MENU, 0.5, true),
+        MUSIC_LEVEL1(ResourcesManager.MUSIC_LEVEL1, 0.5, true),
+        MUSIC_LEVEL2(ResourcesManager.MUSIC_LEVEL2, 0.5, true),
+        MUSIC_LEVEL3(ResourcesManager.MUSIC_LEVEL3, 0.5, true),
+        SOUND_SHOOT(ResourcesManager.SOUND_SHOOT, 1, false),
+        SOUND_EXPLOSION(ResourcesManager.SOUND_EXPLOSION, 1, false);
+        
+        private final String path;
+        private final double volume;
+        private final boolean loop;
+        
+        SoundDescriptor(String path, double volume, boolean loop) {
+            this.path = path;
+            this.volume = volume;
+            this.loop = loop;
+        }
+
+        public boolean isLooping() {
+            return this.loop;
+        }
+        
+        public String getPath() {
+            return path;
+        }
+        
+        public double getVolume() {
+            return volume;
+        }
+    }
 
 
     /**
@@ -99,7 +127,7 @@ public class ResourcesManager {
     public static final int FRAMES_PER_SECOND = 85;
     public static final double MAX_HEALTH = 100;
     
-    private static final String RESOURCES_FOLDER = "";
+    private static final String RESOURCES_FOLDER = "/";
     private static final String IMAGES_FOLDER = RESOURCES_FOLDER + "images/tank_kenney/Retina/";
     private static final String SOUNDS_FOLDER = RESOURCES_FOLDER + "sounds/";
     
@@ -108,13 +136,19 @@ public class ResourcesManager {
     private static final String TANK_BARREL_FMT = IMAGES_FOLDER + "tank%s_barrel%d_outline.png"; 
     private static final String TANK_BULLET_FMT = IMAGES_FOLDER + "bullet%s%d.png";
     private static final String TANK_SHOT_FMT = IMAGES_FOLDER + "shot%s.png";
-
+    
     // Background
     public static final String BACKGROUND = IMAGES_FOLDER + "tileGrass_transitionS.png";
 
+    // Music
+    private static final String MUSIC_MENU = SOUNDS_FOLDER + "music/menu.wav";
+    private static final String MUSIC_LEVEL1 = SOUNDS_FOLDER + "music/level1.mp3";
+    private static final String MUSIC_LEVEL2 = SOUNDS_FOLDER + "music/level2.wav";
+    private static final String MUSIC_LEVEL3 = SOUNDS_FOLDER + "music/level3.wav";
+    
     // Sounds
-    public static final String SOUND_SHOOT = SOUNDS_FOLDER + "explosions/explosion02.wav";
-    public static final String SOUND_EXPLOSION = SOUNDS_FOLDER + "explosions/explosion01.wav";
+    private static final String SOUND_SHOOT = SOUNDS_FOLDER + "explosions/explosion02.wav";
+    private static final String SOUND_EXPLOSION = SOUNDS_FOLDER + "explosions/explosion01.wav";
     
     // Explosions
     private static final String EXPLOSION_FMT = IMAGES_FOLDER + "explosion%s%d.png";
