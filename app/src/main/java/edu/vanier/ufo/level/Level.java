@@ -1,5 +1,6 @@
 package edu.vanier.ufo.level;
 
+import edu.vanier.ufo.engine.GameEngine;
 import edu.vanier.ufo.game.Tank;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.ui.GameWorld;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -19,7 +21,7 @@ public final class Level {
     private int sprites;
     private GridPane levelTile;
 
-    public Level(int levelNumber, Stage primaryStage, Runnable shutdownCallback) {
+    public Level(int levelNumber, Stage primaryStage, Consumer<? super GameEngine> shutdownCallback) {
         this.levelNumber = levelNumber;
         this.tank = generateTank();
         this.sprites = generateNumberOfSprites();

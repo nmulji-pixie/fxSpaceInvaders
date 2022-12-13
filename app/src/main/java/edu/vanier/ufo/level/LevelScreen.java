@@ -34,7 +34,7 @@ public class LevelScreen {
     public Level generateLevels(Stage primaryStage){
         levelOne.setOnMouseClicked(e-> {
             this.islevelChosen = true;
-            this.level = new Level(1, primaryStage, () -> {
+            this.level = new Level(1, primaryStage, (engine) -> {
                 try {
                     new LevelScreen(primaryStage);
                     System.out.println("level one");
@@ -46,7 +46,7 @@ public class LevelScreen {
 
         levelTwo.setOnMouseClicked(e -> {
             this.islevelChosen = true;
-            this.level = new Level(2, primaryStage, () -> {
+            this.level = new Level(2, primaryStage, (engine) -> {
                 try {
                     new LevelScreen(primaryStage);
                 } catch (IOException ex) {
@@ -57,7 +57,7 @@ public class LevelScreen {
 
         levelThree.setOnMouseClicked(e -> {
             this.islevelChosen = true;
-            this.level = new Level(3, primaryStage, () -> {
+            this.level = new Level(3, primaryStage, (engine) -> {
                 try {
                     new LevelScreen(primaryStage);
                 } catch (IOException ex) {

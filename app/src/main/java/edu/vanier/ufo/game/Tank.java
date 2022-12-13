@@ -184,9 +184,9 @@ public class Tank extends Sprite {
         this.shotSprite.turnToScene(sceneX, sceneY);
     }
 
-    public void fire() {
+    public boolean fire() {
         if (this.cooldownTicks != 0)
-            return;
+            return false;
         
         this.shotSprite.setVisible(true);
         this.shotTicks = SHOT_TICKS;
@@ -219,6 +219,8 @@ public class Tank extends Sprite {
         
         this.getEngine().queueAddSprites(missile);
         this.getEngine().playSound("shoot");
+        
+        return true;
     }
 
     public void changeWeapon() {
@@ -317,6 +319,10 @@ public class Tank extends Sprite {
         this.shotSprite.setPivot(new Point2D(
             0.5, -this.barrelSprite.getHeight() / this.shotSprite.getHeight()
         ));
+    }
+    
+    protected int getCooldownTicks() {
+        return this.cooldownTicks;
     }
     
     protected void setCooldownTicks(int newValue) {

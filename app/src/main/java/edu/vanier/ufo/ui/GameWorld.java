@@ -25,6 +25,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.util.Random;
+import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ProgressBar;
 
@@ -49,12 +50,13 @@ public class GameWorld extends GameEngine {
     private Label scoreLabel;
     private int currentLevel;
     private GridPane levelTile;
+    private boolean isWon;
 
-    public GameWorld(int fps, String title, Runnable shutdownCallback) {
+    public GameWorld(int fps, String title, Consumer<? super GameEngine> shutdownCallback) {
         super(fps, title, shutdownCallback);
     }
 
-    public GameWorld(int fps, String title, Runnable shutdownCallback, int sprites, Tank playerTank, int currentLevel, GridPane levelTile) {
+    public GameWorld(int fps, String title, Consumer<? super GameEngine> shutdownCallback, int sprites, Tank playerTank, int currentLevel, GridPane levelTile) {
         super(fps, title, shutdownCallback);
 
         this.sprites = sprites;
@@ -185,7 +187,8 @@ public class GameWorld extends GameEngine {
                 colors[rnd.nextInt(colors.length)],
                 barrelTypes[rnd.nextInt(barrelTypes.length)],
                 newX,
-                newY
+                newY,
+                TankBot.Difficulty.EASY
             );
 
             // random 0 to 2 + (.0 to 1) * random (1 or -1)
@@ -209,7 +212,6 @@ public class GameWorld extends GameEngine {
             this.shutdown();
         } else {
             this.cooldownTimer.setProgress(this.playerTank.getCooldown());
-
 
             // advance object
             sprite.update();
@@ -312,16 +314,28 @@ public class GameWorld extends GameEngine {
         return false;
     }
 
-    public boolean isGameOver() {
+    private boolean isGameOver() {
         if (this.playerTank.isDead()){
             this.isWon = false;
             return true;
+        } else if (
+            this.getSpritesById("tankbot").stream().allMatch(
+                (x) -> x instanceof TankBot && ((TankBot)x).isDead()
+            )
+        ) {
+            this.isWon = true;
+            return true;
         }
+        
         return false;
     }
 
     public void updateScore(){
         this.score = String.valueOf(Integer.valueOf(this.score) + 20);
         this.scoreLabel.setText("Score " + this.score);
+    }
+
+    public boolean isWon() {
+        return isWon;
     }
 }

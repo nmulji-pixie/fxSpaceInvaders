@@ -41,13 +41,30 @@ public class SpaceInvadersApp extends Application {
         Pane root = loader.load();
         btnPlay.setOnAction((e) -> {
             this.shutdown();
-            this.currentLevel = new Level(1, primaryStage, () -> {
-                try {
-                   LevelScreen screen = new LevelScreen(primaryStage);
-                   primaryStage.show();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+            this.currentLevel = new Level(1, primaryStage, (engine) -> {
+                if (!(engine instanceof GameWorld))
+                    throw new IllegalStateException("Must be GameWorld");
+                
+                GameWorld world = (GameWorld)engine;
+                
+                if (!world.isWon()) {
+                    try {
+                        Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
+                        world.getSceneNodes().getChildren().add(game_OVer);
+                        game_OVer.setOnMouseClicked((event) -> {
+                            try {
+                                LevelScreen screen = new LevelScreen(primaryStage);
+                                primaryStage.show();
+                             } catch (IOException ex) {
+                                 throw new RuntimeException(ex);
+                             }
+                        });
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
+                
+                
             });
         });
         

@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -64,10 +65,9 @@ public abstract class GameEngine {
     
     private final SoundManager soundManager;
 
-    private final Runnable shutdownCallback;
+    private final Consumer<? super GameEngine> shutdownCallback;
     
     private boolean isShutdown;
-    protected boolean isWon;
     /**
      * Constructor that is called by the derived class.This will set the frames
  per second, title, and setup the game loop.
@@ -76,7 +76,7 @@ public abstract class GameEngine {
      * @param title - Title of the application window.
      * @param shutdownCallback - Callback when shutdown is called
      */
-    public GameEngine(final int fps, final String title, Runnable shutdownCallback) {
+    public GameEngine(final int fps, final String title, Consumer<? super GameEngine> shutdownCallback) {
         this.framesPerSecond = fps;
         this.windowTitle = title;
         this.spriteManager = new SpriteManager();
@@ -308,23 +308,14 @@ public abstract class GameEngine {
         if (this.isShutdown)
             return;
         
-        this.deinitialize();
-        
         this.isShutdown = true;
+        
+        this.deinitialize();
         
         // Stop the game's animation.
         getGameLoop().stop();
         getSoundManager().shutdown();
-        if (!this.isWon) {
-            try {
-                Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
-                getSceneNodes().getChildren().add(game_OVer);
-                game_OVer.setOnMouseClicked(e -> {
-                    this.shutdownCallback.run();
-                });
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        
+        this.shutdownCallback.accept(this);
     }
 }
