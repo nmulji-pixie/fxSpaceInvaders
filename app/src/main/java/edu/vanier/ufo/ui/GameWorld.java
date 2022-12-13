@@ -9,6 +9,7 @@ import edu.vanier.ufo.level.Level;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 
@@ -17,13 +18,19 @@ import java.util.HashMap;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -45,7 +52,7 @@ public class GameWorld extends GameEngine {
     private ProgressBar cooldownTimer;
     private HBox HUD;
     private Label currentLevelLabel;
-    private double score;
+    private int score;
     private Label scoreLabel;
     private boolean isWon;
     private final Level level;
@@ -85,9 +92,11 @@ public class GameWorld extends GameEngine {
         generateManySpheres(this.level.getSprites());
 
         this.currentLevelLabel = new Label("Level " + this.level.getLevelNumber());
-        this.scoreLabel = new Label("Score " + this.score);
-        this.HUD = new HBox(this.currentLevelLabel, this.scoreLabel);
-        this.HUD.setLayoutX(900);
+        this.currentLevelLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+        this.scoreLabel = new Label( String.valueOf(this.score));
+        this.scoreLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+        this.HUD = new HBox(new StackPane((new ImageView(new Image(getClass().getResource("/images/score_label.png").toExternalForm()))), this.currentLevelLabel), new StackPane((new ImageView(new Image(getClass().getResource("/images/score_label.png").toExternalForm()))), this.scoreLabel));
+        this.HUD.setLayoutX(750);
         this.level.getTank().addId("player");
         this.queueAddSprites(this.level.getTank());
 
@@ -322,7 +331,8 @@ public class GameWorld extends GameEngine {
     }
 
     public void updateScore(){
-        this.scoreLabel.setText("Score " + this.score);
+        this.score += 20;
+        this.scoreLabel.setText(String.valueOf(this.score));
     }
 
     public boolean isWon() {
