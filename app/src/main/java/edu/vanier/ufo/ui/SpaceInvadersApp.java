@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -19,7 +21,7 @@ import java.io.IOException;
 public class SpaceInvadersApp extends Application {
 
     @FXML
-    private Button btnPlay;
+    private ImageView btnPlay;
     
     private LevelSelectionScene levelScene;
     
@@ -39,7 +41,7 @@ public class SpaceInvadersApp extends Application {
         this.levelScene = new LevelSelectionScene(primaryStage);
         
         Pane root = loader.load();
-        btnPlay.setOnAction((e) -> {
+        btnPlay.setOnMouseClicked((e) -> {
             this.shutdown();
             
             primaryStage.setScene(this.levelScene);

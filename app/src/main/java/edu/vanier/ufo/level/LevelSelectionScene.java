@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 public final class LevelSelectionScene extends Scene {
     @FXML
     private BorderPane levelOne, levelTwo, levelThree;
+
     
     private final Stage primaryStage;
     private GameWorld world;
