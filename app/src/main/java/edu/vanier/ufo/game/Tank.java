@@ -20,7 +20,6 @@ public class Tank extends Sprite {
     private final static float THRUST_AMOUNT = 2.3f;
 
     private final static float MISSILE_THRUST_AMOUNT = 6.3F;
-    private int points;
 
     private final StackPane flipBook;
 
@@ -51,7 +50,6 @@ public class Tank extends Sprite {
         this.barrelType = barrelType;
         
         this.health = ResourcesManager.MAX_HEALTH;
-        this.points = 0;
         this.tankSprite = new RotatedImageView(ResourcesManager.getTankBody(this.color), -90, new Point2D(0.5, 0.5));
         
         this.barrelSprite = new RotatedImageView(ResourcesManager.getTankBarrel(this.color, this.barrelType), 90, new Point2D(0.5, 0.8));
@@ -218,7 +216,7 @@ public class Tank extends Sprite {
         );
         
         this.getEngine().queueAddSprites(missile);
-        this.getEngine().playSound("shoot");
+        this.getEngine().playSound(ResourcesManager.SoundDescriptor.SOUND_SHOOT);
         
         return true;
     }
@@ -327,13 +325,5 @@ public class Tank extends Sprite {
     
     protected void setCooldownTicks(int newValue) {
         this.cooldownTicks = newValue;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 }

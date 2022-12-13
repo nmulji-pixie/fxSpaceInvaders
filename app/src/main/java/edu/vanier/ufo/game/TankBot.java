@@ -42,8 +42,7 @@ public class TankBot extends Tank {
     public TankBot(ResourcesManager.TankColor color, ResourcesManager.BarrelType barrelType, double x, double y, Difficulty difficulty) {
         super(color, barrelType, x, y);
         this.setHealthBarColor(Color.RED);
-        this.setPoints(color.getPoints());
-        this.addId("tankbot");
+        this.addId("enemy");
         this.difficulty = difficulty;
         this.rng = new Random();
         this.addExtraCooldown();

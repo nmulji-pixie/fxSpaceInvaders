@@ -1,6 +1,7 @@
 package edu.vanier.ufo.level;
 
 import edu.vanier.ufo.engine.GameEngine;
+import edu.vanier.ufo.engine.SoundManager;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.ui.GameWorld;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ public final class LevelSelectionScene extends Scene {
     
     private final Stage primaryStage;
     private GameWorld world;
+    private SoundManager soundManager;
     
     public LevelSelectionScene(Stage primaryStage) throws IOException {
         super(new Group());
@@ -29,6 +31,9 @@ public final class LevelSelectionScene extends Scene {
 
         this.setRoot(loader.load());
          
+        this.soundManager = new SoundManager();
+        this.soundManager.playSound(ResourcesManager.SoundDescriptor.MUSIC_MENU);
+        
         this.initiateLevels(primaryStage);
     }
 
@@ -45,11 +50,12 @@ public final class LevelSelectionScene extends Scene {
 
         levelThree.setOnMouseClicked(e -> {
             this.launchLevel(new Level(3));
-            
         });
     }
     
     private void launchLevel(Level level) {
+        this.soundManager.shutdown();
+        
         this.world = new GameWorld(
             ResourcesManager.FRAMES_PER_SECOND,
             "Level",
@@ -68,7 +74,7 @@ public final class LevelSelectionScene extends Scene {
                 Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
                 world.getSceneNodes().getChildren().add(game_OVer);
                 game_OVer.setOnMouseClicked((event) -> {
-                    this.shutdown();
+                    this.shutdownWorld();
                 });
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -78,7 +84,7 @@ public final class LevelSelectionScene extends Scene {
                 Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/you_won.fxml")).load();
                 world.getSceneNodes().getChildren().add(game_OVer);
                 game_OVer.setOnMouseClicked((event) -> {
-                    this.shutdown();
+                    this.shutdownWorld();
                 });
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -86,7 +92,7 @@ public final class LevelSelectionScene extends Scene {
         }
     }
     
-    public void shutdown() {
+    public void shutdownWorld() {
         if (this.world == null)
             return;
         
@@ -94,5 +100,7 @@ public final class LevelSelectionScene extends Scene {
         this.world = null;
         
         this.primaryStage.setScene(this);
+        
+        this.soundManager.playSound(ResourcesManager.SoundDescriptor.MUSIC_MENU);
     }
 }

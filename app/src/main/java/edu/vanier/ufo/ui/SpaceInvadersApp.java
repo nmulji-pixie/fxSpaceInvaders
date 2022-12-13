@@ -60,6 +60,6 @@ public class SpaceInvadersApp extends Application {
         if (this.levelScene == null)
             return;
         
-        this.levelScene.shutdown();
+        this.levelScene.shutdownWorld();
     }
 }

@@ -7,34 +7,19 @@ import edu.vanier.ufo.game.TankBot;
 import edu.vanier.ufo.helpers.ResourcesManager;
 import edu.vanier.ufo.level.Level;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-
-import java.io.IOException;
 import java.util.HashMap;
-
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import java.util.Random;
-import java.util.function.Consumer;
-import javafx.event.ActionEvent;
 import javafx.scene.control.ProgressBar;
 
 /**
@@ -52,7 +37,7 @@ public class GameWorld extends GameEngine {
     private ProgressBar cooldownTimer;
     private HBox HUD;
     private Label currentLevelLabel;
-    private int score;
+    private double score;
     private Label scoreLabel;
     private boolean isWon;
     private final Level level;
@@ -92,11 +77,9 @@ public class GameWorld extends GameEngine {
         generateManySpheres(this.level.getSprites());
 
         this.currentLevelLabel = new Label("Level " + this.level.getLevelNumber());
-        this.currentLevelLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-        this.scoreLabel = new Label( String.valueOf(this.score));
-        this.scoreLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-        this.HUD = new HBox(new StackPane((new ImageView(new Image(getClass().getResource("/images/score_label.png").toExternalForm()))), this.currentLevelLabel), new StackPane((new ImageView(new Image(getClass().getResource("/images/score_label.png").toExternalForm()))), this.scoreLabel));
-        this.HUD.setLayoutX(750);
+        this.scoreLabel = new Label("Score " + this.score);
+        this.HUD = new HBox(this.currentLevelLabel, this.scoreLabel);
+        this.HUD.setLayoutX(900);
         this.level.getTank().addId("player");
         this.queueAddSprites(this.level.getTank());
 
@@ -105,8 +88,7 @@ public class GameWorld extends GameEngine {
         getSceneNodes().getChildren().add(this.cooldownTimer);
         getSceneNodes().getChildren().add(this.HUD);
         // load sound files
-        getSoundManager().loadSoundEffects("shoot", getClass().getClassLoader().getResource(ResourcesManager.SOUND_SHOOT));
-        getSoundManager().loadSoundEffects("explosion", getClass().getClassLoader().getResource(ResourcesManager.SOUND_EXPLOSION));
+        this.playSound(this.level.getMusic());
     }
 
     /**
@@ -300,6 +282,9 @@ public class GameWorld extends GameEngine {
                 ((Tank)spriteB).takeDamage(
                     ((Missile)spriteA).getOwner().getBarrelType().getDamage()
                 );
+                
+                if (spriteB.isId("enemy"))
+                    this.score += 100;
             } else if (
                 spriteA instanceof Missile &&
                 spriteB instanceof Missile
@@ -319,7 +304,7 @@ public class GameWorld extends GameEngine {
             this.isWon = false;
             return true;
         } else if (
-            this.getSpritesById("tankbot").stream().allMatch(
+            this.getSpritesById("enemy").stream().allMatch(
                 (x) -> x instanceof TankBot && ((TankBot)x).isDead()
             )
         ) {
@@ -331,8 +316,7 @@ public class GameWorld extends GameEngine {
     }
 
     public void updateScore(){
-        this.score += 20;
-        this.scoreLabel.setText(String.valueOf(this.score));
+        this.scoreLabel.setText("Score " + this.score);
     }
 
     public boolean isWon() {

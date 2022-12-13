@@ -1,5 +1,6 @@
 package edu.vanier.ufo.engine;
 
+import edu.vanier.ufo.helpers.ResourcesManager;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,7 +77,7 @@ public abstract class GameEngine {
         this.framesPerSecond = fps;
         this.windowTitle = title;
         this.spriteManager = new SpriteManager();
-        this.soundManager = new SoundManager(3);
+        this.soundManager = new SoundManager();
         this.sceneNodes = new Group();
         this.queuedSprites = new LinkedList<>();
         this.shutdownCallback = shutdownCallback;
@@ -293,8 +294,8 @@ public abstract class GameEngine {
         return soundManager;
     }
     
-    public void playSound(String id) {
-        this.soundManager.playSound(id);
+    public void playSound(ResourcesManager.SoundDescriptor sound) {
+        this.soundManager.playSound(sound);
     }
 
     /**
@@ -307,10 +308,10 @@ public abstract class GameEngine {
         this.isShutdown = true;
         
         this.deinitialize();
+        this.soundManager.shutdown();
         
         // Stop the game's animation.
         getGameLoop().stop();
-        getSoundManager().shutdown();
         
         this.shutdownCallback.run();
     }
