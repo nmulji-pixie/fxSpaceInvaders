@@ -63,9 +63,19 @@ public final class LevelSelectionScene extends Scene {
     }
     
     private void gameOverCallback() {
-        if (!world.isWon() || 1==1) {
+        if (!world.isWon()) {
             try {
                 Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/game_over.fxml")).load();
+                world.getSceneNodes().getChildren().add(game_OVer);
+                game_OVer.setOnMouseClicked((event) -> {
+                    this.shutdown();
+                });
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        } else if (world.isWon()) {
+            try {
+                Pane game_OVer = new FXMLLoader(getClass().getResource("/fxml/you_won.fxml")).load();
                 world.getSceneNodes().getChildren().add(game_OVer);
                 game_OVer.setOnMouseClicked((event) -> {
                     this.shutdown();
