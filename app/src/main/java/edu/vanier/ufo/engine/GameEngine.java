@@ -31,13 +31,9 @@ import javafx.util.Duration;
 public abstract class GameEngine {
 
     /**
-     * The JavaFX Scene as the game surface
-     */
-    private Scene gameSurface;
-    /**
      * All nodes to be displayed in the game window.
      */
-    private final Group sceneNodes;
+    private final Group sceneNodes, gameNodes;
     /**
      * The game loop using JavaFX's <code>Timeline</code> API.
      */
@@ -78,7 +74,8 @@ public abstract class GameEngine {
         this.windowTitle = title;
         this.spriteManager = new SpriteManager();
         this.soundManager = new SoundManager();
-        this.sceneNodes = new Group();
+        this.gameNodes = new Group();
+        this.sceneNodes = new Group(this.gameNodes);
         this.queuedSprites = new LinkedList<>();
         this.shutdownCallback = shutdownCallback;
         this.isShutdown = false;
@@ -112,10 +109,8 @@ public abstract class GameEngine {
 
     /**
      * Initialize the game world by update the JavaFX Stage.
-     *
-     * @param primaryStage The main window containing the JavaFX Scene.
      */
-    public abstract void initialize(final Stage primaryStage);
+    public abstract void initialize();
     
     /**
      * Deinitialize the game world by update the JavaFX Stage.
@@ -130,6 +125,7 @@ public abstract class GameEngine {
      * sprite objects, check for collisions, and cleanup sprite objects.
      */
     public void beginGameLoop() {
+        this.sceneNodes.requestFocus();
         getGameLoop().play();
     }
 
@@ -193,7 +189,7 @@ public abstract class GameEngine {
             spriteManager.getAllSprites().stream().filter(Sprite::isDead).toList()
         );
         
-        spriteManager.getSpritesToBeRemoved().forEach((x) -> this.sceneNodes.getChildren().remove(x.getNode()));
+        spriteManager.getSpritesToBeRemoved().forEach((x) -> this.gameNodes.getChildren().remove(x.getNode()));
         spriteManager.cleanupSprites();
     }
 
@@ -243,7 +239,7 @@ public abstract class GameEngine {
     private void addQueuedSprites() {
         for (Sprite sprite : this.queuedSprites) {
             sprite.setEngine(this);
-            this.sceneNodes.getChildren().add(sprite.getNode());
+            this.gameNodes.getChildren().add(sprite.getNode());
         }
         
         this.spriteManager.addSprites(this.queuedSprites);
@@ -260,26 +256,6 @@ public abstract class GameEngine {
     }
 
     /**
-     * Returns the JavaFX Scene. This is called the game surface to allow the
-     * developer to add JavaFX Node objects onto the Scene.
-     *
-     * @return Scene The JavaFX scene graph.
-     */
-    public Scene getGameSurface() {
-        return gameSurface;
-    }
-
-    /**
-     * Sets the JavaFX Scene. This is called the game surface to allow the
-     * developer to add JavaFX Node objects onto the Scene.
-     *
-     * @param gameSurface The main game surface (JavaFX Scene).
-     */
-    protected void setGameSurface(Scene gameSurface) {
-        this.gameSurface = gameSurface;
-    }
-
-    /**
      * All JavaFX nodes which are rendered onto the game surface(Scene) is a
      * JavaFX Group object.
      *
@@ -288,6 +264,10 @@ public abstract class GameEngine {
      */
     public Group getSceneNodes() {
         return sceneNodes;
+    }
+
+    public Group getGameNodes() {
+        return gameNodes;
     }
 
     protected SoundManager getSoundManager() {

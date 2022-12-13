@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level1.tmx",
+    "activeFile": "level1..tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -13,29 +13,61 @@
             "scaleInDock": 0.5,
             "scaleInEditor": 1
         },
+        "level1..tmj": {
+            "scale": 0.9616629464285714,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 447.1421110659781,
+                "y": 448.70190912783613
+            }
+        },
+        "level1.json": {
+            "scale": 0.9616629464285714,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 448.18197644055016,
+                "y": 448.70190912783613
+            }
+        },
         "level1.tmx": {
             "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1934,
-                "y": 705
+                "x": 1933,
+                "y": 703.5
+            }
+        },
+        "level2.tmx": {
+            "scale": 0.51396484375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1025.3619608588258,
+                "y": 576.887706631199
             }
         }
     },
-    "last.exportedFilePath": "C:/Users/admin/Documents/Projects/fxSpaceInvaders/app/src/main/resources/fxml",
+    "last.exportedFilePath": "/home/ptrstr/Documents/Projects/fxSpaceInvaders/app/src/main/resources/fxml",
     "last.imagePath": "C:/Users/admin/Documents/Projects/fxSpaceInvaders/app/src/main/resources/images/tank_kenney/Retina",
+    "map.height": 9,
     "map.lastUsedExportFilter": "Java FX FXML (*.fxml)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 128,
     "map.tileWidth": 128,
+    "map.width": 16,
     "openFiles": [
         "level1.tmx",
-        "kenney.tsx"
+        "kenney.tsx",
+        "level1..tmj",
+        "level1.json",
+        "level2.tmx"
     ],
     "project": "tanks.tiled-project",
     "recentFiles": [
         "level1.tmx",
-        "kenney.tsx"
+        "kenney.tsx",
+        "level2.tmx",
+        "level1.json",
+        "level1..tmj"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

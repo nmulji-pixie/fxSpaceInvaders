@@ -39,7 +39,7 @@ public final class Level {
     private int generateNumberOfSprites(){
         switch (this.levelNumber) {
             case 1:
-                this.sprites = 5;
+                this.sprites = 50;
                 break;
             case 2:
                 this.sprites = 10;
@@ -63,7 +63,13 @@ public final class Level {
     }
 
     private Pane generateLevelBackground(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/level1.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(switch(this.levelNumber) {
+            case 1 -> "/fxml/level1.fxml";
+            case 2 -> "/fxml/level2.fxml";
+            case 3 -> "/fxml/level1.fxml";
+            default -> "/fxml/level1.fxml";
+        }));
+        
         try {
             Pane pane = loader.load();
             return pane;

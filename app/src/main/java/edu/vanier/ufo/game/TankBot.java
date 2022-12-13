@@ -58,7 +58,10 @@ public class TankBot extends Tank {
         
         Tank player = (Tank)players.get(0);
         
-        this.aimAt(player.getCenterX(), player.getCenterY());
+        this.aimAt(
+            this.getEngine().getGameNodes().getTranslateX() + player.getCenterX(),
+            this.getEngine().getGameNodes().getTranslateY() + player.getCenterY()
+        );
         
         if (this.fire())
             this.addExtraCooldown();

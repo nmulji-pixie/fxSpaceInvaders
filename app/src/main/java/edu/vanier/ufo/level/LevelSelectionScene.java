@@ -11,26 +11,25 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.io.IOException;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 public final class LevelSelectionScene extends Scene {
     @FXML
     private BorderPane levelOne, levelTwo, levelThree;
-
     
-    private final Stage primaryStage;
     private GameWorld world;
     private SoundManager soundManager;
+    private final Parent selectionRoot;
     
     public LevelSelectionScene(Stage primaryStage) throws IOException {
         super(new Group());
         
-        this.primaryStage = primaryStage;
-        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/levelScreen.fxml"));
         loader.setController(this);
-
-        this.setRoot(loader.load());
+        this.selectionRoot = loader.load();
+        
+        this.setRoot(this.selectionRoot);
          
         this.soundManager = new SoundManager();
         this.soundManager.playSound(ResourcesManager.SoundDescriptor.MUSIC_MENU);
@@ -64,8 +63,8 @@ public final class LevelSelectionScene extends Scene {
             level
         );
         
-        this.world.initialize(this.primaryStage);
-        this.primaryStage.setScene(this.world.getGameSurface());
+        this.world.initialize();
+        this.setRoot(this.world.getSceneNodes());
         this.world.beginGameLoop();
     }
     
@@ -100,7 +99,7 @@ public final class LevelSelectionScene extends Scene {
         this.world.shutdown();
         this.world = null;
         
-        this.primaryStage.setScene(this);
+        this.setRoot(this.selectionRoot);
         
         this.soundManager.playSound(ResourcesManager.SoundDescriptor.MUSIC_MENU);
     }

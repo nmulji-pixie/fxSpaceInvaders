@@ -45,6 +45,7 @@ public class SpaceInvadersApp extends Application {
             this.shutdown();
             
             primaryStage.setScene(this.levelScene);
+            primaryStage.setFullScreen(true);
         });
         
         

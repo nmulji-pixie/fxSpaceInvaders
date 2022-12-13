@@ -1,0 +1,1022 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TilePane prefColumns="16" prefRows="9">
+         <children>
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadCornerLR.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadSplitS.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadSplitS.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadCornerLL.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadSplitE.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadCrossing.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadSplitW.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadCornerUR.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadCornerUL.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadNorth.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand2.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadCornerUR.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadEast.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand_roadCornerUL.png" />
+    </image>
+</ImageView>
+
+
+<ImageView smooth="false">
+    <image>
+        <Image url="@../images/tank_kenney/Retina/tileSand1.png" />
+    </image>
+</ImageView>
+
+         </children>
+      </TilePane>
+   </children>
+</Pane>
